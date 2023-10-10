@@ -1,0 +1,21 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+state_inflation <- read_csv("statecpi_beta.csv") %>%
+  filter(quarter == 4) %>%
+  select(c(state, year, pi)) %>%
+  rename(inflation = pi)
+
+state_unemployment <- read_csv("Unemployment in America Per US State.csv") %>%
+  rename(
+    `State` = `State/Area`,
+    `Labor Force Participation Rate` = `Percent (%) of State/Area's Population`, 
+    `Unemployment Rate` = `Percent (%) of Labor Force Unemployed in State/Area` 
+  ) %>%
+  select(c("State", "Year", "Month", "Labor Force Participation Rate", "Unemployment Rate"))
+```
+
+
