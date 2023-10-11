@@ -1,8 +1,8 @@
 library(tidyverse)
 library(lubridate)
 library(readxl)
-all_polls <- read_csv("raw-polls.csv")
-roper_affiliated <- read_excel("pollster-stats-full (5).xlsx") %>%
+all_polls <- read_csv("../data/raw-polls.csv")
+roper_affiliated <- read_excel("../data/pollster-stats-full (5).xlsx") %>%
   select(c("Pollster Rating ID", "AAPOR / Roper")) %>% 
   rename("pollster_rating_id" = "Pollster Rating ID", "roper" = "AAPOR / Roper")
 
