@@ -12,7 +12,14 @@ from spacy.lang.en.examples import sentences
 nlp = spacy.load('en_core_web_md')
 sid = SentimentIntensityAnalyzer()
 # initializing test characteristics
-urls = ["https://apnews.com/article/president-joe-biden-ap-poll-prescription-drugs-medicare-b82928109ae8564e750a6a196c98cfe9","https://apnews.com/article/biden-pacific-islands-summit-climate-change-funding-727aa6b908ef5cf1ea28438b965ba9b5","https://apnews.com/article/biden-guns-gun-violence-mass-shootings-5a72e3730b6d24b2143f034a9ee6ed21"]
+urls = [
+    "https://apnews.com/article/president-joe-biden-ap-poll-prescription-drugs-medicare-b82928109ae8564e750a6a196c98cfe9",
+    "https://apnews.com/article/biden-pacific-islands-summit-climate-change-funding-727aa6b908ef5cf1ea28438b965ba9b5",
+    "https://apnews.com/article/biden-guns-gun-violence-mass-shootings-5a72e3730b6d24b2143f034a9ee6ed21"
+    "https://apnews.com/article/donald-trump-letitia-james-fraud-new-york-c1865da048782b708de74c050f647df2",
+    "https://apnews.com/article/donald-trump-benjamin-netanyahu-israel-hamas-republicans-63295565c0abe5b30da5898a6b8eb01a",
+    "https://apnews.com/article/trump-gaetz-speaker-ouster-republican-8380c43e9cfcb96b3457bf7e1002b6f1"
+    ]
 demWords = ["biden","democrats", "democrat", "joe biden"]
 demScores = []
 repScores = []
@@ -25,7 +32,7 @@ for link in urls:
   for x in soup.find_all(): # removing empty tags
         if len(x.get_text(strip=True)) == 0: 
           x.extract()
-  content = soup.find("div",class_ = "RichTextStoryBody RichTextBody")
+  content = soup.find("div",class_ = "RichTextStoryBody RichTextBody") # selecting article text
   for block in content:
       nugget = block.text.strip()
       for sentence in sent_tokenize(nugget):
