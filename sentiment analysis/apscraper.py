@@ -1,5 +1,6 @@
 # import & download dependencies w/ requests to pull url, bs4 to process HTML, 
 # nltk to check sentiment, and spacy to break sentences
+import csv
 import requests
 from bs4 import BeautifulSoup
 import nltk
@@ -25,35 +26,42 @@ demScores = []
 repScores = []
 repWords = ["trump", "donald trump", "republican", "republicans"]
 # process test
-for link in urls:
-  page = requests.get(link)
-  soup = BeautifulSoup(page.content, "html.parser")
-  soup.find("div",class_ = "Enhancement-item").clear() # removing ads and promos from AP News body
-  for x in soup.find_all(): # removing empty tags
-        if len(x.get_text(strip=True)) == 0: 
-          x.extract()
-  content = soup.find("div",class_ = "RichTextStoryBody RichTextBody") # selecting article text
-  for block in content:
-      nugget = block.text.strip()
-      for sentence in sent_tokenize(nugget):
-          # print(sid.polarity_scores(sentence)["compound"])
-          result_list = list(map(str.lower, [tok.text for tok in nlp(sentence) if (tok.dep_ == "nsubj")]))
-          # print(result_list)
+with open("sentiment analysis/article_scores.csv", 'w', newline='') as csvfile:
+  writer = csv.writer(csvfile)
+  writer.writerow(["articleTitle","democratScore","republicanScore"])
+  for link in urls:
+    page = requests.get(link)
+    soup = BeautifulSoup(page.content, "html.parser")
+    soup.find("div",class_ = "Enhancement-item").clear() # removing ads and promos from AP News body
+    for x in soup.find_all(): # removing empty tags
+          if len(x.get_text(strip=True)) == 0: 
+            x.extract()
+    content = soup.find("div",class_ = "RichTextStoryBody RichTextBody") # selecting article text
+    for block in content:
+        nugget = block.text.strip()
+        for sentence in sent_tokenize(nugget):
+            # print(sid.polarity_scores(sentence)["compound"])
+            result_list = list(map(str.lower, [tok.text for tok in nlp(sentence) if (tok.dep_ == "nsubj")]))
+            # print(result_list)
 
-          for value in demWords:
-              if value in result_list:
-                  demScores.append(sid.polarity_scores(sentence)["compound"])
-                  # print("----------------- LOOK HERE ---------------")
-                  break
-          for value in repWords:
-              if value in result_list:
-                  repScores.append(sid.polarity_scores(sentence)["compound"])
-                  # print("----------------- LOOK HERE ---------------")
-                  break            
-          # print(sentence)
-      
-  print(soup.title.string)
-  # print(demScores)
-  print((sum(demScores) / len(demScores)))
-  # print(repScores)
-  print((sum(repScores) / len(repScores)))
+            for value in demWords:
+                if value in result_list:
+                    demScores.append(sid.polarity_scores(sentence)["compound"])
+                    # print("----------------- LOOK HERE ---------------")
+                    break
+            for value in repWords:
+                if value in result_list:
+                    repScores.append(sid.polarity_scores(sentence)["compound"])
+                    # print("----------------- LOOK HERE ---------------")
+                    break            
+            # print(sentence)
+        
+    print(soup.title.string)
+    # print(demScores)
+    print((sum(demScores) / len(demScores)))
+    # print(repScores)
+    print((sum(repScores) / len(repScores)))
+    writer.writerow([soup.title.string, (sum(demScores) / len(demScores)),(sum(repScores) / len(repScores))])
+
+
+  
