@@ -1,3 +1,5 @@
+# TODO pull publish date with headline sentiments; pivot to relevancy metric that can consider sentiment, but not as a priority
+
 # import & download dependencies w/ requests to pull url, bs4 to process HTML, 
 # nltk to check sentiment, and spacy to break sentences
 import csv
@@ -62,6 +64,3 @@ with open("sentiment analysis/article_scores.csv", 'w', newline='') as csvfile:
     # print(repScores)
     print((sum(repScores) / len(repScores)))
     writer.writerow([soup.title.string, (sum(demScores) / len(demScores)),(sum(repScores) / len(repScores))])
-
-
-  
