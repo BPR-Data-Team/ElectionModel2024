@@ -108,15 +108,7 @@ Replace `<branch-name>` with the name of your branch. For example, if you named 
 git push origin add-data-about-X
 ```
 
-If you know which branch you are currently on, you can simply just run:
-
-```bash
-git push
-```
-
-This will push your changes to the branch you are currently on.
-
-**To check which branch you are currently on, run the following command:**
+**To check which branch you are currently working on, run the following command:**
 
 ```bash
 git branch
@@ -125,6 +117,8 @@ git branch
 The branch you are currently on will be highlighted in green.
 
 e.g. `* add-data-about-X`
+
+You can exit the list of branches by pressing `q`.
 
 ### 7. Submit a pull request
 
