@@ -4,3 +4,4 @@
 - Scandals.csv (*FiveThirtyEight*): A list of all modern political scandals and their results
 - statecpi_beta (*Hazell, J., J. Herreno, E. Nakamura, and J. Steinsson (2020): “The ˜
 Slope of the Phillips Curve: Evidence from U.S. States”*): A list of state-level inflation over the past ~30 years
+- COVI Values (*[Cost of Voting Index](https://costofvotingindex.com/)*): Data on how each easy it is to vote in each state over the past ~3 decades 
