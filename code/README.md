@@ -13,3 +13,6 @@
 | pct_outside_moe | Percent of results outside the MOE of the pollsters, calculated via their sample size                                                                                                        |
 | dispersion      | The pollster's absolute value difference between their prediction and all other pollster's predictions (lower numbers mean the pollster "herded" closer to other pollsters)                  |
 | relative error  | The average of a pollsters error minus the average error of all other pollsters in a race (negative numbers mean that this pollster was, on average, better than pollsters in the same race) |
+
+
+- MiscCleaning.R: A code file containing all work for cleaning various files.
