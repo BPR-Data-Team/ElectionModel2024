@@ -6,3 +6,4 @@
 Slope of the Phillips Curve: Evidence from U.S. States”*): A list of state-level inflation over the past ~30 years
 - Senate: (*MIT Election Data and Science Lab, 2017, "U.S. Senate statewide 1976–2020"*): The results of past senate elections, used for many analyses throughout the model
 - House: (*MIT Election Data and Science Lab, 2017, "U.S. House statewide 1976–2020"*): The results of past house races, used for many analyses but ALSO used for generic ballot modeling, using the formula described in [this paper](https://centerforpolitics.org/crystalball/articles/seats-votes-relationship-in-the-u-s-house-1972-2020/)
+- COVI Values (*[Cost of Voting Index](https://costofvotingindex.com/)*): Data on how each easy it is to vote in each state over the past ~3 decades 
