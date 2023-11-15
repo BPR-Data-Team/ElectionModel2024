@@ -1,14 +1,14 @@
 library(tidyverse)
 library(lubridate)
 library(readxl)
-all_polls <- read_csv("../data/raw-polls.csv")
-roper_affiliated <- read_excel("../data/pollster-stats-full (5).xlsx") %>%
+all_polls <- read_csv("data/raw-polls.csv")
+roper_affiliated <- read_excel("data/pollster-stats-full (5).xlsx") %>%
   select(c("Pollster Rating ID", "AAPOR / Roper")) %>% 
   rename("pollster_rating_id" = "Pollster Rating ID", "roper" = "AAPOR / Roper")
 
 #HYPERPARAMETERS:
 years_to_rate = 10
-days_to_rate = 28
+days_to_rate = 21
 max_polls_per_race = 10
 
 #takes in a year, throws out ratings for every pollster prior to that year 
