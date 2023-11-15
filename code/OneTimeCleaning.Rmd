@@ -9,11 +9,49 @@ library(readxl)
 library(janitor)
 ```
 
-
-Getting generic ballot results
+Getting a list of every house member and their party back to 2002
 ```{r}
 senate_results <- read.csv("../data/1976-2020-senate.csv")
-house_results <- read.csv("../data/1976-2022-house.csv")
+house_uncleaned <- read.csv("../data/1976-2022-house.csv")
+
+reps_to_party <- house_uncleaned %>%
+  filter(year >= 2002) %>%
+  select(c("candidate", "party", "district", "state_po")) %>%
+  filter(party %in% c("DEMOCRAT", "REPUBLICAN")) %>%
+  distinct()
+
+
+```
+Getting generic ballot results
+Nope -- change up the cleaning on this one -- oftentimes one person runs under multiple ballots
+what to do in that scenario?
+Deal with fusion tickets how??
+```{r}
+#redo this -- not grepl, but a stringr function that checks if the candidate
+#exactly matches it
+house_cleaned <- house_uncleaned %>%
+  filter(year >= 2002 & stage == "GEN" & (!runoff | is.na(runoff))
+         & !special) %>%
+  select(c("year", "state", "state_po", "district", "candidate", "party", "candidatevotes", "totalvotes")) %>%
+  group_by(candidate, year, state_po, district) %>%
+  summarize(candidatevotes = sum(candidatevotes),
+            totalvotes = mean(totalvotes),
+            .groups = "keep") %>%
+  filter(!(candidate %in% c("BLANK", "VOID", "ALL OTHERS", "INDEPENDENT", "MISCELLANEOUS",
+                            "OTHER", "OVER VOTE", "OVERVOTES", "PRO-LIFE", "SCATTER",
+                            "SCATTERING", "UNDERVOTES"))) %>%
+  left_join(reps_to_party, by = c("candidate" = "candidate", "state_po" = "state_po", "district" = "district")) %>%
+  filter(party %in% c("DEMOCRAT", "REPUBLICAN")) %>%
+  group_by(year, state_po, district, party) %>%
+  summarize(partyvotes = sum(candidatevotes),
+            totalvotes = mean(totalvotes), .groups = "keep")
+
+sanity_check <- house_cleaned %>%
+  group_by(year, party) %>%
+  summarize(partyvotes = sum(partyvotes)) %>%
+  pivot_wider(names_from = party, values_from = partyvotes) %>%
+  mutate(dem_percent = DEMOCRAT * 100 / (DEMOCRAT + REPUBLICAN))
+
 
 unopposed_prop <- 0.71 #The average % of the vote 
                         #an unopposed candidate would have received, had they been opposed
@@ -104,3 +142,25 @@ write.csv(full_covi, "../cleaned_data/cost_of_voting.csv")
 
 ```
 
+Not much cleaning necessary, but reading in the state unemployment data and 
+making it longer and only taking data from 2002 onwards
+```{r}
+state_unemployment <- read_excel("../data/staadata.xlsx", skip = 6) %>%
+  slice(-1) %>%
+  rename(State = ...2, year = ...3, unemployment = rate) %>%
+  filter(year >= 2000) %>%
+  arrange(State, year) %>%
+  group_by(State) %>%
+  mutate(unemployment_prev = lag(unemployment, 1), 
+         year = as.numeric(year)) %>%
+  ungroup() %>%
+  filter(!is.na(unemployment_prev)) %>%
+  mutate(change_unemployment = unemployment - unemployment_prev) %>%
+  select(c("State", "year", "unemployment", "change_unemployment"))
+
+write.csv(state_unemployment, "../cleaned_data/unemployment.csv")
+```
+```{r}
+PVI <- read_excel("../data/PVI.xlsx")
+
+```
