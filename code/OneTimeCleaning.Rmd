@@ -22,6 +22,8 @@ reps_to_party <- house_uncleaned %>%
 
 
 ```
+
+
 Getting generic ballot results
 Nope -- change up the cleaning on this one -- oftentimes one person runs under multiple ballots
 what to do in that scenario?
@@ -160,7 +162,33 @@ state_unemployment <- read_excel("../data/staadata.xlsx", skip = 6) %>%
 
 write.csv(state_unemployment, "../cleaned_data/unemployment.csv")
 ```
-```{r}
-PVI <- read_excel("../data/PVI.xlsx")
 
+Cleaning PVI Data
+```{r}
+PVI_path <- "../data/PVI.xlsx"
+
+PVI_list <- PVI_path %>%
+  excel_sheets() %>%
+  map(~ read_excel(PVI_path, sheet = .)) %>%
+  extract(2:length(.)) 
+
+PVI_list[[15]]$District <- PVI_list[[15]]$Number
+
+PVI_full <- Reduce(function(x, y) full_join(x, y, by=c("State","District")), PVI_list) %>%
+mutate(across(contains("Cook"), ~case_when(
+  grepl("D", .) ~ gsub("D\\+", "", .),
+  grepl("R", .) ~ gsub("R\\+","-", .),
+  grepl("EVEN", .) ~ "0",
+  TRUE ~ NA_character_
+ ))) %>%
+  mutate(across(contains("Cook"), as.numeric)) %>%
+  select(c("State", "District") | contains("Raw Cook PVI")) %>%
+  pivot_longer(contains("Cook"), names_to = "Year", values_to = "Raw_PVI") %>%
+  mutate(District = str_remove(District, "\\.0"),
+         Year = str_remove(Year, " Raw Cook PVI"))
+
+
+write.csv(PVI_full, "../cleaned_data/District_PVI.csv")
 ```
+
+
