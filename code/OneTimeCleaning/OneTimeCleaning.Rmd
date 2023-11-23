@@ -1,0 +1,294 @@
+---
+title: "MiscCleaning"
+---
+
+Downloading libraries
+```{r}
+library(tidyverse)
+library(readxl)
+library(janitor)
+```
+
+Getting a list of every house member and their party back to 2002
+```{r}
+senate_results <- read.csv("../data/1976-2020-senate.csv")
+house_uncleaned <- read.csv("../data/1976-2022-house.csv")
+
+reps_to_party <- house_uncleaned %>%
+  filter(year >= 2002) %>%
+  select(c("candidate", "party", "district", "state_po")) %>%
+  filter(party %in% c("DEMOCRAT", "REPUBLICAN")) %>%
+  distinct()
+```
+
+
+Getting generic ballot results
+Nope -- change up the cleaning on this one -- oftentimes one person runs under multiple ballots
+what to do in that scenario?
+Deal with fusion tickets how??
+```{r}
+#redo this -- not grepl, but a stringr function that checks if the candidate
+#exactly matches it
+house_cleaned <- house_uncleaned %>%
+  filter(year >= 2002 & stage == "GEN" & (!runoff | is.na(runoff))
+         & !special) %>%
+  select(c("year", "state", "state_po", "district", "candidate", "party", "candidatevotes", "totalvotes")) %>%
+  group_by(candidate, year, state_po, district) %>%
+  summarize(candidatevotes = sum(candidatevotes),
+            totalvotes = mean(totalvotes),
+            .groups = "keep") %>%
+  filter(!(candidate %in% c("BLANK", "VOID", "ALL OTHERS", "INDEPENDENT", "MISCELLANEOUS",
+                            "OTHER", "OVER VOTE", "OVERVOTES", "PRO-LIFE", "SCATTER",
+                            "SCATTERING", "UNDERVOTES"))) %>%
+  left_join(reps_to_party, by = c("candidate" = "candidate", "state_po" = "state_po", "district" = "district")) %>%
+  filter(party %in% c("DEMOCRAT", "REPUBLICAN")) %>%
+  group_by(year, state_po, district, party) %>%
+  summarize(partyvotes = sum(candidatevotes),
+            totalvotes = mean(totalvotes), .groups = "keep")
+
+sanity_check <- house_cleaned %>%
+  group_by(year, party) %>%
+  summarize(partyvotes = sum(partyvotes)) %>%
+  pivot_wider(names_from = party, values_from = partyvotes) %>%
+  mutate(dem_percent = DEMOCRAT * 100 / (DEMOCRAT + REPUBLICAN))
+
+
+unopposed_prop <- 0.71 #The average % of the vote 
+                        #an unopposed candidate would have received, had they been opposed
+
+contested_party_summaries <- house_results %>%
+  filter(totalvotes > 1, party %in% c("DEMOCRAT", "REPUBLICAN")) %>%
+  group_by(year, party) %>%
+  summarize(total_party_votes = sum(candidatevotes), .groups = "keep")
+
+contested_total_summaries <- house_results %>%
+  filter(totalvotes > 1, party %in% c("DEMOCRAT", "REPUBLICAN")) %>%
+  group_by(year) %>%
+  summarize(mean_votes = mean(totalvotes))
+
+uncontested_party_summaries <- house_results %>%
+  filter(totalvotes <= 1, party %in% c("DEMOCRAT", "REPUBLICAN")) %>%
+  group_by(year, party) %>%
+  summarize(party_uncontested = n(), .groups = "keep")
+
+uncontested_total_summaries <-  house_results %>%
+  filter(totalvotes <= 1, party %in% c("DEMOCRAT", "REPUBLICAN")) %>%
+  group_by(year) %>%
+  summarize(total_uncontested = n())
+
+generic_ballot <- contested_party_summaries %>%
+  full_join(contested_total_summaries, by = "year") %>%
+  full_join(uncontested_party_summaries, by = c("year", "party")) %>%
+  full_join(uncontested_total_summaries, by = "year") %>%
+  mutate(party_uncontested = replace_na(party_uncontested, 0)) %>%
+  mutate(opposite_uncontested = total_uncontested - party_uncontested) %>%
+  mutate(modeled_vote = total_party_votes +
+           (party_uncontested * mean_votes * unopposed_prop) +
+           (opposite_uncontested * mean_votes * (1 - unopposed_prop))) %>%
+  select(year, party, modeled_vote) %>%
+  pivot_wider(names_from = "party",
+              values_from = "modeled_vote") %>%
+  mutate(pct_margin = (DEMOCRAT - REPUBLICAN) / (DEMOCRAT + REPUBLICAN) * 100) %>%
+  select(year, pct_margin) %>%
+  write_csv("../cleaned_data/generic_ballot.csv")
+```
+
+
+Cleaning the COVI database, and getting important results from each state and year
+```{r}
+covi_2000 <- read_excel("../data/Master 1996 2022 Election voting requirements.xlsx", 
+                        sheet = "2000")
+covi_2004 <- read_excel("../data/Master 1996 2022 Election voting requirements.xlsx", 
+                        sheet = "2004")
+covi_2008 <- read_excel("../data/Master 1996 2022 Election voting requirements.xlsx", 
+                        sheet = "2008")
+covi_2012 <- read_excel("../data/Master 1996 2022 Election voting requirements.xlsx", 
+                        sheet = "2012")
+covi_2016 <- read_excel("../data/Master 1996 2022 Election voting requirements.xlsx", 
+                        sheet = "2016")
+covi_2020 <- read_excel("../data/Master 1996 2022 Election voting requirements.xlsx", 
+                        sheet = "2020")
+covi_2022 <- read_excel("../data/Master 1996 2022 Election voting requirements.xlsx", 
+                        sheet = "2022")
+#list of variables to keep
+vars <- c("State.y", "Year", "AbsenteeExcuseReq", "PollHours", "AvgPollHours", "MaxPollHours","MinPollHours", "Issue Area #1-Registration Deadlines", "VoterIDLaws", "NoVoterID", "NoAllMailVote", "NoEarlyVote", "NoFelonReg", "NoFelonsRegAfterIncar", 
+          "nonstrictID", "nonstrictPhoto", "NOonlineregistration", "NoPermanentAbsentee", 
+          "NoPollPlaceReg", "NoPR", "NoSameDayReg", "nostateholiday", 
+         "PR16", "PR17", "PR175", "PR60", "PR90", "strictID", "strictPhoto")
+
+state_numbers <- covi_2000 %>%
+  select(statenu, State)
+
+full_covi <- bind_rows(covi_2000, covi_2004, covi_2008, covi_2012, covi_2016,
+                       covi_2020, covi_2022) %>%
+  mutate(NoFelonReg = ifelse(is.na(NoFelonReg), NoFelonsReg, NoFelonReg), 
+         NoAllMailVote = ifelse(is.na(NoAllMailVote), noallmailvoting, NoAllMailVote), 
+         NoVoterID = ifelse(is.na(NoVoterID), NovoterID, NoVoterID),
+         MaxPollHours = ifelse(is.na(MaxPollHours), PollHoursMax, MaxPollHours),
+         MinPollHours = ifelse(is.na(MinPollHours), PollHoursMin, MinPollHours),
+         AvgPollHours = ifelse(is.na(AvgPollHours), PollHrsAvg, AvgPollHours),
+         VoterIDLaws = ifelse(is.na(`Issue Area #5-Voter ID Laws`), `Issue Area #7-Voter ID Laws`, 
+                              `Issue Area #5-Voter ID Laws`),
+         PollHours = ifelse(is.na(`Issue Area #6-Poll Hours`), `Issue Area #8-Poll Hours`,
+                            `Issue Area #6-Poll Hours`),
+         .keep = "unused") %>%
+  full_join(state_numbers, by = "statenu") %>%
+  select(all_of(vars)) %>%
+  rename(regdeadlines = `Issue Area #1-Registration Deadlines`, 
+         State = State.y) %>%
+  rename_with(tolower)
+
+write.csv(full_covi, "../cleaned_data/cost_of_voting.csv")
+
+```
+
+Not much cleaning necessary, but reading in the state unemployment data and 
+making it longer and only taking data from 2002 onwards
+```{r}
+state_unemployment <- read_excel("../data/staadata.xlsx", skip = 6) %>%
+  slice(-1) %>%
+  rename(State = ...2, year = ...3, unemployment = rate) %>%
+  filter(year >= 2000) %>%
+  arrange(State, year) %>%
+  group_by(State) %>%
+  mutate(unemployment_prev = lag(unemployment, 1), 
+         year = as.numeric(year)) %>%
+  ungroup() %>%
+  filter(!is.na(unemployment_prev)) %>%
+  mutate(change_unemployment = unemployment - unemployment_prev) %>%
+  select(c("State", "year", "unemployment", "change_unemployment"))
+
+write.csv(state_unemployment, "../cleaned_data/unemployment.csv")
+```
+
+
+This gets historical presidential data
+```{r}
+pres_history <- read.csv("../data/HistoricalElections/PresidentialHistory.csv") %>%
+  mutate(candidate = case_when(
+    candidate == "MITT, ROMNEY" ~ "ROMNEY, MITT", 
+    TRUE ~ candidate
+  )) #for some reason, mitt romney's name is backwards sometimes lol
+
+#getting every major candidate and their party
+candidate_to_party <- pres_history %>%
+  filter(year >= 1996 & party_simplified %in% c("DEMOCRAT", "REPUBLICAN") 
+         & !(candidate %in% c("", "OTHER"))) %>%
+  select(c("candidate", "party_simplified")) %>%
+  unique()
+  
+#calculating the total number of votes in each presidential election
+total_votes <- pres_history %>%
+  select(c("year", "state_po", "totalvotes")) %>%
+  unique()
+  
+#full list of historical presidential data
+cleaned_pres <- pres_history %>%
+  filter(year >= 1996 & !writein) %>%
+  group_by(year, state_po, candidate) %>%
+  summarise(votes = sum(candidatevotes)) %>%
+  right_join(candidate_to_party, by = "candidate") %>%
+  select(-"candidate") %>%
+  pivot_wider(names_from = party_simplified, values_from = votes) %>%
+  left_join(total_votes, by = c("year" = "year", "state_po" = "state_po")) %>%
+  mutate(margin = 100 * (DEMOCRAT - REPUBLICAN) / (totalvotes)) %>%
+  select("year", "state_po", "margin") 
+
+write.csv(cleaned_pres, "../cleaned_data/historical_president.csv")
+```
+
+
+This gets data for District-Level PVI, and combines it with state-level PVI
+Notes on what PVI district data is used for what election:
+2024: 2023 data
+2022: 2023 data
+2020: 2019 data, but NC changed their borders b4 the 2020 election and there's no data on that (replace with NA?)
+2018: 2019 data
+2016: 2015 data, but problems with Florida, NC, and VA (replace with NA?)
+2014: 2015 data
+2012: 2012 data
+2010: 2009 data
+2008: 2007 data
+2006: 2007 data
+2004: 2003
+2002: 2003
+```{r}
+PVI_path <- "../data/PVI.xlsx"
+
+#Getting PVI data, which is kept in different excel sheets
+PVI_list <- PVI_path %>%
+  excel_sheets() %>%
+  map(~ read_excel(PVI_path, sheet = .)) %>%
+  magrittr::extract(2:length(.)) #First excel sheet is an explanation
+
+#For some reason, Cook changed District to Number in the final dataset
+PVI_list[[15]]$District <- PVI_list[[15]]$Number
+
+PVI_district <- Reduce(function(x, y) full_join(x, y, by=c("State","District")), PVI_list) %>%
+#Replacing D+12 with 12, R+12 with -12, and EVEN with 0
+mutate(across(contains("Cook"), ~case_when(
+  grepl("D", .) ~ gsub("D\\+", "", .),
+  grepl("R", .) ~ gsub("R\\+","-", .),
+  grepl("EVEN", .) ~ "0",
+  TRUE ~ NA_character_
+ ))) %>%
+  mutate(across(contains("Cook"), as.numeric)) %>%
+  #Pivoting dataset to make it look like it should
+  select(c("State", "District") | contains("Raw Cook PVI")) %>%
+  pivot_longer(contains("Cook"), names_to = "Year", values_to = "Raw_PVI") %>%
+  mutate(District = str_remove(District, "\\.0"),
+         Year = as.numeric(str_remove(Year, " Raw Cook PVI"))) %>%
+  #Using previously-explained years to get the exact data/year combos I want
+  filter(Year %in% c(2003, 2007, 2009, 2012, 2015, 2019, 2023)) %>%
+  rowwise() %>%
+  mutate(True_Year = list(case_when(
+    Year == 2023 ~ c(2022, 2024),
+    Year == 2019 ~ c(2018, 2020), 
+    Year == 2015 ~ c(2014, 2016), 
+    Year == 2012 ~ 2012, 
+    Year == 2009 ~ 2010, 
+    Year == 2007 ~ c(2006, 2008), 
+    Year == 2003 ~ c(2002, 2004), 
+    TRUE ~ Year
+  )), .after = Year) %>%
+  unnest(True_Year) %>%
+  unique() %>%
+  filter(!(
+    (Year == 2020 & State == "North Carolina") |
+    (Year == 2016 & State %in% c("North Carolina", "Florida", "Virginia"))
+  )) %>%
+  select(-c("Year"))
+  
+
+total_president_margin <- read.csv("../data/HistoricalElections/President Summary - Sheet1.csv")
+
+PVI_state <- cleaned_pres %>%
+  group_by(state_po) %>%
+  mutate(lagged_state_margin = lag(margin, order_by = state_po)) %>%
+  filter(year >= 2000) %>%
+  full_join(total_president_margin, by = c("year" = "year")) %>%
+  rename(state_margin = margin) %>%
+  select(-c("DEMOCRAT", "REPUBLICAN")) %>%
+  mutate(Raw_PVI = 0.5*(0.75*(state_margin - national_margin) + 
+           0.25 * (lagged_state_margin - lagged_national_margin))) %>%
+  select(c("year", "state_po", "Raw_PVI")) %>%
+  rowwise() %>%
+  mutate(True_Year = list(c(year + 2, year + 4)), .after = year, 
+         district = "0") %>%
+  unnest(True_Year) %>%
+  select(-c("year")) %>%
+  rename(Abbreviation = state_po, 
+         District = district)
+
+states_list <- read.csv("../cleaned_data/StatesList.csv")
+
+
+PVI_full <- PVI_district %>%
+  full_join(states_list, by = c("State" = "State")) %>%
+  select("Abbreviation", "District", "True_Year", "Raw_PVI") %>%
+  bind_rows(PVI_state)
+
+write.csv(PVI_full, "../cleaned_data/Completed_PVI.csv")
+```
+
+
