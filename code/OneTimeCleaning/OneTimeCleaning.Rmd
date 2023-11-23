@@ -19,8 +19,6 @@ reps_to_party <- house_uncleaned %>%
   select(c("candidate", "party", "district", "state_po")) %>%
   filter(party %in% c("DEMOCRAT", "REPUBLICAN")) %>%
   distinct()
-
-
 ```
 
 
