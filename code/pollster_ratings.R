@@ -1,15 +1,12 @@
 library(tidyverse)
 library(lubridate)
 library(readxl)
-all_polls <- read_csv("data/raw-polls.csv")
-roper_affiliated <- read_excel("data/pollster-stats-full (5).xlsx") %>%
-  select(c("Pollster Rating ID", "AAPOR / Roper")) %>% 
-  rename("pollster_rating_id" = "Pollster Rating ID", "roper" = "AAPOR / Roper")
+all_polls <- read_csv("data/HistoricalPolls.csv")
 
 #HYPERPARAMETERS:
 years_to_rate = 10
 days_to_rate = 21
-max_polls_per_race = 10
+max_polls_per_race = 5
 
 #takes in a year, throws out ratings for every pollster prior to that year 
 ratingfunction <- function(before_year, polls = all_polls) {
@@ -143,11 +140,6 @@ ratings_pre_2018 <- ratingfunction(2018)
 ratings_pre_2020 <- ratingfunction(2020) %>%
   full_join(pollster_to_id, by = "pollster_rating_id")
 
-
-
-all_polls %>%
-  left_join(roper_affiliated, by = "pollster_rating_id") %>%
-  filter(location == "US" & roper == "Yes")
 
 
 
