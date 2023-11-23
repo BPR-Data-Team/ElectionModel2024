@@ -6,5 +6,6 @@
 ElectionModel2024.Rproj
 code/MiscCleaning.nb.html
 data/PVI.xlsx
-cleaned_data/PVI.csv
 cleaned_data/District_PVI.csv
+cleaned_data/Completed_PVI.csv
+testing/
