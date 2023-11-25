@@ -30,39 +30,60 @@ class DataFetcher:
         """
         Constructs all the necessary attributes for the DataFetcher object.
         """
-        self.supported_filenames: list[str] = ['consumer-sentiment.csv']
+        self.files: dict[str, DataFile] = {}
+        self.__construct_files_dict()
 
-    def __handle_request(self, filename: str, base_url: str, params: dict[str, str], headers: list[str]) -> None:
-        """
-        Handles the HTTP request to the API.
-
-        Parameters
-        ----------
-        filename : str
-            The filename of the data to update.
-        base_url : str
-            The base URL of the API.
-        params : dict[str, str]
-            The parameters of the API request.
-        
-        Raises
-        ------
-        HTTPError
-            If the HTTP request returns an error.
-        """
-        response: Response = requests.get(base_url, params=params)
-        if response.status_code == 200:
-            response_json: dict[str, str] = response.json()
-            observations: list[dict[str, str]] = response_json['observations']
-            filepath: str = f'data/{filename}'
-            file: TextIOWrapper = open(filepath, 'w', newline='')
-            writer = csv.writer(file)
-            writer.writerow(headers)
-            for observation in observations:
-                writer.writerow([observation[header] for header in headers])
-            file.close()
-        else:
-            raise HTTPError(f'HTTP Error: {response.status_code} {response.reason} (request url: {response.request.url})')
+    def __construct_files_dict(self) -> None:
+        self.files['consumer-sentiment.csv'] = DataFile(
+            filename='consumer-sentiment.csv',
+            api_url='https://api.stlouisfed.org/fred/series/observations',
+            request_params={
+                'series_id': 'UMCSENT',
+                'api_key': FRED_API_KEY,
+                'file_type': 'json'
+            },
+            headers=['date', 'value']
+        )
+        self.files['inflation-cpi.csv'] = DataFile(
+            filename='inflation-cpi.csv',
+            api_url='https://api.stlouisfed.org/fred/series/observations',
+            request_params={
+                'series_id': 'FPCPITOTLZGUSA',
+                'api_key': FRED_API_KEY,
+                'file_type': 'json'
+            },
+            headers=['date', 'value']
+        )
+        self.files['real-gdp-per-capita.csv'] = DataFile(
+            filename='real-gdp-per-capita.csv',
+            api_url='https://api.stlouisfed.org/fred/series/observations',
+            request_params={
+                'series_id': 'A939RX0Q048SBEA',
+                'api_key': FRED_API_KEY,
+                'file_type': 'json'
+            },
+            headers=['date', 'value']
+        )
+        self.files['national-unemployment-rate.csv'] = DataFile(
+            filename='national-unemployment-rate.csv',
+            api_url='https://api.stlouisfed.org/fred/series/observations',
+            request_params={
+                'series_id': 'UNRATE',
+                'api_key': FRED_API_KEY,
+                'file_type': 'json'
+            },
+            headers=['date', 'value']
+        )
+        self.files['national-home-price-index.csv'] = DataFile(
+            filename='national-home-price-index.csv',
+            api_url='https://api.stlouisfed.org/fred/series/observations',
+            request_params={
+                'series_id': 'CSUSHPINSA',
+                'api_key': FRED_API_KEY,
+                'file_type': 'json'
+            },
+            headers=['date', 'value']
+        )
     
     def fetch_and_write_to_data(self, filename: str) -> None:
         """
@@ -80,19 +101,11 @@ class DataFetcher:
         HTTPError
             If the HTTP request returns an error.
         """
-        match filename:
-            case 'consumer-sentiment.csv':
-                series_id: str = "UMCSENT"
-                base_url: str = "https://api.stlouisfed.org/fred/series/observations"
-                params: dict[str, str] = {
-                    'series_id': series_id,
-                    'api_key': os.getenv('FRED_API_KEY'),
-                    'file_type': 'json'
-                }
-                headers: list[str] = ['date', 'value']
-                self.__handle_request(filename, base_url, params, headers)
-            case _: # invalid filename
-                raise ValueError(f'Invalid filename: {filename}')
+        try:
+            data_file: DataFile = self.files[filename]
+            data_file.handle_request()
+        except KeyError:
+            raise ValueError(f'Invalid filename: {filename}')
     
     def get_supported_filenames(self) -> list[str]:
         """
@@ -103,11 +116,53 @@ class DataFetcher:
         list[str]
             The supported filenames.
         """
-        return self.supported_filenames
+        return self.files.keys()
+    
+class DataFile:
+    """
+    A class used to represent a data file.
+
+    Attributes
+    ----------
+    filename : str
+    api_url : str
+    request_params : dict[str, str]
+    headers : list[str]
+    """
+
+    def __init__(self, filename: str, api_url: str, request_params: dict[str, str], headers: list[str]) -> None:
+        self.filename: str = filename
+        self.api_url: str = api_url
+        self.request_params: dict[str, str] = request_params
+        self.headers: list[str] = headers
+
+    def handle_request(self) -> None:
+        """
+        Handles the HTTP request to the API.
+
+        Raises
+        ------
+        HTTPError
+            If the HTTP request returns an error.
+        """
+        response: Response = requests.get(self.api_url, params=self.request_params)
+        if response.status_code == 200:
+            response_json: dict[str, str] = response.json()
+            observations: list[dict[str, str]] = response_json['observations']
+            filepath: str = f'data/{self.filename}'
+            file: TextIOWrapper = open(filepath, 'w', newline='')
+            writer = csv.writer(file)
+            writer.writerow(self.headers)
+            for observation in observations:
+                writer.writerow([observation[header] for header in self.headers])
+            file.close()
+        else:
+            raise HTTPError(f'HTTP Error: {response.status_code} {response.reason} (request url: {response.request.url})')
 
 if __name__ == '__main__':
     # Load the environment variables
     load_dotenv()
+    FRED_API_KEY = os.getenv('FRED_API_KEY')
 
     # Create the parser
     parser: ArgumentParser = argparse.ArgumentParser(description='Process some arguments.')
