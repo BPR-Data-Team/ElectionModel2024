@@ -9,17 +9,6 @@ library(readxl)
 library(janitor)
 ```
 
-Getting a list of every house member and their party back to 2002
-```{r}
-senate_results <- read.csv("../data/1976-2020-senate.csv")
-house_uncleaned <- read.csv("../data/1976-2022-house.csv")
-
-reps_to_party <- house_uncleaned %>%
-  filter(year >= 2002) %>%
-  select(c("candidate", "party", "district", "state_po")) %>%
-  filter(party %in% c("DEMOCRAT", "REPUBLICAN")) %>%
-  distinct()
-```
 
 
 Getting generic ballot results
