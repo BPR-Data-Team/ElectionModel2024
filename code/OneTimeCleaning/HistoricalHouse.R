@@ -108,7 +108,8 @@ house_finished <- house_finished %>%
     TRUE ~ prev_margin 
   ))
   
-#Calculating Generic Ballot Results for each year
+# ----Calculating Generic Ballot Results for each year -----
+
 #The average % of the vote 
 #an unopposed candidate would have received, had they been opposed
 unopposed_prop <- 0.71 

@@ -15,6 +15,6 @@
 | relative error  | The average of a pollsters error minus the average error of all other pollsters in a race (negative numbers mean that this pollster was, on average, better than pollsters in the same race) |
 
 
-- OneTimeCleaning.Rmd: All of the cleaning for files that do not change for the rest of the project, such as PVI data, cost-of-voting indices, etc.
+- OneTimeCleaning: All of the files for cleaning for data that do not change for the rest of the project, such as PVI data, cost-of-voting indices, etc.
 
 - ContinuousCleaning: A folder containing all files for cleaning datasets that do change -- polls, economic indicators, etc.
