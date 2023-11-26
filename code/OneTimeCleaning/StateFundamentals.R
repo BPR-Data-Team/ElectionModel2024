@@ -68,19 +68,20 @@ full_covi <- bind_rows(covi_2000, covi_2004, covi_2008, covi_2012, covi_2016,
 write.csv(full_covi, "cleaned_data/cost_of_voting.csv")
 
 
-# ---- Done working with COVI! Now, working on Unemployment Data ----- #
-# state_unemployment <- read_excel("data/staadata.xlsx", skip = 6) %>%
-#   slice(-1) %>%
-#   rename(State = ...2, year = ...3, unemployment = rate) %>%
-#   filter(year >= 2000) %>%
-#   arrange(State, year) %>%
-#   group_by(State) %>%
-#   mutate(unemployment_prev = lag(unemployment, 1), 
-#          year = as.numeric(year)) %>%
-#   ungroup() %>%
-#   filter(!is.na(unemployment_prev)) %>%
-#   mutate(change_unemployment = unemployment - unemployment_prev) %>%
-#   select(c("State", "year", "unemployment", "change_unemployment"))
-# 
-# write.csv(state_unemployment, "cleaned_data/unemployment.csv")
+#---- Done working with COVI! Now, working on Unemployment Data ----- #
+state_unemployment <- read_excel("data/Unemployment.xlsx", skip = 6) %>%
+  slice(-1) %>%
+  rename(State = ...2, year = ...3, unemployment = rate) %>%
+  filter(year >= 2000) %>%
+  arrange(State, year) %>%
+  group_by(State) %>%
+  #year should be 1 greater, since we only get unemployment data post-election
+  mutate(unemployment_prev = lag(unemployment, 1),
+         year = as.numeric(year) + 1) %>%
+  ungroup() %>%
+  filter(!is.na(unemployment_prev) & (year %% 2 == 0)) %>%
+  mutate(change_unemployment = unemployment - unemployment_prev) %>%
+  select(c("State", "year", "unemployment", "change_unemployment"))
+
+write.csv(state_unemployment, "cleaned_data/unemployment.csv")
 
