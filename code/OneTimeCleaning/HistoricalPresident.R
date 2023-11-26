@@ -59,7 +59,7 @@ state_pvi <- pres_votes %>%
 #2016 FL, NC, and VA because the necessary data (post-redistricting, pre-election)
 #is unavailable
 
-PVI_path <- "../data/PVI.xlsx"
+PVI_path <- "data/PVI.xlsx"
 
 #Getting PVI data, which is kept in different excel sheets
 PVI_list <- PVI_path %>%
@@ -105,36 +105,23 @@ PVI_district <- Reduce(function(x, y) full_join(x, y, by=c("State","District")),
   )) %>%
   select(-c("Year"))
 
-
-total_president_margin <- read.csv("../data/HistoricalElections/President Summary - Sheet1.csv")
-
-PVI_state <- cleaned_pres %>%
-  group_by(state_po) %>%
-  mutate(lagged_state_margin = lag(margin, order_by = state_po)) %>%
-  filter(year >= 2000) %>%
-  full_join(total_president_margin, by = c("year" = "year")) %>%
-  rename(state_margin = margin) %>%
-  select(-c("DEMOCRAT", "REPUBLICAN")) %>%
-  mutate(Raw_PVI = 0.5*(0.75*(state_margin - national_margin) + 
-                          0.25 * (lagged_state_margin - lagged_national_margin))) %>%
-  select(c("year", "state_po", "Raw_PVI")) %>%
-  rowwise() %>%
-  mutate(True_Year = list(c(year + 2, year + 4)), .after = year, 
-         district = "0") %>%
-  unnest(True_Year) %>%
-  select(-c("year")) %>%
-  rename(Abbreviation = state_po, 
-         District = district)
-
-states_list <- read.csv("../cleaned_data/StatesList.csv")
+states_list <- read.csv("cleaned_data/StatesList.csv")
 
 
 PVI_full <- PVI_district %>%
   full_join(states_list, by = c("State" = "State")) %>%
   select("Abbreviation", "District", "True_Year", "Raw_PVI") %>%
-  bind_rows(PVI_state)
+  rename(
+    year = True_Year, 
+    pvi = Raw_PVI, 
+    district = District, 
+    state = Abbreviation
+  ) %>%
+  filter(district != "AL") %>%
+  mutate(district = as.numeric(district)) %>%
+  bind_rows(state_pvi)
 
-write.csv(PVI_full, "../cleaned_data/Completed_PVI.csv")
+write.csv(PVI_full, "cleaned_data/Completed_PVI.csv")
 
 
 
