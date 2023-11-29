@@ -84,6 +84,16 @@ class DataFetcher:
             },
             headers=['date', 'value']
         )
+        self.files['national-regular-gas-price.csv'] = DataFile(
+            filename='national-regular-gas-price.csv',
+            api_url='https://api.stlouisfed.org/fred/series/observations',
+            request_params={
+                'series_id': 'GASREGW',
+                'api_key': FRED_API_KEY,
+                'file_type': 'json'
+            },
+            headers=['date', 'value']
+        )
     
     def fetch_and_write_to_data(self, filename: str) -> None:
         """
@@ -179,7 +189,7 @@ if __name__ == '__main__':
     update_all: bool = args.all
 
     if not update_all and filename is None:
-        print('No filename provided. Please provide a filename, or use the --all flag to update all files.')
+        print('No filename provided. Please provide a filename using --filename FILENAME, or use the --all flag to update all files.')
         exit(1)
     
     if update_all:
