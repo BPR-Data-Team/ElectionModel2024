@@ -15,3 +15,4 @@
 - national-home-price-index.csv (_FRED_): A measure of home prices
 - national-regular-gas-price.csv (_FRED_): A measure of gas prices
 - real-disposable-personal-income.csv (_FRED_): A measure of disposable income
+- biden-approval.csv (_FiveThirtyEight_): A measure of Biden's approval rating
