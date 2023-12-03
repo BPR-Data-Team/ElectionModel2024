@@ -8,6 +8,10 @@
 - Senate: (_MIT Election Data and Science Lab, 2017, "U.S. Senate statewide 1976–2020"_): The results of past senate elections, used for many analyses throughout the model
 - House: (_MIT Election Data and Science Lab, 2017, "U.S. House statewide 1976–2020"_): The results of past house races, used for many analyses but ALSO used for generic ballot modeling, using the formula described in [this paper](https://centerforpolitics.org/crystalball/articles/seats-votes-relationship-in-the-u-s-house-1972-2020/)
 - COVI Values (_[Cost of Voting Index](https://costofvotingindex.com/)_): Data on how each easy it is to vote in each state over the past ~3 decades
-- consumer-sentiment.csv (_FRED_): A measure of consumer sentiment, used as a proxy for the economy
-- inflation-cpi.csv (_FRED_): A measure of inflation, used as a proxy for the economy
-- real-gdp-per-capita.csv (_FRED_): A measure of GDP per capita, used as a proxy for the economy
+- consumer-sentiment.csv (_FRED_): A measure of consumer sentiment
+- inflation-cpi.csv (_FRED_): A measure of inflation
+- real-gdp-per-capita.csv (_FRED_): A measure of GDP per capita
+- national-unemployment-rate.csv (_FRED_): A measure of unemployment
+- national-home-price-index.csv (_FRED_): A measure of home prices
+- national-regular-gas-price.csv (_FRED_): A measure of gas prices
+- real-disposable-personal-income.csv (_FRED_): A measure of disposable income

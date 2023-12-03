@@ -94,6 +94,20 @@ class DataFetcher:
             },
             headers=['date', 'value']
         )
+        self.files['real-disposable-personal-income.csv'] = DataFile(
+            filename='real-disposable-personal-income.csv',
+            api_url='https://api.stlouisfed.org/fred/series/observations',
+            request_params={
+                'series_id': 'DSPIC96',
+                'api_key': FRED_API_KEY,
+                'file_type': 'json'
+            },
+            headers=['date', 'value']
+        )
+        self.files['biden-approval-rating.csv'] = DataFile(
+            filename='biden-approval-rating.csv',
+            api_url='https://projects.fivethirtyeight.com/polls-page/data/president_approval_polls.csv',
+        )
     
     def fetch_and_write_to_data(self, filename: str) -> None:
         """
@@ -140,7 +154,7 @@ class DataFile:
     headers : list[str]
     """
 
-    def __init__(self, filename: str, api_url: str, request_params: dict[str, str], headers: list[str]) -> None:
+    def __init__(self, filename: str, api_url: str, request_params: dict[str, str] = {}, headers: list[str] = []) -> None:
         self.filename: str = filename
         self.api_url: str = api_url
         self.request_params: dict[str, str] = request_params
@@ -155,19 +169,34 @@ class DataFile:
         HTTPError
             If the HTTP request returns an error.
         """
-        response: Response = requests.get(self.api_url, params=self.request_params)
-        if response.status_code == 200:
-            response_json: dict[str, str] = response.json()
-            observations: list[dict[str, str]] = response_json['observations']
-            filepath: str = f'data/{self.filename}'
-            file: TextIOWrapper = open(filepath, 'w', newline='')
-            writer = csv.writer(file)
-            writer.writerow(self.headers)
-            for observation in observations:
-                writer.writerow([observation[header] for header in self.headers])
-            file.close()
-        else:
-            raise HTTPError(f'HTTP Error: {response.status_code} {response.reason} (request url: {response.request.url})')
+        match self.api_url:
+            case 'https://api.stlouisfed.org/fred/series/observations':
+                response: Response = requests.get(self.api_url, params=self.request_params)
+                if response.status_code == 200:
+                    response_json: dict[str, str] = response.json()
+                    observations: list[dict[str, str]] = response_json['observations']
+                    filepath: str = f'data/{self.filename}'
+                    file: TextIOWrapper = open(filepath, 'w', newline='')
+                    writer = csv.writer(file)
+                    writer.writerow(self.headers)
+                    for observation in observations:
+                        writer.writerow([observation[header] for header in self.headers])
+                    file.close()
+                else:
+                    raise HTTPError(f'HTTP Error: {response.status_code} {response.reason} (request url: {response.request.url})')
+            case "https://projects.fivethirtyeight.com/polls-page/data/president_approval_polls.csv":
+                response: Response = requests.get(self.api_url)
+                # Checking if the request was successful
+                if response.status_code == 200:
+                    # Writing the content to a file
+                    filepath: str = f'data/{self.filename}'
+                    file: TextIOWrapper = open(filepath, 'wb')
+                    file.write(response.content)
+                    file.close()
+                else:
+                    raise HTTPError(f'HTTP Error: {response.status_code} {response.reason} (request url: {response.request.url})')
+            case _:
+                raise ValueError(f'Unknown API: {self.api_url}')
 
 if __name__ == '__main__':
     # Load the environment variables
