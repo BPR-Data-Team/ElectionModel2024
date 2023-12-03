@@ -209,6 +209,7 @@ if __name__ == '__main__':
     # Add the arguments
     parser.add_argument('--filename', type=str, help='The filename of the data to update.')
     parser.add_argument('--all', action='store_true', help='Update all files.')
+    parser.add_argument('--list', action='store_true', help='List all supported filenames.')
 
     # Parse the arguments
     args: Namespace = parser.parse_args()
@@ -216,9 +217,10 @@ if __name__ == '__main__':
     # Get the filename from the arguments
     filename: str = args.filename
     update_all: bool = args.all
+    list_all: bool = args.list
 
-    if not update_all and filename is None:
-        print('No filename provided. Please provide a filename using --filename FILENAME, or use the --all flag to update all files.')
+    if not update_all and filename is None and not list_all:
+        print('No filename provided. Please provide a filename using --filename FILENAME, or use the --all flag to update all files. To view a list of all files, use the --list flag.')
         exit(1)
     
     if update_all:
@@ -236,6 +238,15 @@ if __name__ == '__main__':
                 print(f"[{Fore.RED}{filename}{Style.RESET_ALL}] {' ' * length_difference}{e}")
             else:
                 print(f"[{Fore.GREEN}{filename}{Style.RESET_ALL}] {' ' * length_difference}Updated {filename} successfully!")
+        exit(0)
+    
+    if list_all:
+        # List all supported filenames
+        data_fetcher: DataFetcher = DataFetcher()
+        supported_filenames: list[str] = data_fetcher.get_supported_filenames()
+        print('Supported filenames:')
+        for filename in supported_filenames:
+            print(f'- {filename}')
         exit(0)
 
     # Get the data from the API
