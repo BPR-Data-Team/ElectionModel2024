@@ -15,10 +15,8 @@
 | dispersion      | The pollster's absolute value difference between their prediction and all other pollster's predictions (lower numbers mean the pollster "herded" closer to other pollsters)                  |
 | relative error  | The average of a pollsters error minus the average error of all other pollsters in a race (negative numbers mean that this pollster was, on average, better than pollsters in the same race) |
 
-- MiscCleaning.R: A code file containing all work for cleaning various files.
-
 - data_fetcher.py: A python script that fetches data from the internet and saves it to the data folder. You can run it with `python data_fetcher.py [filename]`. It will fetch the data from the internet and save it to the data folder. If you want to run the code, you will need to install the python package `requests` with `pip install requests` (or just run `pip install -r requirements.txt` to install all required packages).
 
-  So far, the following files are supported:
+- OneTimeCleaning: All of the files for cleaning for data that do not change for the rest of the project, such as PVI data, cost-of-voting indices, etc.
 
-  - `consumer-sentiment.csv` (from [FRED](https://fred.stlouisfed.org/series/UMCSENT))
+- ContinuousCleaning: A folder containing all files for cleaning datasets that do change -- polls, economic indicators, etc.
