@@ -36,7 +36,7 @@ pres_finished <- pres_votes %>%
   filter(year >= 2004)
   
 
-write.csv(pres_finished, "cleaned_data/PresidentHistorical.csv")
+write.csv(pres_finished, "cleaned_data/President Historical.csv")
 
 #---- Working on PVI Values -----#
 #summary of each race -- two party-democratic results since 2000, and lagged values
@@ -132,7 +132,7 @@ PVI_full <- PVI_district %>%
   mutate(district = as.numeric(district)) %>%
   bind_rows(state_pvi)
 
-write.csv(PVI_full, "cleaned_data/Completed_PVI.csv")
+write.csv(PVI_full, "cleaned_data/Completed PVI.csv")
 
 
 
