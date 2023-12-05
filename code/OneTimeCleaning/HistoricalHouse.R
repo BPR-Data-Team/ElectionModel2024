@@ -148,7 +148,7 @@ generic_ballot <- contested_party_summaries %>%
          prev2_gb_margin = lagged_margin) #we want the year to include the GB for EACH of the last 2 elections
 
 #---- Special Elections for all House Elections
-pvi_full <- read.csv("cleaned_data/Completed_PVI.csv")
+pvi_full <- read.csv("cleaned_data/Completed PVI.csv")
 specials_no_pvi <- read.csv("data/HistoricalElections/Special Election Data.csv")
 
 specials_summary <- specials_no_pvi %>%
@@ -159,7 +159,7 @@ specials_summary <- specials_no_pvi %>%
   summarize(mean_differential = mean(differential))
 
 write.csv(specials_summary, "cleaned_data/Specials.csv")
-write.csv(house_finished, "cleaned_data/HouseHistorical.csv")
-write.csv(generic_ballot, "cleaned_data/generic_ballot.csv")
+write.csv(house_finished, "cleaned_data/House Historical.csv")
+write.csv(generic_ballot, "cleaned_data/Generic Ballot.csv")
   
 
