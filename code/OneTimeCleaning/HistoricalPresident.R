@@ -1,10 +1,11 @@
 library(tidyverse)
 library(readxl)
 
-load("data/HistoricalElections/electoral_studies_replication_presidential_analysis_data.Rdata")
+load("data/HistoricalElections/dataverse_shareable_presidential_county_returns_1868_2020.Rdata")
 
-pres_uncleaned <- electoral_studies_presidential
-rm(electoral_studies_presidential)
+pres_uncleaned <- pres_elections_release
+rm(pres_elections_release)
+alaska_results <- read.csv('data/HistoricalElections/AKPres.csv')
 
 #This dataset gets the total number of votes for each party for each race
 #I stop cleaning halfway through because it is used for both PVI and Pres stats
@@ -12,18 +13,28 @@ pres_votes <- pres_uncleaned %>%
   group_by(election_year, state) %>%
   #organized by county, must sum county votes to get total votes
   summarize(
-    dem_votes = sum(democratic_raw_votes), 
-    rep_votes = sum(republican_raw_votes), 
+    dem_votes = sum(democratic_raw_votes, na.rm = TRUE), 
+    rep_votes = sum(republican_raw_votes, na.rm = TRUE), 
     total_votes = sum(raw_county_vote_totals)
   ) %>%
-  filter(election_year >= 1996) 
+  filter(election_year >= 1996) %>%
+  #doesn't include alaska (doesn't report by county), so manually added it
+  bind_rows(alaska_results)
+
 
 #finishing presidential analysis
 pres_finished <- pres_votes %>%
   mutate(margin = 100 * (dem_votes - rep_votes) / total_votes) %>%
-  filter(election_year >= 2004) %>%
   select(c('election_year', 'state', 'margin')) %>%
-  rename(year = election_year)
+  rename(year = election_year) %>%
+  mutate(open_seat = year %in% c(2004, 2012, 2020)) %>%
+  group_by(state) %>%
+  mutate(incumbent_margin = case_when(
+    open_seat ~ NA_real_, 
+    TRUE ~ lag(margin, 1, order_by = year)
+  )) %>%
+  filter(year >= 2004)
+  
 
 write.csv(pres_finished, "cleaned_data/PresidentHistorical.csv")
 
@@ -40,8 +51,8 @@ pres_summary <- read.csv("data/HistoricalElections/President Summary.csv") %>%
 state_pvi <- pres_votes %>%
   mutate(dem_tp_state = 100 * dem_votes/(dem_votes + rep_votes)) %>%
   group_by(state) %>%
-  mutate(lagged_dem_tp_state = lag(dem_tp_state, order_by = election_year),
-         election_year = as.numeric(election_year)) %>%
+  mutate(election_year = as.numeric(election_year), 
+         lagged_dem_tp_state = lag(dem_tp_state, order_by = election_year)) %>%
   filter(election_year > 1996) %>%
   full_join(pres_summary, by = c("election_year" = "year")) %>%
   #formula for PVI
