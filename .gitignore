@@ -3,6 +3,8 @@
 .RData
 .Ruserdata
 .DS_Store
+venv
+.env
 ElectionModel2024.Rproj
 code/MiscCleaning.nb.html
 data/PVI.xlsx
