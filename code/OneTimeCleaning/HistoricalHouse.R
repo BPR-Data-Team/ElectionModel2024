@@ -97,15 +97,15 @@ house_finished <- house_finished %>%
   select(-c("dem_unopposed", "rep_unopposed")) %>%
   #now working with incumbency 
   group_by(state_po, district) %>%
-  mutate(prev_margin = lag(margin, 1, order_by = year)) %>%
+  mutate(incumbent_margin = lag(margin, 1, order_by = year)) %>%
   filter(year >= 2002) %>%
   #rep_to_race contains information on which candidates are incumbents
   left_join(incumbency, by = c("year" = "year", "state_po" = "state_po", 
                                 "district" = "district")) %>%
-  select(c("year", "state_po", "district", "open_race", "margin", "prev_margin")) %>%
-  mutate(prev_margin = case_when(
+  select(c("year", "state_po", "district", "open_race", "margin", "incumbent_margin")) %>%
+  mutate(incumbent_margin = case_when(
     open_race ~ NA_real_, 
-    TRUE ~ prev_margin 
+    TRUE ~ incumbent_margin 
   ))
   
 # ----Calculating Generic Ballot Results for each year -----
@@ -147,6 +147,18 @@ generic_ballot <- contested_party_summaries %>%
   rename(prev_gb_margin = margin, 
          prev2_gb_margin = lagged_margin) #we want the year to include the GB for EACH of the last 2 elections
 
+#---- Special Elections for all House Elections
+pvi_full <- read.csv("cleaned_data/Completed_PVI.csv")
+specials_no_pvi <- read.csv("data/HistoricalElections/Special Election Data.csv")
+
+specials_summary <- specials_no_pvi %>%
+  left_join(pvi_full, by = c("Year" = "year", "State" = "state", "District" = "district")) %>%
+  mutate(differential = 100 * (Dem.Percent - Rep.Percent) / (Dem.Percent + Rep.Percent) -
+           pvi * 2) %>%
+  group_by(Year) %>%
+  summarize(mean_differential = mean(differential))
+
+write.csv(specials_summary, "cleaned_data/Specials.csv")
 write.csv(house_finished, "cleaned_data/HouseHistorical.csv")
 write.csv(generic_ballot, "cleaned_data/generic_ballot.csv")
   
