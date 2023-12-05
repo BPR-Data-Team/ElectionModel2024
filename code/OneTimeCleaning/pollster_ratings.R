@@ -102,15 +102,15 @@ ratingfunction <- function(before_year, polls = all_polls) {
   
 }
 
+#first, cleaning polls
 clean_polls <- all_polls %>%
   separate(type_simple, c("type", "Primary/General")) %>%
   separate(location, c("state", "district")) %>%
-  filter(year > 2000 & `Primary/General` == "G") %>%
+  filter(`Primary/General` == "G") %>%
   mutate(days_until = as.integer(mdy(electiondate) - mdy(polldate))) %>% 
   select(race_id, year, state, district, type, pollster_rating_id, methodology, partisan, days_until, electiondate, samplesize, cand1_party, 
          cand2_party, cand1_pct, cand2_pct, cand1_actual, cand2_actual, error, bias, rightcall) %>%
   group_by(race_id) %>%
-  slice(1:max_polls_per_race) %>%
   mutate(bias = (cand1_pct - cand2_pct) - (cand1_actual - cand2_actual))
 
 #This is the major function: for every year, adds ratings to every poll 

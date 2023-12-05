@@ -1,4 +1,4 @@
-"","year","state_po","district","open_race","margin","prev_margin"
+"","year","state_po","district","open_race","margin","incumbent_margin"
 "1",2002,"AK",0,FALSE,-57.2304314414316,-53.0224896407707
 "2",2002,"AL",1,TRUE,-22.7184965890076,NA
 "3",2002,"AL",2,FALSE,-39.229643816668,-39.0197452343736
