@@ -4,6 +4,11 @@ The complete collection of BPR's code, data, and visualizations for our 2024 ele
 
 See [Git Guide.md](GitGuide.md) for instructions on how to clone the repository and contribute to the project
 
+See the [Data](data) folder for all _non-cleaned_ data. All of this data has a _cleaned counterpart_ in [Cleaned Data](cleaned_data).
+
+See the [Code](code) folder for all cleaning, scraping, and model code.
+
+
 ## If you are working on Python files, install a virtual environment in the root directory of the project:
 
 ### 1. From the root directory of the project, run the following command in your terminal to install a virtual environment:
