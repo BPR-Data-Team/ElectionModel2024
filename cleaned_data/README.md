@@ -7,3 +7,4 @@
 - StatesList: Simple list containing all the states, regions they're in, and the abbreviations for each state. Used to move between different descriptions of states
 - Unemployment: Unemployment, and lagged unemployment, by state over time
 - Historical Elections: All cleaned data regarding past elections, such as special elections, president, house, and governor
+- fec data: All past campaign finance data
