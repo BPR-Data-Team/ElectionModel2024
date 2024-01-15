@@ -11,8 +11,6 @@ max_polls_per_race = 5
 #Takes in a pollster_rating_id and returns a dataframe for all that pollsters ratings
 pollster_rating
 
-
-
 #takes in a year, throws out ratings for every pollster prior to that year 
 ratingfunction <- function(before_year, polls = all_polls) {
   
