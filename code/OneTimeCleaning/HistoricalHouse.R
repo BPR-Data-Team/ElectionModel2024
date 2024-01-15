@@ -66,7 +66,7 @@ incumbency <- house_cleaned %>%
          prev_REPUBLICAN = lag(REPUBLICAN, 1, order_by = year)) %>%
   #a race is only open if neither candidate was in the prev election, AND
   #if the state does not have a jungle primary
-  mutate(open_race = ifelse(
+  mutate(open_seat = ifelse(
     ((!is.na(DEMOCRAT) & !is.na(prev_DEMOCRAT) & DEMOCRAT == prev_DEMOCRAT) |
       (!is.na(REPUBLICAN) & !is.na(prev_REPUBLICAN) & REPUBLICAN == prev_REPUBLICAN)) &
       state_po != "LA", 
@@ -102,11 +102,11 @@ house_finished <- house_finished %>%
   #rep_to_race contains information on which candidates are incumbents
   left_join(incumbency, by = c("year" = "year", "state_po" = "state_po", 
                                 "district" = "district")) %>%
-  select(c("year", "state_po", "district", "open_race", "margin", "incumbent_margin")) %>%
+  select(c("year", "state_po", "district", "open_seat", "margin", "incumbent_margin")) %>%
   mutate(incumbent_margin = case_when(
-    open_race ~ NA_real_, 
+    open_seat ~ NA_real_, 
     TRUE ~ incumbent_margin 
-  ))
+  ), district = ifelse(district == 0, 1, district))
   
 # ----Calculating Generic Ballot Results for each year -----
 
@@ -156,7 +156,8 @@ specials_summary <- specials_no_pvi %>%
   mutate(differential = 100 * (Dem.Percent - Rep.Percent) / (Dem.Percent + Rep.Percent) -
            pvi * 2) %>%
   group_by(Year) %>%
-  summarize(mean_differential = mean(differential))
+  summarize(mean_specials_differential = mean(differential)) %>%
+  rename(year = Year)
 
 write.csv(specials_summary, "cleaned_data/Specials.csv")
 write.csv(house_finished, "cleaned_data/House Historical.csv")
