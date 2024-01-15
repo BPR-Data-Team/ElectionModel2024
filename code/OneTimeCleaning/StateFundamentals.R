@@ -1,5 +1,6 @@
 library(tidyverse)
 library(readxl)
+library(tidycensus)
 
 # ---- Working with COVI Master Data ------ #
 covi_2000 <- read_excel("data/Master 1996 2022 Election voting requirements.xlsx", 
@@ -84,4 +85,6 @@ state_unemployment <- read_excel("data/Unemployment.xlsx", skip = 6) %>%
   select(c("State", "year", "unemployment", "change_unemployment"))
 
 write.csv(state_unemployment, "cleaned_data/unemployment.csv")
+
+
 
