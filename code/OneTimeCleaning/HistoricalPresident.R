@@ -128,9 +128,11 @@ PVI_full <- PVI_district %>%
     district = District, 
     state = Abbreviation
   ) %>%
-  filter(district != "AL") %>%
-  mutate(district = as.numeric(district)) %>%
-  bind_rows(state_pvi)
+  #At-Large Districts count as district #1
+  mutate(district = ifelse(district == "AL", 1, district), 
+         district = as.numeric(district)) %>%
+  bind_rows(state_pvi) %>%
+  filter(!is.na(pvi))
 
 write.csv(PVI_full, "cleaned_data/Completed PVI.csv")
 
