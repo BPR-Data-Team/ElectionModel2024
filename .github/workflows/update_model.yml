@@ -32,7 +32,7 @@ jobs:
           git config --global user.email ""
           git add .
           git diff-index --quiet HEAD || git commit -m "Update model"
-          git push https://${{ secrets.BOT_KEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
+          git push https://${{ secrets.ELECTIONMODELKEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
 
 
   run-r-script:
@@ -64,5 +64,5 @@ jobs:
           git config --global user.email ""
           git add .
           git diff-index --quiet HEAD || git commit -m "Update model"
-          git push https://${{ secrets.BOT_KEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
+          git push https://${{ secrets.ELECTIONMODELKEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
 
