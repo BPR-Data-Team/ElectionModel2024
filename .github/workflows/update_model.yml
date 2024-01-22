@@ -52,7 +52,7 @@ jobs:
 
       - name: Install R dependencies
         run: |
-          install.packages(c("tidyverse", "glue", "tidycensus", "lubridate")) 
+          Rscript -e "install.packages(c('tidyverse', 'glue', 'tidycensus', 'lubridate'))"
 
       - name: Run the R script
         env:
