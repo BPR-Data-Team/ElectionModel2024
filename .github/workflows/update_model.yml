@@ -26,6 +26,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run the script
+        env:
+            FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: python code/data_fetcher.py --all
 
       - name: Commit and push if there are changes
