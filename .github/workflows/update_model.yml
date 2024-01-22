@@ -55,6 +55,9 @@ jobs:
       - name: Install dependencies
         run: Rscript -e "install.packages(c('tidyverse', 'glue', 'tidycensus', 'lubridate'))"
 
+      - name: List installed packages
+        run: Rscript -e "print(installed.packages()[, c('Package', 'LibPath')])"
+
       - name: Run the R script
         env:
             CENSUS_API_KEY: ${{ secrets.CENSUS_API }}
