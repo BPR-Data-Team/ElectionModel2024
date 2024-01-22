@@ -1,9 +1,8 @@
 library(tidycensus)
 library(tidyverse)
 
-api_key <- Sys.getenv("CENSUS_API_KEY")
 
-census_api_key(api_key)
+census_api_key("317f986fcaa44fd558ef89f0753d3259c565eee7")
 
 #2022 data should be used for 2022, but 2019 data sbould be used for 2020
 #year_to_get is what I put into the API, but I use year_to_name in the dataset
