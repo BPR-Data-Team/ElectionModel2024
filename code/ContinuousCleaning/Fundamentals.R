@@ -1,6 +1,7 @@
 library(tidyverse)
 library(lubridate)
 library(glue)
+library(tidycensus)
 
 #Fred data is very similar, so the same function can be used to clean a lot of it
 clean_fred_data <- function(dataset) {
@@ -41,6 +42,7 @@ real_gdp_per_capita <- read.csv("data/real-gdp-per-capita.csv") %>%
 
 national_gas_price <- read.csv("data/national-regular-gas-price.csv") %>%
   clean_fred_data()
+
 
 write.csv(cci, "cleaned_data/Consumer Confidence Index.csv")
 write.csv(unemployment, "cleaned_data/Unemployment.csv")
