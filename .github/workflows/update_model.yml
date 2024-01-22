@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ELECTIONMODELKEY }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -29,11 +31,10 @@ jobs:
       - name: Commit and push if there are changes
         run: |
           git config --global user.name "GitHub Actions"
-          git config --global user.email ""
+          git config --global user.email "actions@users.noreply.github.com"
           git add .
           git diff-index --quiet HEAD || git commit -m "Update model"
-          git push https://${{ secrets.ELECTIONMODELKEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
-
+          git push https://${{ secrets.GITHUB_ACTOR }}:${{ secrets.ELECTIONMODELKEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
 
   run-r-script:
     runs-on: ubuntu-latest
@@ -41,6 +42,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ELECTIONMODELKEY }}
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
@@ -61,8 +64,7 @@ jobs:
       - name: Commit and push if there are changes
         run: |
           git config --global user.name "GitHub Actions"
-          git config --global user.email ""
+          git config --global user.email "actions@users.noreply.github.com"
           git add .
           git diff-index --quiet HEAD || git commit -m "Update model"
-          git push https://${{ secrets.ELECTIONMODELKEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
-
+          git push https://${{ secrets.GITHUB_ACTOR }}:${{ secrets.ELECTIONMODELKEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
