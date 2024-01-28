@@ -41,7 +41,7 @@ write.csv(pres_finished, "cleaned_data/President Historical.csv")
 #---- Working on PVI Values -----#
 #summary of each race -- two party-democratic results since 2000, and lagged values
 pres_summary <- read.csv("data/HistoricalElections/President Summary.csv") %>%
-  mutate(natl_dem_tp = 100 * DEMOCRAT / (DEMOCRAT + REPUBLICAN), ) %>%
+  mutate(natl_dem_tp = 100 * DEMOCRAT / (DEMOCRAT + REPUBLICAN)) %>%
   #national lagged democratic two-party pct -- needed for PVI
   mutate(lagged_natl_dem_tp = lag(natl_dem_tp, order_by = year)) %>%
   select(-c("DEMOCRAT", "REPUBLICAN")) %>%
@@ -80,6 +80,15 @@ PVI_list <- PVI_path %>%
 
 #For some reason, Cook changed District to Number in the final dataset
 PVI_list[[15]]$District <- PVI_list[[15]]$Number
+
+#Districts we want from the PVI website:
+#2023 (elections for 2016 and 2020, post-redistricting) -> 2022, 2024
+#2019 (elections for 2012 and 2016) -> 2018, 2020
+#2015 (elections for 2008, 2012) -> 2014, 2016
+#2012 (elections for 2004, 2008, post-redistricting) -> 2012
+#2009 (elections for 2004 and 2008, pre-redistricting) -> 2010
+#2007 (elections for 2000 and 2004) -> 2006, 2008
+#2003 (elections for 1996, 2000, post-redistricting) -> 2002, 2004
 
 PVI_district <- Reduce(function(x, y) full_join(x, y, by=c("State","District")), PVI_list) %>%
   #Replacing D+12 with 12, R+12 with -12, and EVEN with 0
