@@ -1,6 +1,7 @@
 library(tidyverse)
 library(readxl)
 library(janitor)
+#DO INCUMBENT MARGIN OVER PVI, NOT JUST INCUMBENT MARGIN
 
 house_uncleaned <- read.csv("data/HistoricalElections/HouseHistory.csv")
   

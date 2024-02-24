@@ -1,10 +1,29 @@
 library(tidyverse)
 
 #--- Downloading Datasets ------
-#Past Elections
+#Elections
+#Combining Past and Current House Elections
 house_historical <- read_csv("cleaned_data/House Historical.csv") %>%
   mutate(office_type = "House") %>%
   rename(state = state_po)
+
+house <- read.csv("data/2024-races-house.csv") %>%
+  mutate(District = ifelse(District == "at-large", "1", District), 
+         District = as.numeric(District), 
+         Year = 2024, 
+         State = state.abb[match(State, state.name)]) %>%
+  left_join((house_historical %>% filter(year == 2022)), 
+            by = c("District" = "district", "State" = "state")) %>%
+  mutate(incumbent_margin = case_when(
+    Incumbent == TRUE ~ margin, 
+    TRUE ~ NA_real_
+  )) %>%
+  select(c(Year, State, District, Office_type, R_name, D_name, Unopposed.independent, 
+           Incumbent, incumbent_margin, Sabato)) %>%
+  rename(year = Year, state = State, district = District, open_seat = Incumbent, 
+         I_name = Unopposed.independent, open_seat = Incumbent, final_rating = Sabato,
+         office_type = Office_type)
+
 
 #Cleaning Senate Elections, which were collected fully manually 
 sen_historical <- read.csv("cleaned_data/Senate Historical.csv") %>%
@@ -18,7 +37,8 @@ sen_historical <- read.csv("cleaned_data/Senate Historical.csv") %>%
   ) %>%
   #Connecticut 2006 had an independent win -- we don't include that election
   filter(Republican.Total.. != 0 & Democratic.Total.. != 0 &
-           !(state == "Connecticut" & year == 2006)) %>%
+           !(state == "Connecticut" & year == 2006) & 
+           state != "Maine") %>%
   mutate(office_type = "Senate", 
          district = 0, 
          margin = as.numeric(margin)) %>%
