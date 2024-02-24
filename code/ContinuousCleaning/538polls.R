@@ -1,7 +1,13 @@
 library(tidyverse)
 library(lubridate)
 grade_order <- c("A+","A","A-","A/B","B+","B","B-","B/C","C+","C","C-","C/D","D+","D","D-","D/F","F+,F","F-")
+bool_order <- c("True","False")
 numberOfPolls <- 5
+pollRatings <- read.csv("cleaned_data/Pollster Ratings.csv")
+# take most recent poll rating, extract relevant columns
+pollRatings <- pollRatings %>% group_by(pollster_rating_id) %>% slice_max(year, n=1) %>% slice_max(X, n=1) %>% ungroup() %>% subset(select = c(pollster_rating_id, valid, lower_error_diff)) 
+# making valid column a factor for later sorting
+pollRatings$valid <- factor(pollRatings$valid, levels = bool_order, ordered = TRUE)
 # PRESIDENTIAL ----------------------------------
 
 #read in data from 538's github
@@ -43,10 +49,16 @@ pres_cleaned <- pres_cleaned %>%
     id_cols = c("poll_id", "pollster_id.x", "state.x","fte_grade.x", "total_pct", "pollster_id.y", "pollster", "fte_grade.y", "sample_size", "pollster_rating_id", "methodology", "partisan", "cycle", "seat_number"),
     names_from = party,
     values_from = pct)
+
+
+# merging rating data into cleaned poll data
+pres_cleaned <- left_join(pres_cleaned,pollRatings,by = "pollster_rating_id")
+
+
 # ranking rows by grade and total percent, keeping top 5 polls per state, and eliminating columns
-pres_cleaned <- pres_cleaned %>% arrange(fte_grade.x, desc(total_pct)) %>% ungroup() %>% group_by(state.x) %>%  filter(row_number() <= numberOfPolls) %>% ungroup() %>% subset(select = c(pollster,fte_grade.x,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+pres_cleaned <- pres_cleaned %>% arrange(valid, desc(lower_error_diff)) %>% ungroup() %>% group_by(state.x) %>%  filter(row_number() <= numberOfPolls) %>% ungroup() %>% subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
 # renaming columns
-colnames(pres_cleaned) <- c("pollster","grade","methodology","pollsterParty","DEM","REP","cycle","state","district")
+colnames(pres_cleaned) <- c("pollster","valid","lower_error_diff","methodology","pollsterParty","DEM","REP","cycle","state","district")
 #pres_cleaned$grade <- as.character(pres_cleaned$grade)
 # replacing empty cells w NA
 pres_cleaned[pres_cleaned == ""] <- NA
@@ -54,31 +66,36 @@ pres_cleaned[pres_cleaned == ""] <- NA
 pres_cleaned <- pres_cleaned %>% group_by(state,district,cycle) %>% summarise(
   "numPolls" = n(),
   "pollster1.name" = pollster[1],
-  "pollster1.grade" = grade[1],
+  "pollster1.valid" = valid[1],
+  "pollster1.led" = lower_error_diff[1],
   "pollster1.methodology" = methodology[1],
   "pollster1.partybias" = pollsterParty[1],
   "pollster1.dem" = DEM[1],
   "pollster1.rep" = REP[1],
   "pollster2.name" = pollster[2],
-  "pollster2.grade" = grade[2],
+  "pollster2.valid" = valid[2],
+  "pollster2.led" = lower_error_diff[2],
   "pollster2.methodology" = methodology[2],
   "pollster2.partybias" = pollsterParty[2],
   "pollster2.dem" = DEM[2],
   "pollster2.rep" = REP[2],
   "pollster3.name" = pollster[3],
-  "pollster3.grade" = grade[3],
+  "pollster3.valid" = valid[3],
+  "pollster3.led" = lower_error_diff[3],
   "pollster3.methodology" = methodology[3],
   "pollster3.partybias" = pollsterParty[3],
   "pollster3.dem" = DEM[3],
   "pollster3.rep" = REP[3],
   "pollster4.name" = pollster[4],
-  "pollster4.grade" = grade[4],
+  "pollster4.valid" = valid[4],
+  "pollster4.led" = lower_error_diff[4],
   "pollster4.methodology" = methodology[4],
   "pollster4.partybias" = pollsterParty[4],
   "pollster4.dem" = DEM[4],
   "pollster4.rep" = REP[4],
   "pollster5.name" = pollster[5],
-  "pollster5.grade" = grade[5],
+  "pollster5.valid" = valid[5],
+  "pollster5.led" = lower_error_diff[5],
   "pollster5.methodology" = methodology[5],
   "pollster5.partybias" = pollsterParty[5],
   "pollster5.dem" = DEM[5],
@@ -87,10 +104,7 @@ pres_cleaned <- pres_cleaned %>% group_by(state,district,cycle) %>% summarise(
 # add identifiers
 pres_cleaned <- pres_cleaned %>% mutate("district" = 0,
                                         "isMidterm" = FALSE,
-                                        "isSenate" = FALSE,
-                                        "isHouse" = FALSE,
-                                        "isGubernatorial" = FALSE,
-                                        "isPresidential" = TRUE)
+                                        "office_type" = "President")
 
 # SENATE -----------------------------------------
 uncleaned_sen <- read.csv("https://projects.fivethirtyeight.com/polls-page/data/senate_polls.csv")
@@ -131,53 +145,61 @@ sen_cleaned <- sen_cleaned %>%
     id_cols = c("poll_id", "pollster_id.x", "state.x","fte_grade.x", "total_pct", "pollster_id.y", "pollster", "fte_grade.y", "sample_size", "pollster_rating_id", "methodology", "partisan", "cycle", "seat_number"),
     names_from = party,
     values_from = pct)
+
+# merging rating data into cleaned poll data
+sen_cleaned <- left_join(sen_cleaned,pollRatings,by = "pollster_rating_id")
+
+
 # ranking rows by grade and total percent, keeping top 5 polls per state, and eliminating columns
-sen_cleaned <- sen_cleaned %>% arrange(fte_grade.x, desc(total_pct)) %>% ungroup() %>% group_by(state.x) %>%  filter(row_number() <= numberOfPolls) %>% ungroup() %>% subset(select = c(pollster,fte_grade.x,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+sen_cleaned <- sen_cleaned %>% arrange(valid, desc(lower_error_diff)) %>% ungroup() %>% group_by(state.x) %>%  filter(row_number() <= numberOfPolls) %>% ungroup() %>% subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
 # renaming columns
-colnames(sen_cleaned) <- c("pollster","grade","methodology","pollsterParty","DEM","REP","cycle","state","district")
-#pres_cleaned$grade <- as.character(pres_cleaned$grade)
+colnames(sen_cleaned) <- c("pollster","valid","lower_error_diff","methodology","pollsterParty","DEM","REP","cycle","state","district")
+#sen_cleaned$grade <- as.character(pres_cleaned$grade)
 # replacing empty cells w NA
 sen_cleaned[sen_cleaned == ""] <- NA
 # Each state top 5 polls
 sen_cleaned <- sen_cleaned %>% group_by(state,district,cycle) %>% summarise(
   "numPolls" = n(),
   "pollster1.name" = pollster[1],
-  "pollster1.grade" = grade[1],
+  "pollster1.valid" = valid[1],
+  "pollster1.led" = lower_error_diff[1],
   "pollster1.methodology" = methodology[1],
   "pollster1.partybias" = pollsterParty[1],
   "pollster1.dem" = DEM[1],
   "pollster1.rep" = REP[1],
   "pollster2.name" = pollster[2],
-  "pollster2.grade" = grade[2],
+  "pollster2.valid" = valid[2],
+  "pollster2.led" = lower_error_diff[2],
   "pollster2.methodology" = methodology[2],
   "pollster2.partybias" = pollsterParty[2],
   "pollster2.dem" = DEM[2],
   "pollster2.rep" = REP[2],
   "pollster3.name" = pollster[3],
-  "pollster3.grade" = grade[3],
+  "pollster3.valid" = valid[3],
+  "pollster3.led" = lower_error_diff[3],
   "pollster3.methodology" = methodology[3],
   "pollster3.partybias" = pollsterParty[3],
   "pollster3.dem" = DEM[3],
   "pollster3.rep" = REP[3],
   "pollster4.name" = pollster[4],
-  "pollster4.grade" = grade[4],
+  "pollster4.valid" = valid[4],
+  "pollster4.led" = lower_error_diff[4],
   "pollster4.methodology" = methodology[4],
   "pollster4.partybias" = pollsterParty[4],
   "pollster4.dem" = DEM[4],
   "pollster4.rep" = REP[4],
   "pollster5.name" = pollster[5],
-  "pollster5.grade" = grade[5],
+  "pollster5.valid" = valid[5],
+  "pollster5.led" = lower_error_diff[5],
   "pollster5.methodology" = methodology[5],
   "pollster5.partybias" = pollsterParty[5],
   "pollster5.dem" = DEM[5],
-  "pollster5.rep" = REP[5],
+  "pollster5.rep" = REP[5]
 ) 
 # add identifiers
-sen_cleaned <- sen_cleaned %>% mutate("isMidterm" = FALSE,
-                                        "isSenate" = TRUE,
-                                        "isHouse" = FALSE,
-                                        "isGubernatorial" = FALSE,
-                                        "isPresidential" = FALSE)
+sen_cleaned <- sen_cleaned %>% mutate(
+                                        "isMidterm" = FALSE,
+                                        "office_type" = "Senate")
 
 # HOUSE -----------------------------------------
 uncleaned_house <- read.csv("https://projects.fivethirtyeight.com/polls-page/data/house_polls.csv")
@@ -217,10 +239,16 @@ house_cleaned <- house_cleaned %>%
     id_cols = c("poll_id", "pollster_id.x", "state.x","fte_grade.x", "total_pct", "pollster_id.y", "pollster", "fte_grade.y", "sample_size", "pollster_rating_id", "methodology", "partisan", "cycle", "seat_number"),
     names_from = party,
     values_from = pct)
+
+
+# merging rating data into cleaned poll data
+house_cleaned <- left_join(house_cleaned,pollRatings,by = "pollster_rating_id")
+
+
 # ranking rows by grade and total percent, keeping top 5 polls per state, and eliminating columns
-house_cleaned <- house_cleaned %>% arrange(fte_grade.x, desc(total_pct)) %>% ungroup() %>% group_by(state.x) %>%  filter(row_number() <= numberOfPolls) %>% ungroup() %>% subset(select = c(pollster,fte_grade.x,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+house_cleaned <- house_cleaned %>% arrange(valid, desc(lower_error_diff)) %>% ungroup() %>% group_by(state.x) %>%  filter(row_number() <= numberOfPolls) %>% ungroup() %>% subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
 # renaming columns
-colnames(house_cleaned) <- c("pollster","grade","methodology","pollsterParty","DEM","REP","cycle","state","district")
+colnames(house_cleaned) <- c("pollster","valid","lower_error_diff","methodology","pollsterParty","DEM","REP","cycle","state","district")
 #pres_cleaned$grade <- as.character(pres_cleaned$grade)
 # replacing empty cells w NA
 house_cleaned[house_cleaned == ""] <- NA
@@ -228,42 +256,45 @@ house_cleaned[house_cleaned == ""] <- NA
 house_cleaned <- house_cleaned %>% group_by(state,district,cycle) %>% summarise(
   "numPolls" = n(),
   "pollster1.name" = pollster[1],
-  "pollster1.grade" = grade[1],
+  "pollster1.valid" = valid[1],
+  "pollster1.led" = lower_error_diff[1],
   "pollster1.methodology" = methodology[1],
   "pollster1.partybias" = pollsterParty[1],
   "pollster1.dem" = DEM[1],
   "pollster1.rep" = REP[1],
   "pollster2.name" = pollster[2],
-  "pollster2.grade" = grade[2],
+  "pollster2.valid" = valid[2],
+  "pollster2.led" = lower_error_diff[2],
   "pollster2.methodology" = methodology[2],
   "pollster2.partybias" = pollsterParty[2],
   "pollster2.dem" = DEM[2],
   "pollster2.rep" = REP[2],
   "pollster3.name" = pollster[3],
-  "pollster3.grade" = grade[3],
+  "pollster3.valid" = valid[3],
+  "pollster3.led" = lower_error_diff[3],
   "pollster3.methodology" = methodology[3],
   "pollster3.partybias" = pollsterParty[3],
   "pollster3.dem" = DEM[3],
   "pollster3.rep" = REP[3],
   "pollster4.name" = pollster[4],
-  "pollster4.grade" = grade[4],
+  "pollster4.valid" = valid[4],
+  "pollster4.led" = lower_error_diff[4],
   "pollster4.methodology" = methodology[4],
   "pollster4.partybias" = pollsterParty[4],
   "pollster4.dem" = DEM[4],
   "pollster4.rep" = REP[4],
   "pollster5.name" = pollster[5],
-  "pollster5.grade" = grade[5],
+  "pollster5.valid" = valid[5],
+  "pollster5.led" = lower_error_diff[5],
   "pollster5.methodology" = methodology[5],
   "pollster5.partybias" = pollsterParty[5],
   "pollster5.dem" = DEM[5],
-  "pollster5.rep" = REP[5],
+  "pollster5.rep" = REP[5]
 ) 
 # add identifiers
-house_cleaned <- house_cleaned %>% mutate("isMidterm" = FALSE,
-                                      "isSenate" = FALSE,
-                                      "isHouse" = TRUE,
-                                      "isGubernatorial" = FALSE,
-                                      "isPresidential" = FALSE)
+house_cleaned <- house_cleaned %>% mutate(
+                                        "isMidterm" = FALSE,
+                                        "office_type" = "House")
 
 # GUBERNATORIAL -----------------------------------------
 uncleaned_gub <- read.csv("https://projects.fivethirtyeight.com/polls-page/data/governor_polls.csv")
@@ -303,10 +334,16 @@ gub_cleaned <- gub_cleaned %>%
     id_cols = c("poll_id", "pollster_id.x", "state.x","fte_grade.x", "total_pct", "pollster_id.y", "pollster", "fte_grade.y", "sample_size", "pollster_rating_id", "methodology", "partisan", "cycle", "seat_number"),
     names_from = party,
     values_from = pct)
+
+
+# merging rating data into cleaned poll data
+gub_cleaned <- left_join(gub_cleaned,pollRatings,by = "pollster_rating_id")
+
+
 # ranking rows by grade and total percent, keeping top 5 polls per state, and eliminating columns
-gub_cleaned <- gub_cleaned %>% arrange(fte_grade.x, desc(total_pct)) %>% ungroup() %>% group_by(state.x) %>%  filter(row_number() <= numberOfPolls) %>% ungroup() %>% subset(select = c(pollster,fte_grade.x,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+gub_cleaned <- gub_cleaned %>% arrange(valid, desc(lower_error_diff)) %>% ungroup() %>% group_by(state.x) %>%  filter(row_number() <= numberOfPolls) %>% ungroup() %>% subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
 # renaming columns
-colnames(gub_cleaned) <- c("pollster","grade","methodology","pollsterParty","DEM","REP","cycle","state","district")
+colnames(gub_cleaned) <- c("pollster","valid","lower_error_diff","methodology","pollsterParty","DEM","REP","cycle","state","district")
 #pres_cleaned$grade <- as.character(pres_cleaned$grade)
 # replacing empty cells w NA
 gub_cleaned[gub_cleaned == ""] <- NA
@@ -314,39 +351,42 @@ gub_cleaned[gub_cleaned == ""] <- NA
 gub_cleaned <- gub_cleaned %>% group_by(state,district,cycle) %>% summarise(
   "numPolls" = n(),
   "pollster1.name" = pollster[1],
-  "pollster1.grade" = grade[1],
+  "pollster1.valid" = valid[1],
+  "pollster1.led" = lower_error_diff[1],
   "pollster1.methodology" = methodology[1],
   "pollster1.partybias" = pollsterParty[1],
   "pollster1.dem" = DEM[1],
   "pollster1.rep" = REP[1],
   "pollster2.name" = pollster[2],
-  "pollster2.grade" = grade[2],
+  "pollster2.valid" = valid[2],
+  "pollster2.led" = lower_error_diff[2],
   "pollster2.methodology" = methodology[2],
   "pollster2.partybias" = pollsterParty[2],
   "pollster2.dem" = DEM[2],
   "pollster2.rep" = REP[2],
   "pollster3.name" = pollster[3],
-  "pollster3.grade" = grade[3],
+  "pollster3.valid" = valid[3],
+  "pollster3.led" = lower_error_diff[3],
   "pollster3.methodology" = methodology[3],
   "pollster3.partybias" = pollsterParty[3],
   "pollster3.dem" = DEM[3],
   "pollster3.rep" = REP[3],
   "pollster4.name" = pollster[4],
-  "pollster4.grade" = grade[4],
+  "pollster4.valid" = valid[4],
+  "pollster4.led" = lower_error_diff[4],
   "pollster4.methodology" = methodology[4],
   "pollster4.partybias" = pollsterParty[4],
   "pollster4.dem" = DEM[4],
   "pollster4.rep" = REP[4],
   "pollster5.name" = pollster[5],
-  "pollster5.grade" = grade[5],
+  "pollster5.valid" = valid[5],
+  "pollster5.led" = lower_error_diff[5],
   "pollster5.methodology" = methodology[5],
   "pollster5.partybias" = pollsterParty[5],
   "pollster5.dem" = DEM[5],
-  "pollster5.rep" = REP[5],
+  "pollster5.rep" = REP[5]
 ) 
 # add identifiers
-gub_cleaned <- gub_cleaned %>% mutate("isMidterm" = FALSE,
-                                      "isSenate" = FALSE,
-                                      "isHouse" = FALSE,
-                                      "isGubernatorial" = TRUE,
-                                      "isPresidential" = FALSE)
+gub_cleaned <- gub_cleaned %>% mutate(
+                                        "isMidterm" = FALSE,
+                                        "office_type" = "Gubernatorial")
