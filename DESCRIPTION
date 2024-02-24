@@ -1,6 +1,6 @@
 Imports: 
-    cran::tidyverse, 
-    cran::glue, 
-    cran::tidycensus, 
-    cran::lubridate,
-    cran::utils
+    tidyverse, 
+    glue, 
+    tidycensus, 
+    lubridate,
+    utils
