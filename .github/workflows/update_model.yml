@@ -53,7 +53,7 @@ jobs:
           r-version: '4.1.2'
 
       - name: Install packages
-          uses: r-lib/actions/setup-r-dependencies@v2
+        uses: r-lib/actions/setup-r-dependencies@v2
 
       - name: List installed packages
         run: Rscript -e "print(installed.packages()[, c('Package', 'LibPath')])"
