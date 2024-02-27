@@ -1,6 +1,6 @@
 Imports: 
-    tidyverse, 
-    glue, 
-    tidycensus, 
-    lubridate,
-    utils
+    r-lib/tidyverse, 
+    r-lib/glue, 
+    r-lib/tidycensus, 
+    r-lib/lubridate,
+    r-lib/utils
