@@ -53,14 +53,18 @@ jobs:
           r-version: '4.1.2'
 
       - name: Install packages
+        uses: r-lib/actions/check-r-package@v2
+        env: 
+          _R_CHECK_FORCE_SUGGESTS_: false
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          packages: |
+          extra-packages: |
             any::tidyverse, 
             any::glue, 
             any::tidycensus, 
             any::lubridate,
-            any::utils
+            any::utils,
+            methods=?ignore
 
       - name: List installed packages
         run: Rscript -e "print(installed.packages()[, c('Package', 'LibPath')])"
