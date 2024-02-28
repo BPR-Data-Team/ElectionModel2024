@@ -2,7 +2,7 @@ library(tidycensus)
 library(tidyverse)
 
 
-census_api_key("317f986fcaa44fd558ef89f0753d3259c565eee7")
+census_api_key("")
 
 #2022 data should be used for 2022, but 2019 data sbould be used for 2020
 #year_to_get is what I put into the API, but I use year_to_name in the dataset
@@ -73,7 +73,7 @@ current_dems <- tryCatch(
 
 all_dems <- bind_rows(prev_dems, current_dems) 
 
-write.csv(all_dems, "../../cleaned_data/Demographics.csv")
+write.csv(all_dems, "cleaned_data/Demographics.csv")
 
 
 
