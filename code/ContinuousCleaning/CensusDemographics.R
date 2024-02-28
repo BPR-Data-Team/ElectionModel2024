@@ -22,14 +22,13 @@ clean_acs <- function(year_to_get, year_to_name) {
       output = 'wide'))
   
   acs_data %>% 
-    clean_census_congressional() %>%
     mutate(NAME = sub("\\(at Large\\)", "1", NAME),
            state = sub(".*,\\s*(.*)", "\\1", NAME), 
            district = sub(".*\\bCongressional District (\\d+).*", "\\1", NAME),
            .before = "NAME") %>%
     select(matches("[^M]$")) %>%
     rename_with(~ sub("(?<![M])E$", "", ., perl = TRUE)) %>%
-    filter(!(state %in% c("District of Columbia", "Puerto Rico"))) %>%
+    filter(state != "Puerto Rico") %>%
     mutate(
       white_pct = white_pop / total, 
       black_pct = black_pop / total, 
@@ -39,9 +38,13 @@ clean_acs <- function(year_to_get, year_to_name) {
       college_pct = college_pop / total,
       renting_pct = renting_pop / total,
       year = year_to_name, 
-      district = ifelse(district == state, 0, district), 
-      district = as.numeric(district)
+      district = ifelse(district == state | state == "District of Columbia", "0", district),
+      district = as.numeric(district), 
+      state = case_when(
+        state == "District of Columbia" ~ "DC", 
+        TRUE ~ state.abb[match(state,state.name)])
     ) %>%
+    mutate() %>%
     select(year, state, district, white_pct, black_pct, asian_pct, hispanic_pct, 
            median_income, impoverished_pct, median_age, renting_pct) %>%
     return() 
