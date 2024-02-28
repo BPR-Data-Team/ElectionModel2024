@@ -56,8 +56,11 @@ jobs:
           cache-version: 1
           dependencies: '"hard"'
           packages: |
-            any::ggplot2
-            any::rcmdcheck
+            any::tidyverse
+            any::glue
+            any::tidycensus
+            any:lubridate
+            any::utils
 
       - name: List installed packages
         run: Rscript -e "print(installed.packages()[, c('Package', 'LibPath')])"
