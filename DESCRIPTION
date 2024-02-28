@@ -1,6 +1,0 @@
-Imports: 
-    tidyverse, 
-    glue, 
-    tidycensus, 
-    lubridate,
-    utils
