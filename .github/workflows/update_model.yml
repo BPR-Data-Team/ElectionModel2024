@@ -57,9 +57,7 @@ jobs:
         with:
           extra-packages: |
             any::tidyverse, 
-            any::glue, 
-            any::tidycensus, 
-            any::lubridate
+            any::tidycensus
 
       - name: List installed packages
         run: Rscript -e "print(installed.packages()[, c('Package', 'LibPath')])"
