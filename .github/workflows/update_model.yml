@@ -54,6 +54,13 @@ jobs:
 
       - name: Install packages
         uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::tidyverse, 
+            any::glue, 
+            any::tidycensus, 
+            any::lubridate,
+            any::utils
 
       - name: List installed packages
         run: Rscript -e "print(installed.packages()[, c('Package', 'LibPath')])"
