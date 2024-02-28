@@ -60,8 +60,7 @@ jobs:
             any::glue, 
             any::tidycensus, 
             any::lubridate,
-            any::utils,
-            methods=?ignore
+            any::utils
 
       - name: List installed packages
         run: Rscript -e "print(installed.packages()[, c('Package', 'LibPath')])"
