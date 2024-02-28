@@ -55,7 +55,7 @@ jobs:
       - name: Install packages
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: |
+          packages: |
             any::tidyverse, 
             any::glue, 
             any::tidycensus, 
