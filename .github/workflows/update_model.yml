@@ -61,7 +61,6 @@ jobs:
             any::tidycensus, 
             any::lubridate,
             any::utils,
-            methods=?ignore
 
       - name: List installed packages
         run: Rscript -e "print(installed.packages()[, c('Package', 'LibPath')])"
