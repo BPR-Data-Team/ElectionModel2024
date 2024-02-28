@@ -65,9 +65,6 @@ jobs:
       - name: Run the R script
         env:
             CENSUS_API_KEY: ${{ secrets.CENSUS_API }}
-        run: |
-          Rscript code/ContinuousCleaning/CensusDemographics.R 
-          Rscript code/ContinuousCleaning/Fundamentals.R
 
       - name: Commit and push if there are changes
         run: |
