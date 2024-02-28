@@ -4,7 +4,7 @@ library(readxl)
 load("data/HistoricalElections/dataverse_shareable_presidential_county_returns_1868_2020.Rdata")
 
 pres_uncleaned <- pres_elections_release
-rm(pres_elections_release)
+rm(pres_elections_release) #Clearing memory -- dataset is large
 alaska_results <- read.csv('data/HistoricalElections/AKPres.csv')
 
 #This dataset gets the total number of votes for each party for each race
@@ -17,43 +17,22 @@ pres_votes <- pres_uncleaned %>%
     rep_votes = sum(republican_raw_votes, na.rm = TRUE), 
     total_votes = sum(raw_county_vote_totals)
   ) %>%
-  filter(election_year >= 1996) %>%
   #doesn't include alaska (doesn't report by county), so manually added it
   bind_rows(alaska_results)
 
-
-#finishing presidential analysis
-pres_finished <- pres_votes %>%
-  mutate(margin = 100 * (dem_votes - rep_votes) / total_votes) %>%
-  select(c('election_year', 'state', 'margin')) %>%
-  rename(year = election_year) %>%
-  mutate(open_seat = year %in% c(2004, 2012, 2020)) %>%
-  group_by(state) %>%
-  mutate(incumbent_margin = case_when(
-    open_seat ~ NA_real_, 
-    TRUE ~ lag(margin, 1, order_by = year)
-  )) %>%
-  filter(year >= 2004)
-  
-
-write.csv(pres_finished, "cleaned_data/President Historical.csv")
-
-#---- Working on PVI Values -----#
+#---- Calculating state PVI values -- necessary for incumbent margins
 #summary of each race -- two party-democratic results since 2000, and lagged values
 pres_summary <- read.csv("data/HistoricalElections/President Summary.csv") %>%
   mutate(natl_dem_tp = 100 * DEMOCRAT / (DEMOCRAT + REPUBLICAN)) %>%
   #national lagged democratic two-party pct -- needed for PVI
   mutate(lagged_natl_dem_tp = lag(natl_dem_tp, order_by = year)) %>%
-  select(-c("DEMOCRAT", "REPUBLICAN")) %>%
-  filter(year > 1996)
+  select(-c("DEMOCRAT", "REPUBLICAN")) 
 
-#Calculating state PVI values
 state_pvi <- pres_votes %>%
   mutate(dem_tp_state = 100 * dem_votes/(dem_votes + rep_votes)) %>%
   group_by(state) %>%
   mutate(election_year = as.numeric(election_year), 
          lagged_dem_tp_state = lag(dem_tp_state, order_by = election_year)) %>%
-  filter(election_year > 1996) %>%
   full_join(pres_summary, by = c("election_year" = "year")) %>%
   #formula for PVI
   mutate(pvi = 0.75 * (dem_tp_state - natl_dem_tp) + 
@@ -64,6 +43,31 @@ state_pvi <- pres_votes %>%
   select(c('year', 'state', 'pvi')) %>%
   #all state values should have district values of 0 (at large)
   mutate(district = 0, .before = pvi)
+
+#finishing presidential analysis
+pres_finished <- pres_votes %>%
+  mutate(margin = 100 * (dem_votes - rep_votes) / total_votes, 
+         dem_tp_margin = 100 * (dem_votes - rep_votes) / (dem_votes + rep_votes),
+         district = 0) %>%
+  select(c('election_year', 'state', 'district', 'margin', 'dem_tp_margin')) %>%
+  rename(year = election_year) %>%
+  mutate(open_seat = year %in% c(2008, 2016)) %>%
+  left_join(state_pvi, by = c('year', 'state', 'district')) %>%
+  group_by(state) %>%
+  mutate(incumbent_dem_tp = case_when(
+    open_seat ~ NA_real_,
+    TRUE ~ lag(dem_tp_margin, 1, order_by = year)
+  ), 
+  previous_pvi = lag(pvi, 1, order_by = year)) %>%
+  #Multiplying pvi by 2 to get margin is important
+  mutate(incumbent_differential = incumbent_dem_tp - pvi*2) %>%
+  select(c('year', 'state', 'district', 'open_seat', 'incumbent_differential', 'margin')) %>%
+  filter(year >= 2004)
+  
+
+write.csv(pres_finished, "cleaned_data/President Historical.csv")
+
+#---- Working on PVI District Values -----#
 
 #Working with district PVI values
 #Note: This data has some problems -- specifically, I input NA for 2020 NC and 
@@ -89,6 +93,7 @@ PVI_list[[15]]$District <- PVI_list[[15]]$Number
 #2009 (elections for 2004 and 2008, pre-redistricting) -> 2010
 #2007 (elections for 2000 and 2004) -> 2006, 2008
 #2003 (elections for 1996, 2000, post-redistricting) -> 2002, 2004
+#1999 (elections for 1992, 1996) -> 1998, 2000
 
 PVI_district <- Reduce(function(x, y) full_join(x, y, by=c("State","District")), PVI_list) %>%
   #Replacing D+12 with 12, R+12 with -12, and EVEN with 0
@@ -114,7 +119,8 @@ PVI_district <- Reduce(function(x, y) full_join(x, y, by=c("State","District")),
     Year == 2012 ~ 2012, 
     Year == 2009 ~ 2010, 
     Year == 2007 ~ c(2006, 2008), 
-    Year == 2003 ~ c(2002, 2004), 
+    Year == 2003 ~ c(2002, 2004),
+    Year == 1999 ~ c(1998, 2000),
     TRUE ~ Year
   )), .after = Year) %>%
   unnest(True_Year) %>%
