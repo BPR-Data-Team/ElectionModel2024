@@ -62,10 +62,6 @@ jobs:
       - name: List installed packages
         run: Rscript -e "print(installed.packages()[, c('Package', 'LibPath')])"
 
-      - name: Run the R script
-        env:
-            CENSUS_API_KEY: ${{ secrets.CENSUS_API }}
-
       - name: Commit and push if there are changes
         run: |
           git config --global user.name "GitHub Actions"
