@@ -11,7 +11,9 @@ pollRatings$valid <- factor(pollRatings$valid, levels = bool_order, ordered = TR
 # PRESIDENTIAL ----------------------------------
 
 #read in data from 538's github
-uncleaned_pres <- read.csv("https://projects.fivethirtyeight.com/polls-page/data/president_polls.csv")
+uncleaned_pres <- read.csv("https://projects.fivethirtyeight.com/polls-page/data/president_polls.csv") %>% mutate(
+  state = case_when(state == "Maine CD-1" ~ "Maine", state == "Maine CD-2" ~ "Maine", TRUE ~ state)
+)
 # return the mean of polls giving a high and low percentage for candidates in each question and filter for the last 21 days
 pres_cleaned <- uncleaned_pres %>%
   group_by(poll_id,pollster_id,pollster,fte_grade,start_date,end_date,question_id,sample_size,pollster_rating_id,methodology,partisan,cycle,seat_number,state,party,answer,candidate_name) %>% 
