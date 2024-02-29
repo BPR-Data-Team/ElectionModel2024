@@ -65,7 +65,6 @@ partyDistillation <- allYearsJoined %>% mutate(CAND_PTY_AFFILIATION = case_when(
   "allReceipts" = sum(Total_receipts),
   "allDisbursements" = sum(Total_disbursements),
   "allIndivContributions" = sum(Total_individual_contributions),
-  "pctIncumbent" = mean(CAND_ICI == "I")
 )
 
 ## export
