@@ -392,3 +392,10 @@ gub_cleaned <- gub_cleaned %>% group_by(state,district,cycle) %>% summarise(
 gub_cleaned <- gub_cleaned %>% mutate(
                                         "isMidterm" = FALSE,
                                         "office_type" = "Gubernatorial")
+
+
+# EXPORTS ---------------------------
+
+allPollingData <- rbind(pres_cleaned, house_cleaned, sen_cleaned, gub_cleaned)
+
+write.csv(allPollingData,file = "cleaned_data/538 Polls.csv")
