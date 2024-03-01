@@ -75,6 +75,7 @@ jobs:
       - name: Caching files
         uses: actions/cache@v3
         with:
+          key: cachefile1
           path: |
             ~/temp/
 
