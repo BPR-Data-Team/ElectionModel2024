@@ -72,13 +72,6 @@ jobs:
           Rscript code/ContinuousCleaning/FEC.R
           Rscript code/ContinuousCleaning/538polls.R
 
-      - name: Caching files
-        uses: actions/cache@v3
-        with:
-          key: cachefile1
-          path: |
-            ~/usr/local/bin
-
       - name: Commit and push if there are changes
         run: |
           git config --global user.name "GitHub Actions"
