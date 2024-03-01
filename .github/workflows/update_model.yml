@@ -77,7 +77,7 @@ jobs:
         with:
           key: cachefile1
           path: |
-            ~/temp/
+            ~/usr/local/bin
 
       - name: Commit and push if there are changes
         run: |
