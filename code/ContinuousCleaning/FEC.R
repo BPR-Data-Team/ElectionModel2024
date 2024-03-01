@@ -21,7 +21,7 @@ for (i in 1:12) {
   file.remove(destination)
   
   # read in the pipe delimited file to a dataframe 
-  finances_year <- read_delim(file = paste("data/fec data/","weball", sprintf("%02d", i * 2), ".txt", sep = ""),delim = "|", col_names = FALSE) %>% mutate("YEAR" = as.double(paste("20",sprintf("%02d", i * 2), sep = ""))) 
+  finances_year <- read_delim(file = paste("data/fec data/","weball", sprintf("%02d", i * 2), ".txt", sep = ""),delim = "|", col_names = FALSE, show_col_types = FALSE) %>% mutate("YEAR" = as.double(paste("20",sprintf("%02d", i * 2), sep = ""))) 
   colnames(finances_year) <- c("CandidateID","CandidateN","Incumbent","Party","Party_affiliation","Total_receipts","Transfers from authorized committees","Total_disbursements","Transfers to authorized committees","Beginning cash","Ending cash","Contributions from candidate","Loans from candidate","Other loans","Candidate loan repayments","Other loan repayments","Debts owed by","Total_individual_contributions","Candidate state","Candidate district","Special election status","Primary election status","Runoff election status","General election status","General election percentage","Contributions from other political committees","Contributions from party committees","Coverage end date","Refunds to individuals","Committee Refunds","YEAR")
   finances_year <- finances_year %>% subset(select = c("CandidateID","Total_receipts","Total_disbursements","Total_individual_contributions","YEAR"))
   
@@ -45,7 +45,7 @@ for (i in 1:12) {
   file.rename("data/fec data/cn.txt",paste("data/fec data/","cn", sprintf("%02d", i * 2), ".txt", sep = ""))
   
   # reading in the delimited file to a df
-  candidate_year <- read_delim(file = paste("data/fec data/","cn", sprintf("%02d", i * 2), ".txt", sep = ""),delim = "|", col_names = FALSE) %>% subset(select = c(1:8))
+  candidate_year <- read_delim(file = paste("data/fec data/","cn", sprintf("%02d", i * 2), ".txt", sep = ""),delim = "|", col_names = FALSE, show_col_types = FALSE) %>% subset(select = c(1:8))
   candidate_year <- candidate_year %>% mutate("filing_cycle" = sprintf("%02d", i * 2))
   colnames(candidate_year) <- c("CAND_ID", "CAND_NAME", "CAND_PTY_AFFILIATION",	"CAND_ELECTION_YR", "CAND_OFFICE_ST",	"CAND_OFFICE",	"CAND_OFFICE_DISTRICT",	"CAND_ICI", "filing_cycle")
   
