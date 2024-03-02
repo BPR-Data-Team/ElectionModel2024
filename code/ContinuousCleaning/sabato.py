@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup 
 import re
 import csv
+import html5lib
   
 URL = "https://centerforpolitics.org/crystalball/2024-rating-changes/" 
 r = requests.get(URL) 
