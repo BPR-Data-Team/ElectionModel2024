@@ -2,12 +2,11 @@ import requests
 from bs4 import BeautifulSoup 
 import re
 import csv
-import html5lib
   
 URL = "https://centerforpolitics.org/crystalball/2024-rating-changes/" 
 r = requests.get(URL) 
   
-soup = BeautifulSoup(r.content, 'html5lib') 
+soup = BeautifulSoup(r.content, 'html.parser') 
 
 # Function to extract state and district
 def extract_info(row):
