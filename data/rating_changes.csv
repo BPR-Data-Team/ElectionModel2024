@@ -1,0 +1,30 @@
+Position,State,District,Rating
+Senate,MD,,Likely Democratic
+Senate,WV,,Safe Republican
+Governor,NH,,Toss-up
+Governor,WA,,Likely Democratic
+Governor,MS,,Likely Republican
+House,NY,4,Leans Democratic
+House,NY,3,Likely Democratic
+House,NY,22,Leans Democratic
+House,NY,3,Leans Democratic
+House,IA,2,Safe Republican
+House,IL,14,Safe Democratic
+House,ME,2,Toss-up
+House,NE,2,Toss-up
+House,OH,1,Likely Democratic
+House,TX,34,Leans Democratic
+House,WA,8,Likely Democratic
+House,LA,6,Safe Democratic
+House,CO,5,Likely Republican
+House,MI,8,Toss-up
+House,VA,7,Leans Democratic
+House,NC,6,Safe Republican
+House,NC,13,Safe Republican
+House,NC,14,Safe Republican
+House,AL,2,Likely Democratic
+House,MD,6,Likely Democratic
+House,NJ,3,Likely Democratic
+House,OH,9,Leans Democratic
+House,OH,1,Leans Democratic
+House,WI,1,Likely Republican
