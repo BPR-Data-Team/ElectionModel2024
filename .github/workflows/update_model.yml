@@ -29,8 +29,9 @@ jobs:
       - name: Run the script
         env:
             FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-        run: python code/data_fetcher.py --all
-        run: python code/ContinuousCleaning/sabato.py --all
+        run: |
+          python code/data_fetcher.py --all
+          python code/ContinuousCleaning/sabato.py --all
 
       - name: Commit and push if there are changes
         run: |
