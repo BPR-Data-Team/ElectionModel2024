@@ -16,7 +16,6 @@ def extract_info(row):
     
     # Handling different formats of name_party_state_district
     match = re.match(r'(.+) \((.+)\)', name_party_state_district)
-    print(match)
     if match:
         if not (match.string[2] == " " or (match.string[2] == "-" and match.string[3].isnumeric())):
             state_district = match.group(2)
@@ -41,7 +40,7 @@ def extract_info(row):
 tables = soup.find_all("table")
 
 # Extracting info from each table row and writing to CSV
-with open("rating_changes.csv", "w", newline='') as csvfile:
+with open("data/rating_changes.csv", "w", newline='') as csvfile:
     csvwriter = csv.writer(csvfile)
     csvwriter.writerow(["Position", "State", "District", "Rating"])
     for table in tables:
