@@ -56,7 +56,36 @@ pres_cleaned <- left_join(pres_cleaned,pollRatings,by = "pollster_rating_id")
 
 
 # ranking rows by grade and total percent, keeping top 5 polls per state, and eliminating columns
-pres_cleaned <- pres_cleaned %>% arrange(valid, desc(lower_error_diff)) %>% ungroup() %>% group_by(state.x) %>%  filter(row_number() <= numberOfPolls) %>% ungroup() %>% subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+if (!("DEM" %in% colnames(pres_cleaned)) && !("REP" %in% colnames(pres_cleaned))) {
+  pres_cleaned <- pres_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    add_column("DEM" = NA_real_, .after = "seat_number") %>%
+    add_column("REP" = NA_real_, .before = "valid") %>%
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+} else if (!("DEM" %in% colnames(pres_cleaned))) {
+  pres_cleaned <- pres_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    add_column("DEM" = NA_real_, .after = "seat_number") %>%
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+} else if (!("REP" %in% colnames(pres_cleaned))) {
+  pres_cleaned <- pres_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    add_column("REP" = NA_real_, .before = "valid") %>%
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+} else {
+  pres_cleaned <- pres_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+}
+
 # renaming columns
 colnames(pres_cleaned) <- c("pollster","valid","lower_error_diff","methodology","pollsterParty","DEM","REP","cycle","state","district")
 #pres_cleaned$grade <- as.character(pres_cleaned$grade)
@@ -100,7 +129,8 @@ pres_cleaned <- pres_cleaned %>% group_by(state,district,cycle) %>% summarise(
   "pollster5.partybias" = pollsterParty[5],
   "pollster5.dem" = DEM[5],
   "pollster5.rep" = REP[5]
-  ) 
+  )
+
 # add identifiers
 pres_cleaned <- pres_cleaned %>% mutate("district" = 0,
                                         "isMidterm" = FALSE,
@@ -151,7 +181,35 @@ sen_cleaned <- left_join(sen_cleaned,pollRatings,by = "pollster_rating_id")
 
 
 # ranking rows by grade and total percent, keeping top 5 polls per state, and eliminating columns
-sen_cleaned <- sen_cleaned %>% arrange(valid, desc(lower_error_diff)) %>% ungroup() %>% group_by(state.x) %>%  filter(row_number() <= numberOfPolls) %>% ungroup() %>% subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+if (!("DEM" %in% colnames(sen_cleaned)) && !("REP" %in% colnames(sen_cleaned))) {
+  sen_cleaned <- sen_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    add_column("DEM" = NA_real_, .after = "seat_number") %>%
+    add_column("REP" = NA_real_, .before = "valid") %>%
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+} else if (!("DEM" %in% colnames(sen_cleaned))) {
+  sen_cleaned <- sen_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    add_column("DEM" = NA_real_, .after = "seat_number") %>%
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+} else if (!("REP" %in% colnames(sen_cleaned))) {
+  sen_cleaned <- sen_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    add_column("REP" = NA_real_, .before = "valid") %>%
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+} else {
+  sen_cleaned <- sen_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+}
 # renaming columns
 colnames(sen_cleaned) <- c("pollster","valid","lower_error_diff","methodology","pollsterParty","DEM","REP","cycle","state","district")
 #sen_cleaned$grade <- as.character(pres_cleaned$grade)
@@ -246,7 +304,35 @@ house_cleaned <- left_join(house_cleaned,pollRatings,by = "pollster_rating_id")
 
 
 # ranking rows by grade and total percent, keeping top 5 polls per state, and eliminating columns
-house_cleaned <- house_cleaned %>% arrange(valid, desc(lower_error_diff)) %>% ungroup() %>% group_by(state.x) %>%  filter(row_number() <= numberOfPolls) %>% ungroup() %>% subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+if (!("DEM" %in% colnames(house_cleaned)) && !("REP" %in% colnames(house_cleaned))) {
+  house_cleaned <- house_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    add_column("DEM" = NA_real_, .after = "seat_number") %>%
+    add_column("REP" = NA_real_, .before = "valid") %>%
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+} else if (!("DEM" %in% colnames(house_cleaned))) {
+  house_cleaned <- house_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    add_column("DEM" = NA_real_, .after = "seat_number") %>%
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+} else if (!("REP" %in% colnames(house_cleaned))) {
+  house_cleaned <- house_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    add_column("REP" = NA_real_, .before = "valid") %>%
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+} else {
+  house_cleaned <- house_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+}
 # renaming columns
 colnames(house_cleaned) <- c("pollster","valid","lower_error_diff","methodology","pollsterParty","DEM","REP","cycle","state","district")
 #pres_cleaned$grade <- as.character(pres_cleaned$grade)
@@ -341,7 +427,35 @@ gub_cleaned <- left_join(gub_cleaned,pollRatings,by = "pollster_rating_id")
 
 
 # ranking rows by grade and total percent, keeping top 5 polls per state, and eliminating columns
-gub_cleaned <- gub_cleaned %>% arrange(valid, desc(lower_error_diff)) %>% ungroup() %>% group_by(state.x) %>%  filter(row_number() <= numberOfPolls) %>% ungroup() %>% subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+if (!("DEM" %in% colnames(gub_cleaned)) && !("REP" %in% colnames(gub_cleaned))) {
+  gub_cleaned <- gub_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    add_column("DEM" = NA_real_, .after = "seat_number") %>%
+    add_column("REP" = NA_real_, .before = "valid") %>%
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+} else if (!("DEM" %in% colnames(gub_cleaned))) {
+  gub_cleaned <- gub_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    add_column("DEM" = NA_real_, .after = "seat_number") %>%
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+} else if (!("REP" %in% colnames(gub_cleaned))) {
+  gub_cleaned <- gub_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    add_column("REP" = NA_real_, .before = "valid") %>%
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+} else {
+  gub_cleaned <- gub_cleaned %>% 
+    arrange(valid, desc(lower_error_diff)) %>% 
+    ungroup() %>% group_by(state.x) %>%  
+    filter(row_number() <= numberOfPolls) %>% ungroup() %>% 
+    subset(select = c(pollster,valid,lower_error_diff,methodology,partisan,DEM,REP,cycle,state.x,seat_number))
+}
 # renaming columns
 colnames(gub_cleaned) <- c("pollster","valid","lower_error_diff","methodology","pollsterParty","DEM","REP","cycle","state","district")
 #pres_cleaned$grade <- as.character(pres_cleaned$grade)
