@@ -4,6 +4,8 @@ library(janitor)
 #DO INCUMBENT MARGIN OVER PVI, NOT JUST INCUMBENT MARGIN
 
 house_uncleaned <- read.csv("data/HistoricalElections/HouseHistory.csv")
+pvi_full <- read.csv("cleaned_data/Completed PVI.csv") %>%
+  select(-X)
   
 #Getting a dataframe that takes every major candidate to their party
 reps_to_party <- house_uncleaned %>%
@@ -85,29 +87,33 @@ house_finished <- house_cleaned %>%
   mutate(dem_pct = 100 * DEMOCRAT/totalvotes,
          rep_pct = 100 * REPUBLICAN/totalvotes,
          margin = dem_pct - rep_pct,
+         dem_tp = 100 * (dem_pct - rep_pct) / (dem_pct + rep_pct),
          rep_unopposed = is.na(DEMOCRAT),
          dem_unopposed = is.na(REPUBLICAN))
 
 house_including_unopposed <- house_finished
 
 house_finished <- house_finished %>%
-  select(c("year", "state_po", "district", "margin", "rep_unopposed", "dem_unopposed")) %>%
+  select(c("year", "state_po", "district", "margin", "dem_tp", "rep_unopposed", "dem_unopposed")) %>%
   unique() %>%
   #we only care about "relatively" competitive, opposed races
   filter(!(dem_unopposed | rep_unopposed) & margin < 95 & margin > -95) %>% #when margins are this high, races are universally ACTUALLY unopposed
   select(-c("dem_unopposed", "rep_unopposed")) %>%
+  left_join(pvi_full, by = c('year' = 'year', 'state_po' = 'state', 
+                             'district' = 'district')) %>%
   #now working with incumbency 
   group_by(state_po, district) %>%
-  mutate(incumbent_margin = lag(margin, 1, order_by = year)) %>%
+  mutate(past_dem_tp = lag(dem_tp, 1, order_by = year), 
+         past_pvi = lag(pvi, 1, order_by = year)) %>%
   filter(year >= 2002) %>%
   #rep_to_race contains information on which candidates are incumbents
   left_join(incumbency, by = c("year" = "year", "state_po" = "state_po", 
                                 "district" = "district")) %>%
-  select(c("year", "state_po", "district", "open_seat", "margin", "incumbent_margin")) %>%
-  mutate(incumbent_margin = case_when(
+  mutate(incumbent_differential = case_when(
     open_seat ~ NA_real_, 
-    TRUE ~ incumbent_margin 
-  ), district = ifelse(district == 0, 1, district))
+    TRUE ~ past_dem_tp - 2*past_pvi 
+  ), district = ifelse(district == 0, 1, district)) %>%
+  select(c("year", "state_po", "district", "open_seat", "margin", "incumbent_differential"))
   
 # ----Calculating Generic Ballot Results for each year -----
 
