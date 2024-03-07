@@ -23,7 +23,7 @@ pres_votes <- pres_uncleaned %>%
 #---- Calculating state PVI values -- necessary for incumbent margins
 #summary of each race -- two party-democratic results since 2000, and lagged values
 pres_summary <- read.csv("data/HistoricalElections/President Summary.csv") %>%
-  mutate(natl_dem_tp = 100 * DEMOCRAT / (DEMOCRAT + REPUBLICAN)) %>%
+  mutate(natl_dem_tp = 100 * DEMOCRAT/ (DEMOCRAT + REPUBLICAN)) %>%
   #national lagged democratic two-party pct -- needed for PVI
   mutate(lagged_natl_dem_tp = lag(natl_dem_tp, order_by = year)) %>%
   select(-c("DEMOCRAT", "REPUBLICAN")) 
@@ -47,22 +47,23 @@ state_pvi <- pres_votes %>%
 #finishing presidential analysis
 pres_finished <- pres_votes %>%
   mutate(margin = 100 * (dem_votes - rep_votes) / total_votes, 
-         dem_tp_margin = 100 * (dem_votes - rep_votes) / (dem_votes + rep_votes),
+         dem_tp = 100 * dem_votes/ (dem_votes + rep_votes),
          district = 0) %>%
-  select(c('election_year', 'state', 'district', 'margin', 'dem_tp_margin')) %>%
+  select(c('election_year', 'state', 'district', 'margin', 'dem_tp')) %>%
   rename(year = election_year) %>%
   mutate(open_seat = year %in% c(2008, 2016)) %>%
-  left_join(state_pvi, by = c('year', 'state', 'district')) %>%
-  group_by(state) %>%
-  mutate(incumbent_dem_tp = case_when(
-    open_seat ~ NA_real_,
-    TRUE ~ lag(dem_tp_margin, 1, order_by = year)
-  ), 
-  previous_pvi = lag(pvi, 1, order_by = year)) %>%
-  #Multiplying pvi by 2 to get margin is important
-  mutate(incumbent_differential = incumbent_dem_tp - pvi*2) %>%
-  select(c('year', 'state', 'district', 'open_seat', 'incumbent_differential', 'margin')) %>%
-  filter(year >= 2004)
+  left_join(state_pvi, by = c('year', 'state', 'district')) 
+
+  # group_by(state) %>%
+  # mutate(incumbent_dem_tp = case_when(
+  #   open_seat ~ NA_real_,
+  #   TRUE ~ lag(dem_tp, 1, order_by = year)
+  # ), 
+  # previous_pvi = lag(pvi, 1, order_by = year)) %>%
+  # #Multiplying pvi by 2 to get margin is important
+  # mutate(incumbent_differential = incumbent_dem_tp - previous_pvi) %>%
+  # select(c('year', 'state', 'district', 'open_seat', 'incumbent_differential', 'margin')) %>%
+  # filter(year >= 2004)
   
 
 write.csv(pres_finished, "cleaned_data/President Historical.csv")

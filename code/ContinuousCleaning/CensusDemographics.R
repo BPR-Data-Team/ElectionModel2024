@@ -7,6 +7,8 @@ census_api_key(Sys.getenv("CENSUS_API_KEY"))
 #2022 data should be used for 2022, but 2019 data sbould be used for 2020
 #year_to_get is what I put into the API, but I use year_to_name in the dataset
 clean_acs <- function(year_to_get, year_to_name) {
+  #Get data from the ACS:
+  #We get both congressional district and state, and combine the two
   acs_data <- bind_rows(
     get_acs(
     geography = "congressional district", 
@@ -22,13 +24,17 @@ clean_acs <- function(year_to_get, year_to_name) {
       output = 'wide'))
   
   acs_data %>% 
+    #Grabbing state and district from the complicated NAME column
     mutate(NAME = sub("\\(at Large\\)", "1", NAME),
            state = sub(".*,\\s*(.*)", "\\1", NAME), 
            district = sub(".*\\bCongressional District (\\d+).*", "\\1", NAME),
            .before = "NAME") %>%
+    #Don't want margin of error
     select(matches("[^M]$")) %>%
     rename_with(~ sub("(?<![M])E$", "", ., perl = TRUE)) %>%
+    #Obviously, don't want puerto rico
     filter(state != "Puerto Rico") %>%
+    #Renaming based on pct bc state/districts have diff populations
     mutate(
       white_pct = white_pop / total, 
       black_pct = black_pop / total, 
@@ -37,7 +43,8 @@ clean_acs <- function(year_to_get, year_to_name) {
       impoverished_pct = impoverished_pop / total, 
       college_pct = college_pop / total,
       renting_pct = renting_pop / total,
-      year = year_to_name, 
+      year = year_to_name,
+      #Districts should be a number
       district = ifelse(district == state | state == "District of Columbia", "0", district),
       district = as.numeric(district), 
       state = case_when(
@@ -64,6 +71,8 @@ variables <- c(
   college_pop = "B06009_005", 
   renting_pop = "B25008_003")
 
+#2005 census data should be used for the 2006 election, and so on
+#As described in the two vectors
 prev_dems <- reduce(
   map2(c(2005, 2007, 2009, 2012, 2013, 2015, 2017, 2019, 2022),
        c(2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022),
@@ -74,6 +83,7 @@ current_dems <- tryCatch(
   clean_acs(2023, 2024), 
   error = function(e) clean_acs(2022, 2024))
 
+#Combining all the data
 all_dems <- bind_rows(prev_dems, current_dems) 
 
 write.csv(all_dems, "cleaned_data/Demographics.csv")
