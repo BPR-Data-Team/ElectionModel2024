@@ -117,7 +117,7 @@ class DataFetcher:
             api_url='https://projects.fivethirtyeight.com/polls-page/data/president_approval_polls.csv',
         )
         self.files['cpi-urban-consumers-all-items.csv'] = DataFile(
-            filename='cpi-urban-consumers.csv',
+            filename='cpi-urban-consumers-all-items.csv',
             api_url='https://api.stlouisfed.org/fred/series/observations',
             request_params={
                 'series_id': 'CPIAUCSL',
