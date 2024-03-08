@@ -15,6 +15,14 @@ class DataFetcher:
 
     supported filenames:
     - consumer-sentiment.csv
+    - inflation-cpi.csv
+    - real-gdp-per-capita.csv
+    - national-unemployment-rate.csv
+    - national-home-price-index.csv
+    - national-regular-gas-price.csv
+    - real-disposable-personal-income.csv
+    - biden-approval-rating.csv
+    - cpi-urban-consumers-all-items.csv
 
     Attributes
     ----------
@@ -107,6 +115,16 @@ class DataFetcher:
         self.files['biden-approval-rating.csv'] = DataFile(
             filename='biden-approval-rating.csv',
             api_url='https://projects.fivethirtyeight.com/polls-page/data/president_approval_polls.csv',
+        )
+        self.files['cpi-urban-consumers-all-items.csv'] = DataFile(
+            filename='cpi-urban-consumers-all-items.csv',
+            api_url='https://api.stlouisfed.org/fred/series/observations',
+            request_params={
+                'series_id': 'CPIAUCSL',
+                'api_key': FRED_API_KEY,
+                'file_type': 'json'
+            },
+            headers=['date', 'value']
         )
     
     def fetch_and_write_to_data(self, filename: str) -> None:
