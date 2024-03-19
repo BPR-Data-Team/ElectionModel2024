@@ -86,7 +86,7 @@ sen_names <- sen_current %>%
 
 sen_current <- sen_current %>%
   #Matching data from previous years to get incumbent margin
-  left_join((senate_historical %>% filter(year == 2022)), 
+  left_join((sen_historical %>% filter(year == 2022)), 
             by = c("District" = "district", "State" = "state")) %>%
   #Need to fix this step, as I do with every other incumbent margin step
   mutate(incumbent_differential = case_when(
@@ -207,7 +207,7 @@ polls <- read.csv("cleaned_data/538 Polls.csv")
 demographics <- read.csv("cleaned_data/Demographics.csv")
 
 
-combination <- elections_historical %>%
+combination <- all_elections %>%
   left_join(covi, by = c('state', 'year')) %>% #2024 included
   left_join(expert, by = c("state" = "State", "district" = "District", "year", 
                            "special", "office_type" = "race")) %>% #2024 not included 
@@ -218,8 +218,7 @@ combination <- elections_historical %>%
   left_join(cci, by = 'year') %>% #2024 included
   left_join(gas, by = 'year') %>% #2024 included
   left_join(unemployment, by = 'year') %>% #2024 included
-  left_join(fec, by = c('state', 'year', 'district', 'office_type')) %>%
-  left_join(demographics, by = c('state', 'year', 'district')) %>%
-  select(-`...1`)
+  left_join(fec, by = c('state', 'year', 'district', 'office_type'))
+  #left_join(demographics, by = c('state', 'year', 'district')) %>%
 
 write.csv(combination, "cleaned_data/Finalized Dataset.csv")
