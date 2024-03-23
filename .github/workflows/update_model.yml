@@ -74,7 +74,7 @@ jobs:
           Rscript code/ContinuousCleaning/CensusDemographics.R 
           Rscript code/ContinuousCleaning/Fundamentals.R
           Rscript code/ContinuousCleaning/FEC.R
-          Rscript code/ContinuousCleaning/538polls.R
+          Rscript code/ContinuousCleaning/PollingAverages.R
 
       - name: Commit and push if there are changes
         run: |
