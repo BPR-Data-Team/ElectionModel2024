@@ -218,7 +218,7 @@ sen_2014 <- read_excel("data/HistoricalElections/Sabato_Ratings/2014 Crystal Bal
            TRUE ~ State
          )) %>%
   mutate(abbreviation = state.abb[match(State, state.name)]) %>%
-  select(year, abbreviation, final_rating, race) %>%
+  select(year, abbreviation, final_rating, special, race) %>%
   rename(State = abbreviation)
 
 gov_2014 <- read_excel("data/HistoricalElections/Sabato_Ratings/2014 Crystal Ball ratings.xlsx", 
@@ -264,7 +264,7 @@ house_2016 <- read_excel("data/HistoricalElections/Sabato_Ratings/2016 Crystal B
   separate(CD, c("State", "District"), sep = "-") %>%
   mutate(District = ifelse(District == "AL", "0", District),
          year = 2016, race = "House") %>%
-  select(year, State, Final, race) %>%
+  select(year, State, District, Final, race) %>%
   rename(final_rating = Final) %>%
   filter(!is.na(final_rating))
 
