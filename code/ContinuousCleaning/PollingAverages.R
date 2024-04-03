@@ -123,8 +123,8 @@ poll_averages <- all_polls %>%
   summarize(unconvinced_pct = mean(100 - (DEM + REP - IND), na.rm = TRUE),
             valid_weighted_ba = weighted.mean(margin - mean_bias, ifelse(valid, weight, 0), 
                                            na.rm = TRUE), 
-            phone_unweighted = mean(ifelse(phone, margin, NA_real_), na.rm = TRUE), 
-            online_unweighted = mean(ifelse(online, margin, NA_real_), na.rm = TRUE),
+            phone_unweighted_ba = mean(ifelse(phone, margin - mean_bias, NA_real_), na.rm = TRUE), 
+            online_unweighted_ba = mean(ifelse(online, margin - mean_bias, NA_real_), na.rm = TRUE),
             all_unweighted_ba = mean(margin - mean_bias),
             all_unweighted = mean(margin),
             num_polls = n()) %>%
