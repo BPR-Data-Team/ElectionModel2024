@@ -27,12 +27,14 @@ cleaned_historical <- raw_polls %>%
   pivot_wider(names_from = cand1_party, values_from = cand1_pct) %>%
   pivot_wider(names_from = cand2_party, values_from = cand2_pct) %>%
   #We don't want primary polls or generic polls
-  filter(!str_detect(type_simple, "-P|US")) %>%
+  filter(!str_detect(type_simple, "-P")) %>%
   mutate(office_type = case_when(
     str_detect(type_simple, "Sen") ~ "Senate", 
     str_detect(type_simple, "Gov") ~ "Governor",
     str_detect(type_simple, "Pres") ~ "President",
-    str_detect(type_simple, "House") ~ "House"),) %>%
+    str_detect(type_simple, "House") ~ "House"),
+    office_type = ifelse(office_type == "President" & state == "US", 
+                         "House", office_type)) %>%
   left_join(pollRatings, by = c("cycle" = 'year', 'pollster_rating_id')) %>%
   rename(sample_size = samplesize) %>%
   select(poll_id, pollster_rating_id, methodology, state, seat_number, sample_size, 
@@ -100,7 +102,8 @@ cleaned_current <- cleaned_current %>%
   #Combining with pollRatings
   left_join(pollRatings, by = c('cycle' = 'year', 'pollster_rating_id')) %>%
   mutate(valid = ifelse(is.na(valid), FALSE, valid), 
-         state = state.abb[match(state, state.name)]) %>%
+         state = state.abb[match(state, state.name)], 
+         state = ifelse(is.na(state), "US", state)) %>%
   arrange(valid, desc(lower_error_diff)) # Arrange rows
 
 all_polls <- cleaned_current %>%
@@ -128,7 +131,15 @@ poll_averages <- all_polls %>%
             all_unweighted_ba = mean(margin - mean_bias),
             all_unweighted = mean(margin),
             num_polls = n()) %>%
-  mutate(across(everything(), ~ifelse(is.nan(.), NA, .)))
+  mutate(across(everything(), ~ifelse(is.nan(.), NA, .))) 
+
+generic_polling <- poll_averages %>%
+  ungroup() %>%
+  filter(state == "US" & cycle > 2000) %>%
+  rename(weighted_genpoll = valid_weighted_ba, 
+         unweighted_genpoll = all_unweighted_ba, 
+         year = cycle) %>%
+  select(c('year', 'weighted_genpoll', 'unweighted_genpoll'))
 
 # --- This was a previous version of the poll data -- removed so we could focus 
 # --- purely on the polling averages
@@ -158,3 +169,4 @@ poll_averages <- all_polls %>%
   # mutate(office_type = str_remove(office_type, "U.S. ")) 
 
 write.csv(poll_averages, "cleaned_data/AllPolls.csv")
+write.csv(generic_polling, "cleaned_data/GenPolling.csv")
