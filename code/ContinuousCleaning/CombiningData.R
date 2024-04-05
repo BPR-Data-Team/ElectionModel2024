@@ -1,4 +1,5 @@
 library(tidyverse)
+library(missForest)
 
 #--- Downloading Datasets ------
 #This is by far the most important file in the entire project. It contains all the 
@@ -96,6 +97,8 @@ fec <- read.csv("cleaned_data/fecData20022024.csv") %>%
 polls <- read.csv("cleaned_data/AllPolls.csv") %>% select(-X) %>%
   mutate(office_type = str_remove(office_type, "U\\.S\\. "))
 
+genpolls <- read.csv("cleaned_data/GenPolling.csv") %>% select(-X)
+
 #DEMOGRAPHICS
 demographics <- read.csv("cleaned_data/Demographics.csv") %>% select(-X) %>%
   #Weird combinations where both district and state-level dems are the same
@@ -109,6 +112,7 @@ combination <- all_elections %>%
   left_join(expert, by = c("state" = "State", "district" = "District", "year",
                             "special", "office_type" = "race")) %>% #2024 not included
   left_join(genballot, by = 'year') %>% #2024 included
+  left_join(genpolls, by = 'year') %>%
   left_join(specials, by = 'year') %>% #2024 included?
   left_join(pvi, by = c('year', 'state', 'district')) %>% #2024 included
   left_join(chambers, by = 'year') %>% #2024 included
@@ -129,7 +133,11 @@ engineered <- combination %>%
   mutate(incumbent_differential = ifelse(is.na(incumbent_differential), 
                                          0, incumbent_differential), 
          receipts_ratio = receipts_DEM / receipts_REP, 
-         dispursements_ratio = disbursements_DEM / disbursements_REP)
+         disbursements_ratio = disbursements_DEM / disbursements_REP, 
+         disbursements_ratio = ifelse(disbursements_ratio > 1e6, 1e6, disbursements_ratio), 
+         genballot_predicted_margin = pvi * 2 + weighted_genpoll, 
+         specials_predicted_margin = pvi * 2 + (mean_specials_differential - 50) * 2)
+
 
 write.csv(combination, "cleaned_data/Finalized Dataset.csv")
 write.csv(engineered, "cleaned_data/Engineered Dataset.csv")
