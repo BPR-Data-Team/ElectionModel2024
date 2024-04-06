@@ -43,9 +43,13 @@ real_gdp_per_capita <- read.csv("data/real-gdp-per-capita.csv") %>%
 national_gas_price <- read.csv("data/national-regular-gas-price.csv") %>%
   clean_fred_data()
 
+cpi <- read.csv('data/cpi-urban-consumers-all-items.csv') %>%
+  clean_fred_data()
+
 
 write.csv(cci, "cleaned_data/Consumer Confidence Index.csv")
 write.csv(unemployment, "cleaned_data/Unemployment.csv")
 write.csv(real_disposable, "cleaned_data/Real Disposable PI.csv")
 write.csv(real_gdp_per_capita, "cleaned_data/Real GDP Per Capita.csv")
 write.csv(national_gas_price, "cleaned_data/Gas Prices.csv")
+write.csv(cpi, "cleaned_data/CPI.csv")

@@ -72,10 +72,11 @@ variables <- c(
   renting_pop = "B25008_003")
 
 #2005 census data should be used for the 2006 election, and so on
+#We also use it for 2002/4 because they don't have census data
 #As described in the two vectors
 prev_dems <- reduce(
-  map2(c(2005, 2007, 2009, 2012, 2013, 2015, 2017, 2019, 2022),
-       c(2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022),
+  map2(c(2005, 2005, 2005, 2007, 2009, 2012, 2013, 2015, 2017, 2019, 2022),
+       c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022),
        clean_acs), bind_rows)
 
 #ACS 2023 data comes out in September, so we use 2022 data until then
@@ -84,7 +85,7 @@ current_dems <- tryCatch(
   error = function(e) clean_acs(2022, 2024))
 
 #Combining all the data
-all_dems <- bind_rows(prev_dems, current_dems) 
+all_dems <- bind_rows(prev_dems, current_dems) %>% unique()
 
 write.csv(all_dems, "cleaned_data/Demographics.csv")
 
