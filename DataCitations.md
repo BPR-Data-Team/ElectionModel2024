@@ -2,9 +2,10 @@
 _This is not an exhaustive list of data sources. Attributions are featured at the request of each data publisher. Not all publishers granted permission to store data in this repository but are included because their data was incuded in model training._
 
 - Cook Political Report:
-    - Permission granted by the Cook Political Report to use Partisan Voting Index data in the training of our model.Scot Schraufnagel, Michael J. Pomante, and Quan Li.Cost of Voting in the American States: 2022*.
+    - Permission granted by the Cook Political Report to use Partisan Voting Index data in the training of our model.
 - Cost of Voting Index:
     - Election Law Journal: Rules, Politics, and Policy.Sep 2022.220-228.http://doi.org/10.1089/elj.2022.0041
+    - Scot Schraufnagel, Michael J. Pomante, and Quan Li.Cost of Voting in the American States: 2022*.
 - FiveThirtyEight:
     - Data authored by FiveThirtyEight under a CC 4.0 License. Modified FiveThirtyEight data is stored in the cleaned_data folder. See the full CC 4.0 License at https://creativecommons.org/licenses/by/4.0/.
 - FRED:
