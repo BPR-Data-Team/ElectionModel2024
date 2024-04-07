@@ -8,6 +8,7 @@ See the [Data](data) folder for all _non-cleaned_ data. All of this data has a _
 
 See the [Code](code) folder for all cleaning, scraping, and model code.
 
+See [Data Citations.md](DataCitations.md) for disclosures of authorship on the data we use.
 
 ## If you are working on Python files, install a virtual environment in the root directory of the project:
 
