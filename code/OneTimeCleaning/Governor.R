@@ -26,6 +26,7 @@ governor_cleaned <- governor_uncleaned %>%
   summarize(dem_votes = sum(democratic_raw_votes, na.rm = TRUE), 
             rep_votes = sum(republican_raw_votes, na.rm = TRUE), 
             total_votes = sum(raw_county_vote_totals, na.rm = TRUE)) %>%
+  "Only care about races where no big independent"
   filter(dem_votes + rep_votes >= total_votes*0.75) %>%
   rename(year = election_year) %>%
   #If gov ran in 2003, we're saying they ran in 2004
@@ -46,7 +47,7 @@ governor_cleaned <- governor_uncleaned %>%
   #Weird stuff in 2001 and 2020 WV elections
   filter(year >= 2002 &
            !(state == "WV" & year == 2012) &
-           !(state == "WV" & year == 2020)) %>%
-  select(c('year', 'state', 'open_seat', 'margin', 'incumbent_differential'))
+           !(state == "WV" & year == 2020))
+  #select(c('year', 'state', 'open_seat', 'margin', 'incumbent_differential'))
 
 write.csv(governor_cleaned, "cleaned_data/AllGovernor.csv")
