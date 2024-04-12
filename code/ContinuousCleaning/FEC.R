@@ -21,9 +21,10 @@ for (i in 1:12) {
   file.remove(destination)
   
   # read in the pipe delimited file to a dataframe 
-  finances_year <- read_delim(file = paste("data/fec data/","weball", sprintf("%02d", i * 2), ".txt", sep = ""),delim = "|", col_names = FALSE, show_col_types = FALSE) %>% mutate("YEAR" = as.double(paste("20",sprintf("%02d", i * 2), sep = ""))) 
-  colnames(finances_year) <- c("CandidateID","CandidateN","Incumbent","Party","Party_affiliation","Total_receipts","Transfers from authorized committees","Total_disbursements","Transfers to authorized committees","Beginning cash","Ending cash","Contributions from candidate","Loans from candidate","Other loans","Candidate loan repayments","Other loan repayments","Debts owed by","Total_individual_contributions","Candidate state","Candidate district","Special election status","Primary election status","Runoff election status","General election status","General election percentage","Contributions from other political committees","Contributions from party committees","Coverage end date","Refunds to individuals","Committee Refunds","YEAR")
-  finances_year <- finances_year %>% subset(select = c("CandidateID","Total_receipts","Total_disbursements","Total_individual_contributions","YEAR"))
+  finances_year <- read_delim(file = paste("data/fec data/","weball", sprintf("%02d", i * 2), ".txt", sep = ""),delim = "|", col_names = FALSE, show_col_types = FALSE) %>% 
+    mutate("YEAR" = as.double(paste("20",sprintf("%02d", i * 2), sep = ""))) %>% 
+    setNames(c("CandidateID","CandidateN","Incumbent","Party","Party_affiliation","Total_receipts","Transfers from authorized committees","Total_disbursements","Transfers to authorized committees","Beginning cash","Ending cash","Contributions from candidate","Loans from candidate","Other loans","Candidate loan repayments","Other loan repayments","Debts owed by","Total_individual_contributions","Candidate state","Candidate district","Special election status","Primary election status","Runoff election status","General election status","General election percentage","Contributions from other political committees","Contributions from party committees","Coverage end date","Refunds to individuals","Committee Refunds","YEAR")) %>% 
+    subset(select = c(1, 6:12, 18, 31))
   
   # append the filing year dataframe to the general one
   finances <- rbind(finances, finances_year)
@@ -61,11 +62,9 @@ candidiates <- candidiates %>% group_by(CAND_ID, CAND_ELECTION_YR) %>% slice(whi
 allYearsJoined <- left_join(candidiates,finances,by = c("CAND_ID" = "CandidateID","CAND_ELECTION_YR" = "YEAR")) %>% filter(!is.na(Total_receipts) & Total_receipts > 0)
 
 # grouping down to the party level
-partyDistillation <- allYearsJoined %>% mutate(CAND_PTY_AFFILIATION = case_when(CAND_PTY_AFFILIATION %in% c("DEM", "REP") ~ CAND_PTY_AFFILIATION,TRUE ~ "IND")) %>% group_by(CAND_ELECTION_YR, CAND_OFFICE_ST, CAND_OFFICE, CAND_OFFICE_DISTRICT, CAND_PTY_AFFILIATION) %>% summarise(
-  "allReceipts" = sum(Total_receipts),
-  "allDisbursements" = sum(Total_disbursements),
-  "allIndivContributions" = sum(Total_individual_contributions),
-)
+partyDistillation <- allYearsJoined %>% mutate(CAND_PTY_AFFILIATION = case_when(CAND_PTY_AFFILIATION %in% c("DEM", "REP") ~ CAND_PTY_AFFILIATION,TRUE ~ "IND")) %>% 
+  group_by(CAND_ELECTION_YR, CAND_OFFICE_ST, CAND_OFFICE, CAND_OFFICE_DISTRICT, CAND_PTY_AFFILIATION) %>% 
+  slice(which.max(Total_receipts))
 
 ## export
 write.csv(partyDistillation,file = "cleaned_data/fecData20022024.csv")
