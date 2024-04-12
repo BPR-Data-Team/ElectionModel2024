@@ -186,7 +186,6 @@ poll_averages <- all_polls %>%
          phone = str_detect(methodology, "Phone|IVR"), 
          online = str_detect(methodology, "Online|Mail|Email|Text")) %>%
   group_by(state, seat_number, cycle, office_type) %>%
-  filter(cycle == 2012) %>%
   #Deal with the fact that only valid pollsters should be weighted at all
   mutate(valid = ifelse(is.na(valid), FALSE, valid), 
          #Softmaxing weights

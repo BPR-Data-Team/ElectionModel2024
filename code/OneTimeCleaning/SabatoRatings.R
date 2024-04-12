@@ -307,7 +307,9 @@ combined_ratings <- bind_rows(sen_total, gov_total, house_total, pres_total) %>%
   ), special = ifelse(is.na(special), FALSE, special), 
   District = ifelse(is.na(District), "0", District), 
   District = as.numeric(District), 
-  District = ifelse(race == "House" & District == 0, 1, District)
-  ) 
+  District = ifelse(race == "House" & District == 0, 1, District), 
+  final_rating = str_remove(final_rating, "\\*")
+  ) %>% 
+  filter(!str_detect(final_rating, " I"))
 
 write.csv(combined_ratings, "cleaned_data/Expert Ratings.csv")

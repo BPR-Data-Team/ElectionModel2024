@@ -120,7 +120,7 @@ combination <- all_elections %>%
   left_join(gas, by = 'year') %>% #2024 included
   left_join(unemployment, by = 'year') %>% #2024 included
   left_join(fec, by = c('state', 'year', 'district', 'office_type')) %>%
-  left_join(polls, by = c('state', 'year' = 'cycle', 'district' = 'seat_number', 'office_type')) %>%
+  left_join(polls, by = c('state', 'year', 'district' = 'seat_number', 'office_type')) %>%
   left_join(demographics, by = c('state', 'year', 'district')) %>%
   left_join(inflation, by = 'year') %>% 
   mutate(isMidterm = year %% 4 != 0) %>%
@@ -146,7 +146,11 @@ engineered <- combination %>%
          specials_predicted_margin = pvi * 2 + mean_specials_differential + incumbent_differential,
          num_polls = replace_na(num_polls, 0), 
          receipts_genballot_interaction = genballot_predicted_margin * receipts_ratio, 
-         disbursements_genballot_interaction = genballot_predicted_margin * disbursements_ratio) %>%
+         disbursements_genballot_interaction = genballot_predicted_margin * disbursements_ratio, 
+         democrat_in_presidency = year %in% c(2010, 2012, 2014, 2016, 2022, 2024), 
+         gas_democrat_interaction = democrat_in_presidency * current_gas, 
+         cci_democrat_interaction = democrat_in_presidency * current_cci, 
+         poll_fundamental_average = (genballot_predicted_margin + unweighted_estimate) / 2) %>%
   filter(!is.na(pvi))
 
 
