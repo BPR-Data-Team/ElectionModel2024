@@ -130,8 +130,8 @@ PVI_district <- Reduce(function(x, y) full_join(x, y, by=c("State","District")),
   unnest(True_Year) %>%
   unique() %>%
   filter(!(
-    (Year == 2020 & State == "North Carolina") |
-      (Year == 2016 & State %in% c("North Carolina", "Florida", "Virginia"))
+    (True_Year == 2020 & State == "North Carolina") |
+      (True_Year == 2016 & State %in% c("North Carolina", "Florida", "Virginia"))
   )) %>%
   select(-c("Year"))
 

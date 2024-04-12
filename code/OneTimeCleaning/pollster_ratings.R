@@ -5,8 +5,7 @@ all_polls <- read_csv("data/HistoricalPolls.csv")
 
 #HYPERPARAMETERS:
 years_to_rate = 10
-days_to_rate = 21
-max_polls_per_race = 5
+days_to_rate = 50
 
 #takes in a year, throws out ratings for every pollster prior to that year 
 ratingfunction <- function(before_year, polls = all_polls) {

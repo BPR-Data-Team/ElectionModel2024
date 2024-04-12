@@ -1,8 +1,10 @@
 library(tidyverse)
 library(lubridate)
 library(stringr)
+library(meta)
+library(metafor)
 
-days_counting <- 21
+days_counting <- 50
 population_order <- c('lv', 'rv', 'v', 'a')
 numberOfPolls <- 1
 
@@ -12,6 +14,71 @@ pollRatings <- read.csv("cleaned_data/Pollster Ratings.csv") %>%
   mutate(valid = as.logical(valid))
 
 raw_polls <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/pollster-ratings/raw_polls.csv")# pivot_longer(cols = c(cand1_party, cand2_party),
+
+reverse_logit <- function(num) {
+  return (exp(num) / (1 + exp(num)))
+}
+
+#Getting softmax weights for only valid polls
+valid_softmax <- function(nums, valid) {
+  expsums <- ifelse(valid, exp(nums), 0) / sum(ifelse(valid, exp(nums), 0), na.rm = TRUE)
+  #weights
+  expsums <- ifelse(is.na(expsums), 0, expsums)
+  return (expsums)
+}
+
+#Performing a meta_analysis on polls, returning a dataset that is later unnested
+#Much better than simply averaging polls because this accounts for 
+#Heterogeneity between polls
+perform_weighted_metaprop <- function(num_democrat, samplesizes, weights) {
+  
+  
+  # Perform the meta-analysis for UNWEIGHTED
+  unweighted_meta <- metaprop(event = num_democrat, 
+                              n = samplesizes, 
+                              sm = "PLO", 
+                              method.tau = "DL", 
+                              method.ci = "NAsm")
+  
+  unweighted_estimate <- reverse_logit(unweighted_meta$TE.random)
+  unweighted_ci_lower <- reverse_logit(unweighted_meta$lower.random)
+  unweighted_ci_upper <- reverse_logit(unweighted_meta$upper.random)
+  
+  #Perform the weighted meta-analysis
+  #When there are no valid pollsters, this FAILS
+  #So we do a tryCatch to work with it
+  weighted_estimate <- NA
+  weighted_ci_lower <- NA
+  weighted_ci_upper <- NA
+  
+  tryCatch({
+    logit_event_rate <- log(num_democrat / (samplesizes - num_democrat))
+    se_logit_event_rate <- sqrt(1 / num_democrat + 1 / (samplesizes - num_democrat))
+    
+   
+    weighted_meta <- rma(yi = logit_event_rate,
+                         sei = se_logit_event_rate,
+                         weights = weights,
+                         method = "REML")
+    
+    #Change the weighted estimates if there ARE estimates
+    weighted_estimate <- reverse_logit(weighted_meta$beta[, 1])
+    weighted_ci_lower <- reverse_logit(weighted_meta$ci.lb)
+    weighted_ci_upper <- reverse_logit(weighted_meta$ci.ub)
+  }, error = function(e) {
+  })
+  
+  # Return the results as a tibble
+  return(tibble(
+    unweighted_estimate = 200 * (unweighted_estimate - 0.5),
+    unweighted_ci_lower = 200 * (unweighted_ci_lower - 0.5),
+    unweighted_ci_upper = 200 * (unweighted_ci_upper - 0.5),
+    weighted_estimate = 200 * (weighted_estimate - 0.5),
+    weighted_ci_lower = 200 * (weighted_ci_lower - 0.5),
+    weighted_ci_upper = 200 * (weighted_ci_upper - 0.5)
+  ))
+}
+
 
 #Cleaning past polls to make them look the same as current polls
 cleaned_historical <- raw_polls %>%
@@ -115,58 +182,41 @@ all_polls <- cleaned_current %>%
 #valid_weighted, which looks at the softmax-weighted average for valid pollsters only
 #all_unweighted, which doesn't care about weights/validity
 poll_averages <- all_polls %>%
-  mutate(margin = DEM - REP, 
+  mutate(margin_ba = (DEM - REP) - mean_bias, 
          phone = str_detect(methodology, "Phone|IVR"), 
          online = str_detect(methodology, "Online|Mail|Email|Text")) %>%
   group_by(state, seat_number, cycle, office_type) %>%
+  filter(cycle == 2012) %>%
   #Deal with the fact that only valid pollsters should be weighted at all
   mutate(valid = ifelse(is.na(valid), FALSE, valid), 
-         weight = ifelse(valid, exp(lower_error_diff), 0) /
-           sum(ifelse(valid, exp(lower_error_diff), 0), na.rm = TRUE)) %>%
-  summarize(unconvinced_pct = mean(100 - (DEM + REP - IND), na.rm = TRUE),
-            valid_weighted_ba = weighted.mean(margin - mean_bias, ifelse(valid, weight, 0), 
-                                           na.rm = TRUE), 
-            phone_unweighted_ba = mean(ifelse(phone, margin - mean_bias, NA_real_), na.rm = TRUE), 
-            online_unweighted_ba = mean(ifelse(online, margin - mean_bias, NA_real_), na.rm = TRUE),
-            all_unweighted_ba = mean(margin - mean_bias),
-            all_unweighted = mean(margin),
-            num_polls = n()) %>%
-  mutate(across(everything(), ~ifelse(is.nan(.), NA, .))) 
+         #Softmaxing weights
+         weight = valid_softmax(lower_error_diff, valid),
+         #Num-democrats is required for meta-analyses -- #people who said they'd vote DEM
+         #REALLY important to put DEM tp here, because many polls have significant unconvinced
+         num_democrat = round(sample_size * (DEM - 0.5*mean_bias) / (DEM + REP)))
 
-generic_polling <- poll_averages %>%
+#Conducting meta-analyses on the polling averages
+meta_analyses <- poll_averages %>%
+  nest() %>%
+  summarize(meta_results = map(data, ~perform_weighted_metaprop(.$num_democrat, .$sample_size, .$weight))) %>% 
+  unnest(cols = meta_results)
+
+full_poll_averages <- poll_averages %>% 
+ summarize(unconvinced_pct = mean(100 - (DEM + REP - IND), na.rm = TRUE),
+            phone_unweighted = mean(ifelse(phone, margin_ba, NA_real_), na.rm = TRUE), 
+            online_unweighted = mean(ifelse(online, margin_ba, NA_real_), na.rm = TRUE),
+            num_polls = n()) %>%
+  mutate(across(everything(), ~ifelse(is.nan(.), NA, .))) %>%
+  left_join(meta_analyses, by = c("state", 'seat_number', 'cycle', 'office_type')) %>%
+  rename(year = cycle)
+
+
+generic_polling <- full_poll_averages %>%
   ungroup() %>%
-  filter(state == "US" & cycle > 2000) %>%
-  rename(weighted_genpoll = valid_weighted_ba, 
-         unweighted_genpoll = all_unweighted_ba, 
-         year = cycle) %>%
+  filter(state == "US" & year > 2000) %>%
+  rename(weighted_genpoll = weighted_estimate, 
+         unweighted_genpoll = unweighted_estimate) %>%
   select(c('year', 'weighted_genpoll', 'unweighted_genpoll'))
 
-# --- This was a previous version of the poll data -- removed so we could focus 
-# --- purely on the polling averages
-
-#Final cleaning: Taking the polls and pivoting them to include the top N polls
-# cleaned_full <- all_polls %>%
-#   select(-IND) %>%
-#   left_join(poll_averages, by = c('state', 'seat_number', 
-#                                   'cycle', 'office_type')) %>%
-#   filter(!is.na(state) & state != "" & state != "US" & cycle %% 2 == 0) %>% 
-#   mutate(office_type = str_remove(office_type, "U.S. ")) 
-  # group_by(state, seat_number, cycle, office_type) %>%
-  # slice_head(n = numberOfPolls) %>%
-  # mutate(rank = round(rank(desc(lower_error_diff), ties.method = "random"), 0)) %>%
-  # arrange(rank) %>%
-  # ungroup() %>%
-  # mutate(margin = DEM - REP) %>%
-  # pivot_wider(
-  #   id_cols = c(state, seat_number, cycle, office_type),
-  #   names_from = rank,
-  #   values_from = c(margin, methodology),
-  #   names_glue = "poll_{rank}_{.value}"
-  # ) %>%
-  # left_join(poll_averages, by = c('state', 'seat_number', 'cycle',
-  #                                 'office_type')) %>%
-  # filter(!is.na(state) & state != "" & state != "US" & cycle %% 2 == 0) %>%
-  # mutate(office_type = str_remove(office_type, "U.S. ")) 
-
-write.csv(poll_averages, "cleaned_data/AllPolls.csv")
+write.csv(full_poll_averages, "cleaned_data/AllPolls.csv")
 write.csv(generic_polling, "cleaned_data/GenPolling.csv")

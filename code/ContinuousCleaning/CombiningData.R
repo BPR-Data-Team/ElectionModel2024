@@ -132,11 +132,22 @@ engineered <- combination %>%
   select(-c(maxpollhours, noonlineregistration, nopermanentabsentee)) %>% 
   mutate(incumbent_differential = ifelse(is.na(incumbent_differential), 
                                          0, incumbent_differential), 
-         receipts_ratio = receipts_DEM / receipts_REP, 
-         disbursements_ratio = disbursements_DEM / disbursements_REP, 
-         disbursements_ratio = ifelse(disbursements_ratio > 1e6, 1e6, disbursements_ratio), 
-         genballot_predicted_margin = pvi * 2 + weighted_genpoll, 
-         specials_predicted_margin = pvi * 2 + (mean_specials_differential - 50) * 2)
+         receipts_ratio = case_when(
+           receipts_DEM == 0 ~ -6, 
+           receipts_REP == 0 ~ 6, 
+           TRUE ~ log(receipts_DEM / receipts_REP)), 
+         disbursements_ratio = case_when(
+           disbursements_DEM == 0 ~ -6, 
+           disbursements_REP == 0 ~ 6, 
+           TRUE ~ log(disbursements_DEM / disbursements_REP)),
+         total_receipts = receipts_DEM + receipts_REP,
+         total_disbursements = disbursements_DEM + disbursements_REP,
+         genballot_predicted_margin = pvi * 2 + weighted_genpoll + incumbent_differential, 
+         specials_predicted_margin = pvi * 2 + mean_specials_differential + incumbent_differential,
+         num_polls = replace_na(num_polls, 0), 
+         receipts_genballot_interaction = genballot_predicted_margin * receipts_ratio, 
+         disbursements_genballot_interaction = genballot_predicted_margin * disbursements_ratio) %>%
+  filter(!is.na(pvi))
 
 
 write.csv(combination, "cleaned_data/Finalized Dataset.csv")
