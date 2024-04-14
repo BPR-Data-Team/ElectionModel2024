@@ -24,9 +24,11 @@ pres_votes <- pres_uncleaned %>%
 #---- Calculating state PVI values -- necessary for incumbent margins
 #summary of each race -- two party-democratic results since 2000, and lagged values
 pres_summary <- read.csv("data/HistoricalElections/President Summary.csv") %>%
-  mutate(natl_dem_tp = 100 * DEMOCRAT/ (DEMOCRAT + REPUBLICAN)) %>%
+  mutate(natl_dem_tp = 100 * DEMOCRAT/ (DEMOCRAT + REPUBLICAN), 
+         natl_margin = 100 * (DEMOCRAT - REPUBLICAN) / (DEMOCRAT + REPUBLICAN)) %>%
   #national lagged democratic two-party pct -- needed for PVI
-  mutate(lagged_natl_dem_tp = lag(natl_dem_tp, order_by = year)) %>%
+  mutate(lagged_natl_dem_tp = lag(natl_dem_tp, order_by = year), 
+         lagged_natl_margin = lag(natl_margin, order_by = year)) %>%
   select(-c("DEMOCRAT", "REPUBLICAN")) 
 
 state_pvi <- pres_votes %>%
@@ -61,11 +63,10 @@ pres_finished <- pres_votes %>%
   left_join(pres_summary, by = 'year') %>%
   group_by(state) %>%
   #Getting past results for incumbency data
-  mutate(past_dem_tp = lag(dem_tp, 1, order_by = year), 
-         past_pvi = lag(pvi, 1, order_by = year), 
-         past_gen_dem_tp = lag(natl_dem_tp, 1, order_by = year)) %>%
+  mutate(lagged_margin = lag(margin, 1, order_by = year), 
+         lagged_pvi = lag(pvi, 1, order_by = year)) %>%
   mutate(incumbent_differential = ifelse(open_seat, NA_real_, 
-          (past_dem_tp - past_gen_dem_tp) - past_pvi)) %>%
+          (lagged_margin - lagged_natl_margin) - 2 * lagged_pvi)) %>%
   select(c('year', 'state', 'district', 'open_seat', 'incumbent_differential', 'margin')) %>%
   filter(year >= 2004)
   

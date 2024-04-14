@@ -14,10 +14,10 @@ pvi <- read.csv("cleaned_data/Completed PVI.csv")
 generic_ballot <- read.csv("cleaned_data/Generic Ballot.csv")
 
 current_senate <- read.csv("data/2024Senate.csv") %>%
-  mutate(State = str_remove(State, " Special"),
+  mutate(special_election = str_detect(State, " Special"), 
+         State = str_remove(State, " Special"),
          open_seat = !Incumbent, 
-         year = 2024, 
-         special_election = FALSE) %>%
+         year = 2024) %>%
   rename(state = State) %>%
   select(year, state, open_seat, special_election)
 
@@ -46,10 +46,9 @@ senate_with_incumbency <- cleaned_senate %>%
   left_join(generic_ballot, by = c('incumbent_year' = 'year')) %>%
   #Because we matched genballot to incumbent year, we actually 
   #Choose the current genballot rather than past (since past would be too far back)
-  mutate(past_dem_tp = (democratic_total_past / (democratic_total_past + republican_total_past)),
-    incumbent_differential = ifelse(open_seat, NA_real_, 
-                      100*(past_dem_tp - gen_dem_tp) - pvi_past)) %>%
-  select(c(state, year, district, special_election, open_seat, 
+  mutate(incumbent_differential = ifelse(open_seat, NA_real_, 
+                      (margin_past - gen_margin) - 2*pvi_past)) %>%
+  select(c(state, year, district, special_election, open_seat,
            incumbent_differential, margin)) %>%
   filter(year == 2024 | !is.na(margin)) %>% 
   filter(year %% 2 == 0)

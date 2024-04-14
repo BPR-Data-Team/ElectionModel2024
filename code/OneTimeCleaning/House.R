@@ -118,7 +118,7 @@ uncontested_party_summaries <- house_including_unopposed %>%
   summarize(num_rep_unopposed = sum(rep_unopposed), 
             num_dem_unopposed = sum(dem_unopposed))
 
-generic_ballot <- contested_party_summaries %>%
+house_generic_ballot <- contested_party_summaries %>%
   full_join(uncontested_party_summaries, by = "year") %>%
   mutate(
     total_dem = contested_dem + num_dem_unopposed*mean_votes*unopposed_prop + num_rep_unopposed*mean_votes*(1-unopposed_prop), 
@@ -127,14 +127,23 @@ generic_ballot <- contested_party_summaries %>%
   mutate(dem_pct = 100 * total_dem/(435 * mean_votes), 
          rep_pct = 100 * total_rep/(435 * mean_votes)) %>%
   mutate(gen_margin = dem_pct - rep_pct, 
-         gen_dem_tp = dem_pct / (dem_pct + rep_pct)) %>%
+         gen_dem_tp = 100 * dem_pct / (dem_pct + rep_pct)) %>%
   select(c('year', 'gen_margin', 'gen_dem_tp')) %>%
   #adding on generic ballot for previous years
   bind_rows(list(year = 2024, gen_margin = NA_real_, gen_dem_tp = NA_real_)) %>%
   mutate(prev_gen_margin = lag(gen_margin, order_by = year),
-         prev2_gen_margin = lag(prev_gen_margin, order_by = year), 
          prev_dem_gen_tp = lag(gen_dem_tp, order_by = year)) %>% #lagging margin
-  filter(year >= 1996)
+  filter(year >= 1996 & year %% 4 == 2) 
+
+#For even years, we want to utilize presidential generic ballot instead of 
+#House generic ballot, because it's more accurate
+
+generic_ballot <- pres_summary %>%
+  rename(gen_margin = natl_margin, 
+         prev_gen_margin = lagged_natl_margin, 
+         gen_dem_tp = natl_dem_tp, 
+         prev_dem_gen_tp = lagged_natl_dem_tp) %>%
+  bind_rows(house_generic_ballot)
 
 house_current <- read.csv("data/2024House.csv") %>%
   rename(district = District) %>%
@@ -161,16 +170,15 @@ house_finished <- house_finished %>%
   left_join(generic_ballot, by = 'year') %>%
   # #now working with incumbency
   group_by(state_po, district) %>%
-  mutate(past_dem_tp = lag(dem_tp, 1, order_by = year),
-         past_pvi = lag(pvi, 1, order_by = year), 
-         prev_dem_gen_tp = lag(gen_dem_tp, 1, order_by = year)) %>%
+  mutate(past_margin = lag(margin, 1, order_by = year),
+         past_pvi = lag(pvi, 1, order_by = year)) %>%
   filter(year >= 2002 & (year == 2024 | !is.na(margin))) %>% 
   #rep_to_race contains information on which candidates are incumbents,
   #but only for past years -- must combine with current incumbency
   mutate(open_seat = coalesce(open_seat.x, open_seat.y)) %>%
   #Calculating incumbent differential... what all of this was for
   mutate(incumbent_differential = ifelse(open_seat, NA_real_,
-    100*(past_dem_tp - prev_dem_gen_tp) - past_pvi)) %>%
+    (past_margin - prev_gen_margin) - 2*past_pvi)) %>%
   select(c("year", "state_po", "district", "open_seat", "margin", "incumbent_differential"))
   
 # ----Calculating Special Election Results for each year -----
@@ -184,7 +192,7 @@ specials_summary <- specials_no_pvi %>%
   #Key: this math is straight up wrong. We cannot utilize generic ballot results
   #(because they don't exist yet), and this math seems relatively close 
   #to what we'd expect (idk why...) so we use it
-  mutate(differential = 100*(Dem.Percent / (Dem.Percent + Rep.Percent)) - pvi) %>%
+  mutate(differential = Margin - 2*PVI) %>%
   group_by(Year) %>%
   summarize(mean_specials_differential = mean(differential)) %>%
   rename(year = Year)
