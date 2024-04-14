@@ -47,7 +47,7 @@ governor_cleaned <- governor_uncleaned %>%
   #Weird stuff in 2001 and 2020 WV elections
   filter(year >= 2002 &
            !(state == "WV" & year == 2012) &
-           !(state == "WV" & year == 2020)) %>%
-  select(c('year', 'state', 'open_seat', 'margin', 'incumbent_differential'))
+           !(state == "WV" & year == 2020))
+  #select(c('year', 'state', 'open_seat', 'margin', 'incumbent_differential'))
 
 write.csv(governor_cleaned, "cleaned_data/AllGovernor.csv")

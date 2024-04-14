@@ -150,8 +150,9 @@ engineered <- combination %>%
          democrat_in_presidency = year %in% c(2010, 2012, 2014, 2016, 2022, 2024), 
          gas_democrat_interaction = democrat_in_presidency * current_gas, 
          cci_democrat_interaction = democrat_in_presidency * current_cci, 
-         poll_fundamental_average = (genballot_predicted_margin + unweighted_estimate) / 2) %>%
+         poll_fundamental_agree = sign(genballot_predicted_margin * unweighted_estimate)) %>%
   filter(!is.na(pvi))
+
 
 
 write.csv(combination, "cleaned_data/Finalized Dataset.csv")

@@ -118,7 +118,7 @@ uncontested_party_summaries <- house_including_unopposed %>%
   summarize(num_rep_unopposed = sum(rep_unopposed), 
             num_dem_unopposed = sum(dem_unopposed))
 
-generic_ballot <- contested_party_summaries %>%
+house_generic_ballot <- contested_party_summaries %>%
   full_join(uncontested_party_summaries, by = "year") %>%
   mutate(
     total_dem = contested_dem + num_dem_unopposed*mean_votes*unopposed_prop + num_rep_unopposed*mean_votes*(1-unopposed_prop), 
@@ -127,14 +127,23 @@ generic_ballot <- contested_party_summaries %>%
   mutate(dem_pct = 100 * total_dem/(435 * mean_votes), 
          rep_pct = 100 * total_rep/(435 * mean_votes)) %>%
   mutate(gen_margin = dem_pct - rep_pct, 
-         gen_dem_tp = dem_pct / (dem_pct + rep_pct)) %>%
+         gen_dem_tp = 100 * dem_pct / (dem_pct + rep_pct)) %>%
   select(c('year', 'gen_margin', 'gen_dem_tp')) %>%
   #adding on generic ballot for previous years
   bind_rows(list(year = 2024, gen_margin = NA_real_, gen_dem_tp = NA_real_)) %>%
   mutate(prev_gen_margin = lag(gen_margin, order_by = year),
-         prev2_gen_margin = lag(prev_gen_margin, order_by = year), 
          prev_dem_gen_tp = lag(gen_dem_tp, order_by = year)) %>% #lagging margin
-  filter(year >= 1996)
+  filter(year >= 1996 & year %% 4 == 2) 
+
+#For even years, we want to utilize presidential generic ballot instead of 
+#House generic ballot, because it's more accurate
+
+generic_ballot <- pres_summary %>%
+  rename(gen_margin = natl_margin, 
+         prev_gen_margin = lagged_natl_margin, 
+         gen_dem_tp = natl_dem_tp, 
+         prev_dem_gen_tp = lagged_natl_dem_tp) %>%
+  bind_rows(house_generic_ballot)
 
 house_current <- read.csv("data/2024House.csv") %>%
   rename(district = District) %>%
