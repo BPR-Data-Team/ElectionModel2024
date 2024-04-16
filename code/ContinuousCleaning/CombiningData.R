@@ -1,5 +1,6 @@
 library(tidyverse)
 library(missForest)
+library(FNN)
 
 #--- Downloading Datasets ------
 #This is by far the most important file in the entire project. It contains all the 
@@ -122,7 +123,7 @@ combination <- all_elections %>%
   left_join(fec, by = c('state', 'year', 'district', 'office_type')) %>%
   left_join(polls, by = c('state', 'year', 'district' = 'seat_number', 'office_type')) %>%
   left_join(demographics, by = c('state', 'year', 'district')) %>%
-  left_join(inflation, by = 'year') %>% 
+  left_join(inflation, by = 'year') %>%
   mutate(isMidterm = year %% 4 != 0) %>%
   filter(!is.na(state))
 
@@ -143,6 +144,8 @@ engineered <- combination %>%
          total_receipts = receipts_DEM + receipts_REP,
          total_disbursements = disbursements_DEM + disbursements_REP,
          genballot_predicted_margin = pvi * 2 + weighted_genpoll + incumbent_differential, 
+         genballot_predicted_lower = pvi * 2 + weighted_genpoll_lower + incumbent_differential, 
+         genballot_predicted_upper = pvi * 2 + weighted_genpoll_upper + incumbent_differential,
          specials_predicted_margin = pvi * 2 + mean_specials_differential + incumbent_differential,
          num_polls = replace_na(num_polls, 0), 
          receipts_genballot_interaction = genballot_predicted_margin * receipts_ratio, 
@@ -152,6 +155,53 @@ engineered <- combination %>%
          cci_democrat_interaction = democrat_in_presidency * current_cci, 
          poll_fundamental_agree = sign(genballot_predicted_margin * unweighted_estimate)) %>%
   filter(!is.na(pvi))
+
+#DOING MORE DATA ENGINEERING
+#Many races do not have polls, but we can learn about what their polls might be by
+#Looking at nearby races (in demographics)
+demographics <- c("black_pct", "impoverished_pct", "renting_pct", "median_age")
+
+
+
+# Function to calculate similar polling using weighted KNN
+calculate_similar_polling_year <- function(data, k = 5) {
+  # Find k-nearest neighbors and distances
+  #Get.knnx takes a data matrix and a query data matrix
+
+  data_with_polls <- data %>%
+    filter(!is.na(unweighted_estimate)) %>%
+    select(demographics)
+  
+  query_data <- data %>% select(demographics)
+  
+  neighbors_info <- get.knnx(data_with_polls, query_data, 
+                             k = k, algorithm = "cover_tree")
+  
+  sapply(1:nrow(data), function(idx) {
+    indices <- neighbors_info$nn.index[idx, ]
+    distances <- neighbors_info$nn.dist[idx, ]
+    neighbor_polling_differential <- data$unweighted_estimate[indices] - data$genballot_predicted_margin[indices]
+    
+    if (any(!is.na(neighbor_polls))) {
+      return(weighted.mean(neighbor_polling_differential, w = 1 / (distances^2 + 1e-10), na.rm = TRUE))
+    } else {
+      return(NA)
+    }
+  })
+}
+
+get_dataset_with_similar_polls <- function(year_to_check) {
+  similar_polls <- engineered %>% 
+    filter(year == year_to_check) %>%
+    mutate(across(c(black_pct, impoverished_pct, renting_pct, median_age), scale)) %>%  # Assuming these are your demographic columns
+    mutate(similar_poll_differential = calculate_similar_polling(.))
+  
+  return (similar_polls)
+}
+
+all_years <- seq(2002, 2024, 2)
+engineered <- reduce(map(all_years, ~get_dataset_with_similar_polls(.)), bind_rows) %>%
+  mutate(combined_prediction = genballot_predicted_margin + similar_poll_differential)
 
 
 

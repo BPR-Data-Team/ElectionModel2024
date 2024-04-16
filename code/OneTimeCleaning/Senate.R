@@ -50,7 +50,7 @@ senate_with_incumbency <- cleaned_senate %>%
                       (margin_past - gen_margin) - 2*pvi_past)) %>%
   select(c(state, year, district, special_election, open_seat,
            incumbent_differential, margin)) %>%
-  filter(year == 2024 | !is.na(margin)) %>% 
+  filter(year == 2024 | !is.na(margin) | (state == "Georgia" & special_election)) %>% 
   filter(year %% 2 == 0)
 
 

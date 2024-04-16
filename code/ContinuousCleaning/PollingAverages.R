@@ -214,8 +214,11 @@ generic_polling <- full_poll_averages %>%
   ungroup() %>%
   filter(state == "US" & year > 2000) %>%
   rename(weighted_genpoll = weighted_estimate, 
-         unweighted_genpoll = unweighted_estimate) %>%
-  select(c('year', 'weighted_genpoll', 'unweighted_genpoll'))
+         weighted_genpoll_lower = weighted_ci_lower, 
+         weighted_genpoll_upper = weighted_ci_upper,
+         unweighted_genpoll = unweighted_estimate, ) %>%
+  select(c('year', 'weighted_genpoll','weighted_genpoll_lower', 
+           'weighted_genpoll_upper', 'unweighted_genpoll'))
 
 write.csv(full_poll_averages, "cleaned_data/AllPolls.csv")
 write.csv(generic_polling, "cleaned_data/GenPolling.csv")
