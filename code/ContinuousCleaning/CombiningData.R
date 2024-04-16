@@ -67,31 +67,31 @@ inflation <- cpi %>%
   rename(inflation = change)
 
 #Campaign Finance -- dealing with inflation as well
-fec <- read.csv("cleaned_data/fecData20022024.csv") %>%
-  rename(year = CAND_ELECTION_YR, 
-         state = CAND_OFFICE_ST, 
-         office_type = CAND_OFFICE,
-         district = CAND_OFFICE_DISTRICT,
-         party = CAND_PTY_AFFILIATION, 
-         receipts = allReceipts, 
-         disbursements = allDisbursements, 
-         indiv_contributions = allIndivContributions)  %>%
-  #Want to keep district numbers correct -- Senate/Gov have district 0
-  mutate(district = ifelse(district == 0 & office_type == 'H',
-                           1, district),
-         office_type = case_when(
-           office_type == "H" ~ "House",
-           office_type == "S" ~ "Senate"
-         )) %>%
-  pivot_wider(id_cols = c(year, state, office_type, district),
-              names_from = party,
-              values_from = c(receipts, disbursements, indiv_contributions),
-              values_fn = sum) %>%
-  select(!contains("IND")) %>%
-  #We want campaign finance to be comparable across years, so we account for inflation
-  left_join(cpi, by = c('year' = 'year')) %>%
-  mutate(across(matches("DEM|REP"), ~. * 100 / current)) %>%
-  select(-c("X", 'current', 'previous', 'change'))
+fec <- read.csv("cleaned_data/fecData20022024.csv")# %>%
+  # rename(year = CAND_ELECTION_YR, 
+  #        state = CAND_OFFICE_ST, 
+  #        office_type = CAND_OFFICE,
+  #        district = CAND_OFFICE_DISTRICT,
+  #        party = CAND_PTY_AFFILIATION, 
+  #        receipts = allReceipts, 
+  #        disbursements = allDisbursements, 
+  #        indiv_contributions = allIndivContributions)  %>%
+  # #Want to keep district numbers correct -- Senate/Gov have district 0
+  # mutate(district = ifelse(district == 0 & office_type == 'H',
+  #                          1, district),
+  #        office_type = case_when(
+  #          office_type == "H" ~ "House",
+  #          office_type == "S" ~ "Senate"
+  #        )) %>%
+  # pivot_wider(id_cols = c(year, state, office_type, district),
+  #             names_from = party,
+  #             values_from = c(receipts, disbursements, indiv_contributions),
+  #             values_fn = sum) %>%
+  # select(!contains("IND")) %>%
+  # #We want campaign finance to be comparable across years, so we account for inflation
+  # left_join(cpi, by = c('year' = 'year')) %>%
+  # mutate(across(matches("DEM|REP"), ~. * 100 / current)) %>%
+  # select(-c("X", 'current', 'previous', 'change'))
 
 #POLLS... wow this is only two lines lol
 polls <- read.csv("cleaned_data/AllPolls.csv") %>% select(-X) %>%
