@@ -68,12 +68,12 @@ partyDistillation <- allYearsJoined %>%
   mutate(CAND_PTY_AFFILIATION = case_when(CAND_PTY_AFFILIATION %in% c("DEM", "REP") ~ CAND_PTY_AFFILIATION,TRUE ~ "IND")) %>%
   filter(CAND_PTY_AFFILIATION != "IND") %>%
   group_by(YEAR, CAND_OFFICE_ST, CAND_OFFICE, CAND_OFFICE_DISTRICT) %>%
-  mutate("isOPEN" = !(any(CAND_ICI == "I"))) %>% ungroup() %>%
+  mutate("open_status" = (any(CAND_ICI == "O", na.rm = TRUE))) %>% ungroup() %>%
   rename(year = YEAR, 
          state = CAND_OFFICE_ST, 
          office_type = CAND_OFFICE,
          district = CAND_OFFICE_DISTRICT,
-         is_open = isOPEN,
+         is_open = open_status,
          party = CAND_PTY_AFFILIATION, 
          receipts = Total_receipts, 
          from_committee_transfers = `Transfers from authorized committees`,
@@ -82,15 +82,15 @@ partyDistillation <- allYearsJoined %>%
          beginning_cash = `Beginning cash`,
          ending_cash = `Ending cash`,
          candidate_contributions = `Contributions from candidate`,
-         individual_contributions = Total_individual_contributions)  %>%
+         individual_contributions = Total_individual_contributions) %>%
   #Want to keep district numbers correct -- Senate/Gov have district 0
   mutate(district = ifelse(district == 0 & office_type == 'H',
                            1, district),
          office_type = case_when(
            office_type == "H" ~ "House",
-           office_type == "S" ~ "Senate"
+           office_type == "S" ~ "Senate", TRUE ~ "President"
          )) %>%
-  pivot_wider(id_cols = c(year, state, office_type, district),
+  pivot_wider(id_cols = c(year, state, office_type, district, is_open),
               names_from = party,
               values_from = c(receipts, from_committee_transfers, disbursements, 
                               to_committee_transfers, beginning_cash,
@@ -102,7 +102,7 @@ partyDistillation <- allYearsJoined %>%
   select(-c("X", 'current', 'previous', 'change'))
 
 
-calculate_logit_proportion <- function(data, metric) {
+calculate_log_proportion <- function(data, metric) {
   metric_dem <- paste0(metric, "_DEM")
   metric_rep <- paste0(metric, "_REP")
   
@@ -123,15 +123,15 @@ calculate_logit_proportion <- function(data, metric) {
 }
 
 partyDistillation <- partyDistillation %>% mutate(
-  "receipts" = calculate_logit_proportion(partyDistillation, "receipts"),
-  "from_committee_transfers" = calculate_logit_proportion(partyDistillation, "from_committee_transfers"),
-  "disbursements" = calculate_logit_proportion(partyDistillation, "disbursements"),
-  "to_committee_transfers" = calculate_logit_proportion(partyDistillation, "to_committee_transfers"),
-  "beginning_cash" = calculate_logit_proportion(partyDistillation, "beginning_cash"),
-  "ending_cash" = calculate_logit_proportion(partyDistillation, "ending_cash"),
-  "candidate_contributions" = calculate_logit_proportion(partyDistillation, "candidate_contributions"),
-  "individual_contributions" = calculate_logit_proportion(partyDistillation, "individual_contributions")
-)
+  "receipts" = calculate_log_proportion(partyDistillation, "receipts"),
+  "from_committee_transfers" = calculate_log_proportion(partyDistillation, "from_committee_transfers"),
+  "disbursements" = calculate_log_proportion(partyDistillation, "disbursements"),
+  "to_committee_transfers" = calculate_log_proportion(partyDistillation, "to_committee_transfers"),
+  "beginning_cash" = calculate_log_proportion(partyDistillation, "beginning_cash"),
+  "ending_cash" = calculate_log_proportion(partyDistillation, "ending_cash"),
+  "candidate_contributions" = calculate_log_proportion(partyDistillation, "candidate_contributions"),
+  "individual_contributions" = calculate_log_proportion(partyDistillation, "individual_contributions")
+) %>% filter(!is.na(district))
 
 
 
