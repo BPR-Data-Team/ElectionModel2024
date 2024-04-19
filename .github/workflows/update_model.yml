@@ -12,8 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        #with:
-         # token: ${{ secrets.ELECTIONMODELKEY }}
+        with:
+          token: ${{ secrets.ELECTIONMODELKEY }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
