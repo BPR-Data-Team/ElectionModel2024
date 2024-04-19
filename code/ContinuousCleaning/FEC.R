@@ -82,24 +82,24 @@ partyDistillation <- allYearsJoined %>%
          beginning_cash = `Beginning cash`,
          ending_cash = `Ending cash`,
          candidate_contributions = `Contributions from candidate`,
-         individual_contributions = Total_individual_contributions)  %>%
+         individual_contributions = Total_individual_contributions) 
   #Want to keep district numbers correct -- Senate/Gov have district 0
-  mutate(district = ifelse(district == 0 & office_type == 'H',
-                           1, district),
-         office_type = case_when(
-           office_type == "H" ~ "House",
-           office_type == "S" ~ "Senate"
-         )) %>%
-  pivot_wider(id_cols = c(year, state, office_type, district),
-              names_from = party,
-              values_from = c(receipts, from_committee_transfers, disbursements, 
-                              to_committee_transfers, beginning_cash,
-                              ending_cash, candidate_contributions,
-                              individual_contributions),
-              values_fn = sum) %>%
-  left_join(cpi, by = c('year' = 'year')) %>%
-  mutate(across(matches("DEM|REP"), ~. * 100 / current)) %>%
-  select(-c("X", 'current', 'previous', 'change'))
+  # mutate(district = ifelse(district == 0 & office_type == 'H',
+  #                          1, district),
+  #        office_type = case_when(
+  #          office_type == "H" ~ "House",
+  #          office_type == "S" ~ "Senate"
+  #        )) 
+  # pivot_wider(id_cols = c(year, state, office_type, district),
+  #             names_from = party,
+  #             values_from = c(receipts, from_committee_transfers, disbursements, 
+  #                             to_committee_transfers, beginning_cash,
+  #                             ending_cash, candidate_contributions,
+  #                             individual_contributions),
+  #             values_fn = sum) %>%
+  # left_join(cpi, by = c('year' = 'year')) %>%
+  # mutate(across(matches("DEM|REP"), ~. * 100 / current)) %>%
+  # select(-c("X", 'current', 'previous', 'change'))
 
 
 calculate_logit_proportion <- function(data, metric) {

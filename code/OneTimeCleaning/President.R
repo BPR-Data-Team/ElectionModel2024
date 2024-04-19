@@ -154,6 +154,7 @@ PVI_full <- PVI_district %>%
   bind_rows(state_pvi) %>%
   filter(!is.na(pvi))
 
+
 write.csv(PVI_full, "cleaned_data/Completed PVI.csv")
 
 

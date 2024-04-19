@@ -51,20 +51,15 @@ cont_fts = ['open_seat','incumbent_differential', 'absenteeexcusereq', 'special'
 
 
 shap_features = {
-    "Electoral Dynamics": ['open_seat','incumbent_differential', 'weighted_genpoll', 'unweighted_genpoll',
+    "Past Polling Results": ['open_seat', 'incumbent_differential', 'weighted_genpoll', 'unweighted_genpoll',
        'mean_specials_differential', 'genballot_predicted_margin',
        'specials_predicted_margin', 'poll_fundamental_agree', 'genballot_predicted_lower',
        'genballot_predicted_upper'],
         
-    "Voter ID Laws": ['voteridlaws', 'novoterid', 'nonstrictid', 'strictid', 'strictphoto'],
-    
-    "Voter Registration Laws": ['nofelonreg', 'nofelonsregafterincar', 'nonstrictphoto',
-       'nopollplacereg', 'nosamedayreg', 'pr16',
-       'pr17', 'pr175', 'pr60', 'pr90', 'nopr'], 
-    
-    "Mail-in Voting": ['noallmailvote', 'noearlyvote'],
-    
-    "Misceallaneous Voting Laws": ['absenteeexcusereq', 'pollhours', 'avgpollhours', 'minpollhours', 'regdeadlines', 'nostateholiday', 'covi_num'],
+    "Voting Laws": ['voteridlaws', 'novoterid', 'nonstrictid', 'strictid', 'strictphoto', 
+                    'nofelonreg', 'nofelonsregafterincar', 'nonstrictphoto', 'nopollplacereg', 'nosamedayreg', 'pr16',
+                    'pr17', 'pr175', 'pr60', 'pr90', 'nopr', 'noallmailvote', 'noearlyvote',
+                    'absenteeexcusereq', 'pollhours', 'avgpollhours', 'minpollhours', 'regdeadlines', 'nostateholiday', 'covi_num'],
     
     "Polls from this race": ['unconvinced_pct', 'phone_unweighted', 'online_unweighted', 'num_polls',
        'unweighted_estimate', 'unweighted_ci_lower', 'unweighted_ci_upper',
@@ -161,8 +156,9 @@ shap_df = shap_df[['state', 'district', 'office_type'] + list(shap_features.keys
 
 shap_df.to_csv('../cleaned_data/SHAP_Values.csv', index = False)
 predictions_df.to_csv('../cleaned_data/Predictions.csv', index = False)
+
         
-print(shap_df.columns)
+print(shap_df.sum(axis = 0))
     
         
     

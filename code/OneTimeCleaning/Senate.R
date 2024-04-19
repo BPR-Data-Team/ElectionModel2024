@@ -50,8 +50,9 @@ senate_with_incumbency <- cleaned_senate %>%
                       (margin_past - gen_margin) - 2*pvi_past)) %>%
   select(c(state, year, district, special_election, open_seat,
            incumbent_differential, margin)) %>%
-  filter(year == 2024 | !is.na(margin) | (state == "Georgia" & special_election)) %>% 
-  filter(year %% 2 == 0)
+  filter(year == 2024 | (!is.na(margin) & !(state == "GA" & special_election))) %>% 
+  filter(year %% 2 == 0 & !(state == "CA" & special_election & year == 2022)) %>%
+  filter(!(state == "IL" & special_election & year == 2010) & state != "LA") 
 
 
 write.csv(senate_with_incumbency, "cleaned_data/AllSenate.csv")              
