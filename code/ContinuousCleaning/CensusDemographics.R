@@ -1,7 +1,5 @@
 library(tidycensus)
 library(tidyverse)
-
-
 census_api_key(Sys.getenv("CENSUS_API_KEY"))
 
 #2022 data should be used for 2022, but 2019 data sbould be used for 2020

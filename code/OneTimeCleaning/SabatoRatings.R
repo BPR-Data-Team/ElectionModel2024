@@ -279,11 +279,11 @@ pres_2016 <- read_excel("data/HistoricalElections/Sabato_Ratings/2016 Crystal Ba
   filter(!is.na(final_rating))
 
 #---- Rest of data, manually collected
-sen_rest = read_excel("data/HistoricalElections/Sabato_Ratings/2018-2022 Crystal Ball Senate.xlsx") %>%
+sen_rest = read_excel("data/HistoricalElections/Sabato_Ratings/2018-2024 Crystal Ball Senate.xlsx") %>%
   mutate(special = str_detect(State, "\\*"), 
          State = str_remove(State, "\\*"))
-gov_rest = read_excel("data/HistoricalElections/Sabato_Ratings/2018-2022 Crystall Ball Gubernatorial.xlsx")
-house_rest <- read_excel("data/HistoricalElections/Sabato_Ratings/2018-2022 Crystal Ball.xlsx") %>%
+gov_rest = read_excel("data/HistoricalElections/Sabato_Ratings/2018-2024 Crystall Ball Gubernatorial.xlsx")
+house_rest <- read_excel("data/HistoricalElections/Sabato_Ratings/2018-2024 Crystal Ball House.xlsx") %>%
   mutate(District = as.character(District))
 pres_rest <- read_excel("data/HistoricalElections/Sabato_Ratings/2020 Crystal Ball Electoral College.xlsx") %>%
   mutate(race = "President")
