@@ -13,6 +13,11 @@ current_governor <- read.csv("data/2024Governor.csv") %>%
   rename(state = State) %>%
   select(year, state, open_seat)
 
+governor_2022 <- read.csv("data/HistoricalElections/governor 2022.csv") %>%
+  mutate(state = state.abb[match(state, state.name)], 
+         year = 2022) %>%
+  select(year, state, open_seat, margin)
+
 generic_ballot <- read.csv("cleaned_data/Generic Ballot.csv")
 
 #getting PVI data for incumbent differential
@@ -33,6 +38,7 @@ governor_cleaned <- governor_uncleaned %>%
   mutate(open_seat = (grepl("Open Seat", seat_status)),
          margin = 100 * (dem_votes - rep_votes) / total_votes,
          dem_tp = dem_votes / (dem_votes + rep_votes)) %>% 
+  bind_rows(governor_2022) %>%
   #Only looking at governors who ran in an election year
   filter(year %% 2 == 0) %>%
   left_join(state_pvi, by = c('year', 'state')) %>%
@@ -47,7 +53,7 @@ governor_cleaned <- governor_uncleaned %>%
   #Weird stuff in 2001 and 2020 WV elections
   filter(year >= 2002 &
            !(state == "WV" & year == 2012) &
-           !(state == "WV" & year == 2020))
-  #select(c('year', 'state', 'open_seat', 'margin', 'incumbent_differential'))
+           !(state == "WV" & year == 2020)) %>%
+  select(c('year', 'state', 'open_seat', 'margin', 'incumbent_differential'))
 
 write.csv(governor_cleaned, "cleaned_data/AllGovernor.csv")

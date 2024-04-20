@@ -84,11 +84,12 @@ partyDistillation <- allYearsJoined %>%
          candidate_contributions = `Contributions from candidate`,
          individual_contributions = Total_individual_contributions) %>%
   #Want to keep district numbers correct -- Senate/Gov have district 0
-  mutate(district = ifelse(district == 0 & office_type == 'H',
-                           1, district),
+  mutate(district = as.numeric(ifelse(district == "00" & office_type == 'H',
+                           1, district)),
          office_type = case_when(
            office_type == "H" ~ "House",
-           office_type == "S" ~ "Senate", TRUE ~ "President"
+           office_type == "S" ~ "Senate", 
+           TRUE ~ "President"
          )) %>%
   pivot_wider(id_cols = c(year, state, office_type, district, is_open),
               names_from = party,

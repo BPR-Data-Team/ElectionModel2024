@@ -1,0 +1,37 @@
+state,office_type,open_seat,Incumbent_margin,margin
+Alabama,Governor,FALSE,-1.9,-38
+Alaska,Governor,FALSE,7.7,-26.1
+Arizona,Governor,TRUE,,0.7
+Arkansas,Governor,TRUE,,-27.8
+California,Governor,FALSE,-3.8,18.4
+Colorado,Governor,FALSE,4.5,19.3
+Connecticut,Governor,FALSE,-1,12.8
+Florida,Governor,FALSE,-6.4,-19.4
+Georgia,Governor,FALSE,-0.4,-7.5
+Hawaii,Governor,TRUE,,26.4
+Idaho,Governor,FALSE,7.5,-40.2
+Illinois,Governor,FALSE,-2.1,12
+Iowa,Governor,FALSE,-2,-18.6
+Kansas,Governor,FALSE,10.5,2.1
+Maine,Governor,FALSE,3.7,12.9
+Maryland,Governor,TRUE,,32.5
+Massachusetts,Governor,TRUE,,29.1
+Michigan,Governor,FALSE,5.5,10.6
+Minnesota,Governor,FALSE,1.3,7.7
+Nebraska,Governor,TRUE,,-23.4
+Nevada,Governor,FALSE,2.2,-1.5
+New Hampshire,Governor,FALSE,-8.1,-15.5
+New Mexico,Governor,FALSE,-1,6.4
+New York,Governor,FALSE,-6.8,5.8
+Ohio,Governor,FALSE,-6.4,-25.6
+Oklahoma,Governor,FALSE,14.6,-13.6
+Oregon,Governor,TRUE,,3.4
+Pennsylvania,Governor,TRUE,,14.8
+Rhode Island,Governor,FALSE,0.1,19.1
+South Carolina,Governor,FALSE,-0.1,-17.4
+South Dakota,Governor,FALSE,4,-26.8
+Tennessee,Governor,FALSE,-0.9,-32
+Texas,Governor,FALSE,0.2,-10.9
+Vermont,Governor,FALSE,-36.9,-47.2
+Wisconsin,Governor,FALSE,3.2,3.4
+Wyoming,Governor,FALSE,0.9,-61.9

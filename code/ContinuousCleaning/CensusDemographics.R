@@ -83,7 +83,16 @@ current_dems <- tryCatch(
   error = function(e) clean_acs(2022, 2024))
 
 #Combining all the data
-all_dems <- bind_rows(prev_dems, current_dems) %>% unique()
+all_dems <- bind_rows(prev_dems, current_dems) %>% unique() %>%
+  #Incorrect demographic data in ACS
+  filter(
+    !(year == 2024 & state %in% c("AL", "LA", "GA", "NC", "NY")) & 
+    !(year == 2020 & state == "NC") & 
+    !(year == 2018 & state == "PA") & 
+    !(year == 2016 & state %in% c("FL", "NC", "VA")) &
+    !(year == 2006 & state == "GA") & 
+    !(year == 2004 & state == "TX")
+  )
 
 write.csv(all_dems, "cleaned_data/Demographics.csv")
 
