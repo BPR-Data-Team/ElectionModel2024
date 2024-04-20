@@ -76,7 +76,8 @@ inflation <- cpi %>%
   rename(inflation = change)
 
 #Campaign Finance -- dealing with inflation as well
-fec <- read.csv("cleaned_data/fecData20022024.csv")# %>%
+fec <- read.csv("cleaned_data/fecData20022024.csv") %>%
+  select(-is_open)
 
 #POLLS... wow this is only two lines lol
 polls <- read.csv("cleaned_data/AllPolls.csv") %>% select(-X) %>%
@@ -122,8 +123,8 @@ engineered <- combination %>%
          genballot_predicted_upper = pvi * 2 + weighted_genpoll_upper + incumbent_differential,
          specials_predicted_margin = pvi * 2 + mean_specials_differential + incumbent_differential,
          num_polls = replace_na(num_polls, 0), 
-         receipts_genballot_interaction = genballot_predicted_margin * receipts_ratio, 
-         disbursements_genballot_interaction = genballot_predicted_margin * disbursements_ratio, 
+         receipts_genballot_interaction = genballot_predicted_margin * receipts, 
+         disbursements_genballot_interaction = genballot_predicted_margin * disbursements, 
          democrat_in_presidency = year %in% c(2010, 2012, 2014, 2016, 2022, 2024), 
          gas_democrat_interaction = democrat_in_presidency * current_gas, 
          cci_democrat_interaction = democrat_in_presidency * current_cci, 

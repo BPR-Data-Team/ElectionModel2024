@@ -6,7 +6,6 @@ library(metafor)
 
 days_counting <- 50
 population_order <- c('lv', 'rv', 'v', 'a')
-numberOfPolls <- 1
 
 #Get poll ratings, extract relevant columns
 pollRatings <- read.csv("cleaned_data/Pollster Ratings.csv") %>%
