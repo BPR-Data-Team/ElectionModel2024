@@ -5,6 +5,7 @@ library("utils")
 # making empty dataframes. rows will be appended to these in later loops
 finances <- data.frame()
 candidiates <- data.frame()
+cpi <- read.csv("cleaned_data/CPI.csv") 
 
 # programmatically loops through 12 years of fec data on campaign finance
 for (i in 1:12) {
