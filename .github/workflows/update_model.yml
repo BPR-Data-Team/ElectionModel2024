@@ -1,8 +1,8 @@
 name: Update Model
 
 on:
- # schedule:
-  #  - cron: "0 0 * * *" # Run every day at 00:00 UTC
+  schedule:
+    - cron: "0 3 * * *" # Run every day at 03:00 UTC / 23:00 EDT
   workflow_dispatch:
 
 jobs:
