@@ -7,10 +7,5 @@ venv
 .env
 ElectionModel2024.Rproj
 code/MiscCleaning.nb.html
-data/PVI.xlsx
-cleaned_data/District PVI.csv
-cleaned_data/Completed PVI.csv
-cleaned_data/Engineered Dataset.csv
 cleaned_data/Finalized Dataset.csv
-cleaned_data/Specials.csv
 testing/
