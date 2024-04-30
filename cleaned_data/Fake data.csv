@@ -1,4 +1,7 @@
 state,district,office_type,avg_margin,margins,dem_name,rep_name,ind_name,Past Elections,Voting Regulations,Polls,Demographics,Campaign Finance,Consumer Confidence Index,Gas Prices,Unemployment & Inflation,Expert Ratings,Composition of Congress/Presidency,Other,weird
+US,0,House,214,"[214, 213, 215]",Democrats,Republicans,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,
+US,0,Senate,50,"[49, 50, 51]",Democrats,Republicans,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,
+US,0,President,280,"[287, 245, 301]",Biden,Trump,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,
 AL,1,House,0.1317914061,"[1.2036764766743, -4.29195804310806, 3.48365578463412]",Biden,Trump,n/a,-34.08546241,-49.4716304,-15.39565667,-0.3513430071,0.04807283235,0.02300048921,0.1373640681,0.4359671119,-0.214333827,0.2677349469,-0.1825059324,
 AL,2,House,-0.4313621461,"[-4.19312248035769, 3.58111231795163, -0.682076275947448]",Biden,Trump,n/a,-0.4775222259,0.5450804479,22.07638735,-0.1310761889,0.2438357524,-0.4638714038,-0.2716508507,-0.1866350807,0.2097177047,-0.4006699816,-0.2713897231,
 AL,3,House,-4.20110843,"[-4.78862818463961, -3.64944668591524, -4.16525042032822]",Biden,Trump,Unopposed,41.22238465,45.52296039,-21.43447773,0.4389353498,-0.3865522202,0.1763298377,-0.0735238098,0.1812124953,0.381050038,0.2646277485,-0.4981883442,
