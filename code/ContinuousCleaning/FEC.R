@@ -97,7 +97,7 @@ partyDistillation <- allYearsJoined %>%
                               to_committee_transfers, beginning_cash,
                               ending_cash, candidate_contributions,
                               individual_contributions),
-              values_fn = sum) %>%
+              values_fn = max) %>%
   left_join(cpi, by = c('year' = 'year')) %>%
   mutate(across(matches("DEM|REP"), ~. * 100 / current)) %>%
   select(-c("X", 'current', 'previous', 'change'))
