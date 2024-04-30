@@ -77,7 +77,9 @@ inflation <- cpi %>%
 
 #Campaign Finance -- dealing with inflation as well
 fec <- read.csv("cleaned_data/fecData20022024.csv") %>%
-  select(-is_open)
+  select(-is_open) %>% 
+  mutate(state = ifelse(state == "US", list(state.abb), as.list(state))) %>%
+  unnest(cols = c(state))
 
 #POLLS... wow this is only two lines lol
 polls <- read.csv("cleaned_data/AllPolls.csv") %>% select(-X) %>%
@@ -129,7 +131,12 @@ engineered <- combination %>%
          gas_democrat_interaction = democrat_in_presidency * current_gas, 
          cci_democrat_interaction = democrat_in_presidency * current_cci, 
          poll_fundamental_agree = sign(genballot_predicted_margin * unweighted_estimate)) %>%
-  filter(!is.na(pvi))
+  filter(!is.na(pvi)) %>%
+  filter(!(state == "AK" & office_type == "House" & year == 2022) &
+           !(state == "LA" & office_type == "House") & 
+           !(state == "CA" & year == 2012 & district %in% c(8, 15, 30, 31, 35, 40, 43, 44)) & 
+           !(state == "CA" & year == 2014 & district %in% c(4,17,19, 25,34, 35, 40, 44)) & 
+           !(state == "CA" & year == 2016 & district %in% c(17, 29, 32, 34, 37, 44, 46)))
 
 write.csv(engineered, "cleaned_data/Engineered Dataset.csv")
 

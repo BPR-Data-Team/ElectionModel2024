@@ -4,6 +4,7 @@ library(janitor)
 
 house_uncleaned <- read.csv("data/HistoricalElections/HouseHistory.csv") %>%
   mutate(district = ifelse(district == 0, 1, district))
+
 pvi_full <- read.csv("cleaned_data/Completed PVI.csv") %>%
   select(-X)
   
@@ -58,12 +59,19 @@ house_cleaned <- house_uncleaned %>%
     TRUE ~ sum_candidate_votes
   ))
 
-#this dataset is just to determine which races have incumbents
-fec_for_incumbency <- read.csv("cleaned_data/fecData20022024.csv")
-# incumbency <- fec_for_incumbency %>% 
-#   select(year, state, district, is_open) %>%
-#   rename(open_seat = is_open)
+#Current house results -- used for both incumbency and actual results
+house_current <- read.csv("data/AllRaces.csv") %>%
+  rename(district = District) %>%
+  filter(Office_type == "House" & Weird == "") %>%
+  mutate(year = 2024, 
+         open_seat = !as.logical(Incumbent), 
+         State = str_trim(State),
+         state_po = state.abb[match(State, state.name)],
+         district = ifelse(district == "at-large", 1, district),
+         district = as.numeric(district)) %>%
+  select(year, state_po, district, open_seat)
 
+#dealing with incumbency
 incumbency <- house_cleaned %>%
   select(-"sum_candidate_votes") %>%
   group_by(year, state_po, district, party) %>%
@@ -80,8 +88,8 @@ incumbency <- house_cleaned %>%
       state_po != "LA", 
     FALSE, TRUE
   )) %>%
-  rename(state = state_po) %>%
-  select(year, state, district, open_seat)
+  select(year, state_po, district, open_seat) %>%
+  bind_rows(house_current)
 
 house_finished <- house_cleaned %>%
   group_by(year, state_po, district, party) %>%
@@ -92,8 +100,8 @@ house_finished <- house_cleaned %>%
                                  "district" = "district")) %>%
   #calculating margins and whether candidates were unopposed
   mutate(dem_pct = 100 * DEMOCRAT/totalvotes,
-         dem_tp = dem_pct / (dem_pct + rep_pct),
          rep_pct = 100 * REPUBLICAN/totalvotes,
+         dem_tp = dem_pct / (dem_pct + rep_pct),
          margin = dem_pct - rep_pct,
          rep_unopposed = is.na(DEMOCRAT),
          dem_unopposed = is.na(REPUBLICAN))
@@ -149,16 +157,6 @@ generic_ballot <- pres_summary %>%
          prev_dem_gen_tp = lagged_natl_dem_tp) %>%
   bind_rows(house_generic_ballot)
 
-house_current <- read.csv("data/2024House.csv") %>%
-  rename(district = District) %>%
-  mutate(year = 2024, 
-         open_seat = !as.logical(Incumbent), 
-         State = str_trim(State),
-         state_po = state.abb[match(State, state.name)],
-         district = ifelse(district == "at-large", 1, district),
-         district = as.numeric(district)) %>%
-  select(year, state_po, district)
-
 #combining all house data to get incumbent differential
 house_finished <- house_finished %>%
   select(c("year", "state_po", "district", "margin", "dem_tp", "rep_unopposed", "dem_unopposed")) %>%
@@ -166,11 +164,11 @@ house_finished <- house_finished %>%
   #we only care about "relatively" competitive, opposed races
   filter(!(dem_unopposed | rep_unopposed) & margin < 95 & margin > -95) %>% #when margins are this high, races are universally ACTUALLY unopposed
   select(-c("dem_unopposed", "rep_unopposed")) %>%
-  bind_rows(house_current) %>%
-  full_join(pvi_full, by = c('year' = 'year', 'state_po' = 'state', 
-                             'district' = 'district')) %>%
-  left_join(incumbency, by = c("year" = "year", "state_po" = "state",
+  left_join(incumbency, by = c("year" = "year", "state_po",
                                "district" = "district")) %>%
+  bind_rows(house_current) %>%
+  left_join(pvi_full, by = c('year' = 'year', 'state_po' = 'state', 
+                             'district' = 'district')) %>%
   left_join(generic_ballot, by = 'year') %>%
   # #now working with incumbency
   group_by(state_po, district) %>%

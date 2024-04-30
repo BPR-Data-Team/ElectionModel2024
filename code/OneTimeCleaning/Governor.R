@@ -5,7 +5,8 @@ load("data/HistoricalElections/dataverse_shareable_gubernatorial_county_returns_
 governor_uncleaned <- gov_elections_release
 rm(gov_elections_release) #Clearing memory
 
-current_governor <- read.csv("data/2024Governor.csv") %>%
+current_governor <- read.csv("data/AllRaces.csv") %>%
+  filter(Office_type == "Governor") %>%
   mutate(State = str_remove(State, " Special"),
          open_seat = !Incumbent, 
          year = 2024, 

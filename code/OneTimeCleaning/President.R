@@ -48,7 +48,10 @@ state_pvi <- pres_votes %>%
   mutate(district = 0, .before = pvi)
 
 #Getting incumbency values for this current election
-current_pres <- read.csv("data/2024President.csv") %>%
+current_pres <- read.csv("data/AllRaces.csv") %>%
+  filter(Office_type == "President") %>%
+  mutate(year = 2024) %>%
+  rename(state = State) %>%
   select(year, state)
 
 #finishing presidential analysis
@@ -63,10 +66,7 @@ pres_finished <- pres_votes %>%
   left_join(pres_summary, by = 'year') %>%
   group_by(state) %>%
   #Getting past results for incumbency data
-  mutate(lagged_margin = lag(margin, 1, order_by = year), 
-         lagged_pvi = lag(pvi, 1, order_by = year)) %>%
-  mutate(incumbent_differential = ifelse(open_seat, NA_real_, 
-          (lagged_margin - lagged_natl_margin) - 2 * lagged_pvi)) %>%
+  mutate(incumbent_differential = 0) %>%
   select(c('year', 'state', 'district', 'open_seat', 'incumbent_differential', 'margin')) %>%
   filter(year >= 2004)
   
@@ -100,7 +100,7 @@ PVI_list[[15]]$District <- PVI_list[[15]]$Number
 #2003 (elections for 1996, 2000, post-redistricting) -> 2002, 2004
 #1999 (elections for 1992, 1996) -> 1998, 2000
 
-PVI_district <- Reduce(function(x, y) full_join(x, y, by=c("State","District")), PVI_list) %>%
+PVI_district_before_2024 <- Reduce(function(x, y) full_join(x, y, by=c("State","District")), PVI_list) %>%
   #Replacing D+12 with 12, R+12 with -12, and EVEN with 0
   mutate(across(contains("Cook"), ~case_when(
     grepl("D", .) ~ gsub("D\\+", "", .),
@@ -118,7 +118,7 @@ PVI_district <- Reduce(function(x, y) full_join(x, y, by=c("State","District")),
   filter(Year %in% c(1999, 2003, 2007, 2009, 2012, 2015, 2019, 2023)) %>%
   rowwise() %>%
   mutate(True_Year = list(case_when(
-    Year == 2023 ~ c(2022, 2024),
+    Year == 2023 ~ c(2022),
     Year == 2019 ~ c(2018, 2020), 
     Year == 2015 ~ c(2014, 2016), 
     Year == 2012 ~ 2012, 
@@ -134,19 +134,30 @@ PVI_district <- Reduce(function(x, y) full_join(x, y, by=c("State","District")),
     (True_Year == 2020 & State == "North Carolina") |
       (True_Year == 2016 & State %in% c("North Carolina", "Florida", "Virginia"))
   )) %>%
+  mutate(State = state.abb[match(State, state.name)]) %>%
   select(-c("Year"))
+
+
+PVI_district_2024 <- read.csv("data/PostRedistrictPVI.csv") %>%
+  filter(year == 2024 & district != 0) %>%
+  select(state, district, year, real_pvi) %>%
+  mutate(district = as.character(district)) %>%
+  rename(Raw_PVI = real_pvi, 
+         State = state, 
+         District = district, 
+         True_Year = year)
+
+PVI_district <- bind_rows(PVI_district_before_2024, PVI_district_2024)
 
 states_list <- read.csv("cleaned_data/StatesList.csv")
 
 
 PVI_full <- PVI_district %>%
-  full_join(states_list, by = c("State" = "State")) %>%
-  select("Abbreviation", "District", "True_Year", "Raw_PVI") %>%
   rename(
     year = True_Year, 
     pvi = Raw_PVI, 
     district = District, 
-    state = Abbreviation
+    state = State
   ) %>%
   #At-Large Districts count as district #1
   mutate(district = ifelse(district == "AL", 1, district), 
