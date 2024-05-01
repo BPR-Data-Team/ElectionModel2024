@@ -8,7 +8,8 @@ library(janitor)
 #Those down. Didn't take that long, but now need to do extra analysis
 
 senate_uncleaned <- read.csv("data/HistoricalElections/SenateHistory.csv") %>%
-  clean_names() 
+  clean_names() %>%
+  mutate(uncontested = ifelse(state == "Vermont", FALSE, uncontested))
 
 pvi <- read.csv("cleaned_data/Completed PVI.csv")
 generic_ballot <- read.csv("cleaned_data/Generic Ballot.csv")
@@ -53,7 +54,7 @@ senate_with_incumbency <- cleaned_senate %>%
            incumbent_differential, margin)) %>%
   filter(year == 2024 | (!is.na(margin) & !(state == "GA" & special_election))) %>% 
   filter(year %% 2 == 0 & !(state == "CA" & special_election & year == 2022)) %>%
-  filter(!(state == "IL" & special_election & year == 2010) & state != "LA") 
+  filter(!(state == "IL" & special_election & year == 2010) & state != "LA")
 
 
 write.csv(senate_with_incumbency, "cleaned_data/AllSenate.csv")              

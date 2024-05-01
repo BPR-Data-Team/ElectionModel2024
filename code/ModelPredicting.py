@@ -234,7 +234,7 @@ std_best_params = fmin(fn=std_objective,
                 space=param_dict,
                 algo=tpe.suggest,
                 trials=Trials(),
-                early_stop_fn = no_progress_loss(1))
+                early_stop_fn = no_progress_loss(3))
 
 #once we get the best params for each, we train each sequentially and then return the fitted versions.
 
@@ -264,28 +264,20 @@ for col in shap_features:
 #Now working on getting the multivariate normal distribution with the std and the correlation matrix
 cov_matrix = np.diag(final_std_predictions) @ correlations @ np.diag(final_std_predictions)
 cov_matrix = (cov_matrix + cov_matrix.T) / 2 # Ensure symmetry despite small numerical errors
-eigenvalues = np.linalg.eigvalsh(cov_matrix)
-if np.any(eigenvalues <= 0):
-    print("Covariance matrix is not positive definite")
-    print("Minimum eigenvalue:", eigenvalues.min())
-else:
-    print("Covariance matrix is positive definite")
-    
-symmetry_error = np.linalg.norm(cov_matrix - cov_matrix.T)
-print("Symmetry error (Frobenius norm):", symmetry_error)
 
 
 multinormal = multivariate_normal(mean_predictions, cov_matrix, allow_singular=True)
 random_samples = multinormal.rvs(size = 50).T
+predictions_df['aleatoric_std'] = aleatoric_std_predictions
 predictions_df['margins'] = random_samples.tolist()
 
 #Now need to add additional rows for house, senate, and president
 senate_samples = random_samples[predictions_df['office_type'] == 'Senate']
-senate_summary = np.sum(np.sign(senate_samples), axis = 0) - 10 #of the races we're not predicting, the margin is -9
+senate_summary = np.sum(np.sign(senate_samples), axis = 0) - 10 #of the races we're not predicting, the margin is -10
 print(senate_summary)
 
 house_samples = random_samples[predictions_df['office_type'] == 'House']
-house_summary = np.sum(np.sign(house_samples), axis = 0) + 3
+house_summary = np.sum(np.sign(house_samples), axis = 0) + 4
 print(house_summary)
 
 electoral_votes = pd.read_csv('../cleaned_data/Electoral Votes Sheet.csv')

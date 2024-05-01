@@ -9,7 +9,7 @@ population_order <- c('lv', 'rv', 'v', 'a')
 
 #Get poll ratings, extract relevant columns
 pollRatings <- read.csv("cleaned_data/Pollster Ratings.csv") %>%
-  select(c(year, pollster_rating_id, valid, lower_error_diff, mean_bias)) %>%
+  select(c(year, pollster_rating_id, valid, lower_error_diff)) %>%
   mutate(valid = as.logical(valid))
 
 raw_polls <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/pollster-ratings/raw_polls.csv")# pivot_longer(cols = c(cand1_party, cand2_party),
@@ -104,7 +104,7 @@ cleaned_historical <- raw_polls %>%
   left_join(pollRatings, by = c("cycle" = 'year', 'pollster_rating_id')) %>%
   rename(sample_size = samplesize) %>%
   select(poll_id, pollster_rating_id, methodology, state, seat_number, sample_size, 
-         cycle, office_type, DEM, REP, valid, lower_error_diff, mean_bias)
+         cycle, office_type, DEM, REP, valid, lower_error_diff)
 
 #Get current polls from online, 538 stream
 uncleaned_current <- bind_rows(
@@ -174,14 +174,13 @@ cleaned_current <- cleaned_current %>%
 
 all_polls <- cleaned_current %>%
   bind_rows(cleaned_historical) %>%
-  mutate(IND = ifelse(is.na(IND), 0, IND), 
-         mean_bias = ifelse(is.na(mean_bias), 0, mean_bias))
+  mutate(IND = ifelse(is.na(IND), 0, IND))
 
 #Splitting up cleaning polls to get 2 types of averages for each race
 #valid_weighted, which looks at the softmax-weighted average for valid pollsters only
 #all_unweighted, which doesn't care about weights/validity
 poll_averages <- all_polls %>%
-  mutate(margin_ba = (DEM - REP) - mean_bias, 
+  mutate(margin = (DEM - REP), 
          phone = str_detect(methodology, "Phone|IVR"), 
          online = str_detect(methodology, "Online|Mail|Email|Text")) %>%
   group_by(state, seat_number, cycle, office_type) %>%
@@ -191,7 +190,7 @@ poll_averages <- all_polls %>%
          weight = valid_softmax(lower_error_diff, valid),
          #Num-democrats is required for meta-analyses -- #people who said they'd vote DEM
          #REALLY important to put DEM tp here, because many polls have significant unconvinced
-         num_democrat = round(sample_size * (DEM - 0.5*mean_bias) / (DEM + REP)))
+         num_democrat = round(sample_size * (DEM) / (DEM + REP)))
 
 #Conducting meta-analyses on the polling averages
 meta_analyses <- poll_averages %>%
@@ -201,8 +200,8 @@ meta_analyses <- poll_averages %>%
 
 full_poll_averages <- poll_averages %>% 
  summarize(unconvinced_pct = mean(100 - (DEM + REP - IND), na.rm = TRUE),
-            phone_unweighted = mean(ifelse(phone, margin_ba, NA_real_), na.rm = TRUE), 
-            online_unweighted = mean(ifelse(online, margin_ba, NA_real_), na.rm = TRUE),
+            phone_unweighted = mean(ifelse(phone, margin, NA_real_), na.rm = TRUE), 
+            online_unweighted = mean(ifelse(online, margin, NA_real_), na.rm = TRUE),
             num_polls = n()) %>%
   mutate(across(everything(), ~ifelse(is.nan(.), NA, .))) %>%
   left_join(meta_analyses, by = c("state", 'seat_number', 'cycle', 'office_type')) %>%
