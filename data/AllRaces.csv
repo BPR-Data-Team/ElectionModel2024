@@ -3,13 +3,13 @@ Alabama,01,House,Barry Moore,Tom Holmes,n/a,TRUE,,Safe R,
 Alabama,02,House,"Dick Brewbaker /
 Caroleene Dobson","Anthony Daniels /
 Shomari Figures",n/a,FALSE,,Likely D,
-Alabama,03,House,Mike Rogers,n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
-Alabama,04,House,Robert Aderholt,n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
-Alabama,05,House,Dale Strong,n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
+Alabama,03,House,Mike Rogers,n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
+Alabama,04,House,Robert Aderholt,n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
+Alabama,05,House,Dale Strong,n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Alabama,06,House,Gary Palmer,Elizabeth Anderson,n/a,TRUE,,Safe R,
 Alabama,07,House,Christian Horn,Terri Sewell,n/a,TRUE,,Safe D,
 Alaska,at-large,House,"Nick Begich III /
-Nancy Dahlstrom",Mary Peltola,n/a,TRUE,,Lean D,Ranked choice voting
+Nancy Dahlstrom",Mary Peltola,n/a,TRUE,,Lean D,We are not predicting this race since Alaska uses a ranked choice voting system.
 Arizona,01,House,"David Schweikert /
 Paul Burton","Andrei Cherny /
 Marlene Galán-Woods /
@@ -68,19 +68,19 @@ California,09,House,Kevin Lincoln,Josh Harder,n/a,TRUE,,Likely D,
 California,10,House,Katherine Piccinini,Mark DeSaulnier,n/a,TRUE,,Safe D,
 California,11,House,Bruce Lou,Nancy Pelosi,n/a,TRUE,,Safe D,
 California ,12,House,n/a,"Lateefah Simon /
-Jennifer Tran",n/a,FALSE,,Safe D,No Republican candidate
+Jennifer Tran",n/a,FALSE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 California,13,House,John Duarte,Adam Gray,n/a,TRUE,,Tossup,
 California,14,House,Vin Kruttiventi,Eric Swalwell,n/a,TRUE,,Safe D,
 California,15,House,Anna Cheng Kramer,Kevin Mullin,n/a,TRUE,,Safe D,
 California,16,House,n/a,"
 Sam Liccardo /
 Evan Low /
-Joe Simitian",n/a,FALSE,,Safe D,No Republican candidate
+Joe Simitian",n/a,FALSE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 California,17,House,Anita Chen,Ro Khanna,n/a,TRUE,,Safe D,
 California,18,House,Peter Hernandez,Zoe Lofgren,n/a,TRUE,,Safe D,
 California,19,House,Jason Anderson,Jimmy Panetta,n/a,TRUE,,Safe D,
 California,20,House,"Mike Boudreaux /
-Vince Fong",n/a,n/a,FALSE,,Safe R,No Democratic candidate
+Vince Fong",n/a,n/a,FALSE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 California,21,House,Michael Maher,Jim Costa,n/a,TRUE,,Safe D,
 California,22,House,David Valadao,Rudy Salas,n/a,TRUE,,Tossup,
 California,23,House,Jay Obernolte,Derek Marshall,n/a,TRUE,,Safe R,
@@ -95,10 +95,10 @@ California,31,House,Daniel Martinez,Gil Cisneros,n/a,FALSE,,Safe D,
 California,32,House,Larry Thompson,Brad Sherman,n/a,TRUE,,Safe D,
 California ,33,House,Tom Herman,Pete Aguilar,n/a,TRUE,,Safe D,
 California,34,House,n/a,"Jimmy Gomez /
-David Kim",n/a,TRUE,,Safe D,No Republican candidate
+David Kim",n/a,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 California,35,House,Mike Cargile,Norma Torres,n/a,TRUE,,Safe D,
 California,36,House,Melissa Toomim,Ted Lieu,n/a,TRUE,,Safe D,
-California,37,House,n/a,Sydney Kamlager-Dove,Juan Rey,TRUE,,Safe D,No Republican candidate
+California,37,House,n/a,Sydney Kamlager-Dove,Juan Rey,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 California,38,House,Eric Ching,Linda Sánchez,n/a,TRUE,,Safe D,
 California ,39,House,David Serpa,Mark Takano,n/a,TRUE,,Safe D,
 California,40,House,Young Kim,Joe Kerr,n/a,TRUE,,Likely R,
@@ -232,7 +232,7 @@ Matthew Montavon",n/a,TRUE,,Safe R,
 Florida,18,House,Scott Franklin,"Peter Braunston /
 Andrea Doria Kale",John Richardson,TRUE,,Safe R,
 Florida,19,House,Byron Donalds,Kari Lerner,n/a,TRUE,,Safe R,
-Florida,20,House,n/a,Sheila Cherfilus-McCormick,Unopposed,TRUE,,Safe D,No Republican candidate
+Florida,20,House,n/a,Sheila Cherfilus-McCormick,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 Florida,21,House,"Brian Mast /
 Ljubo Skrbic",Thomas Witkop,n/a,TRUE,,Safe R,
 Florida,22,House,"Deborah Adeimy /
@@ -296,7 +296,7 @@ Clarence Blalock /
 Deric Houston /
 Joseph Leigh",n/a,TRUE,,Safe R,
 Hawaii,01,House,Patrick Largey,Ed Case,n/a,TRUE,,Safe D,
-Hawaii,02,House,n/a,Jill Tokuda,Unopposed,TRUE,,Safe D,No Republican candidate
+Hawaii,02,House,n/a,Jill Tokuda,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 Idaho,01,House,Russ Fulcher,Kaylee Peterson,n/a,TRUE,,Safe R,
 Idaho,02,House,"Mike Simpson /
 Scott Cleveland /
@@ -306,7 +306,7 @@ Illinois,01,House,"Montelle Gaji /
 Marcus Lewis",Jonathan Jackson,n/a,TRUE,,Safe D,
 Illinois,02,House,Ashley Ramos,Robin Kelly,n/a,TRUE,,Safe D,
 Illinois,03,House,John Booras,Delia Ramirez,n/a,TRUE,,Safe D,
-Illinois,04,House,n/a,Chuy García,Unopposed,TRUE,,Safe D,No Republican candidate
+Illinois,04,House,n/a,Chuy García,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 Illinois,05,House,Tom Hanson,"Mike Quigley /
 Jerico Matias Cruz",n/a,TRUE,,Safe D,
 Illinois,06,House,Niki Conforti,"Sean Casten /
@@ -318,7 +318,7 @@ Kina Collins /
 Melissa Conyears-Ervin /
 Kouri Marshall",n/a,TRUE,,Safe D,
 Illinois,08,House,Mark Rice,Raja Krishnamoorthi,Jorge Briseno,TRUE,,Safe D,
-Illinois,09,House,n/a,Jan Schakowsky,Unopposed,TRUE,,Safe D,No Republican candidate
+Illinois,09,House,n/a,Jan Schakowsky,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 Illinois,10,House,Jim Carris,Brad Schneider,"Austin Mink /
 Joseph Severino",TRUE,,Safe D,
 Illinois,11,House,"Jerry Evans /
@@ -332,8 +332,8 @@ Illinois,13,House,"Thomas Clatterbuck /
 Joshua Loyd",Nikki Budzinski,n/a,TRUE,,Safe D,
 Illinois,14,House,"Charlie Kim /
 James Marter",Lauren Underwood,n/a,TRUE,,Safe D,
-Illinois,15,House,Mary Miller,n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
-Illinois,16,House,Darin LaHood,n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
+Illinois,15,House,Mary Miller,n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
+Illinois,16,House,Darin LaHood,n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Illinois,17,House,"Scott Crowl /
 Joseh G. McGraw",Eric Sorensen,n/a,TRUE,,Lean D,
 Indiana,01,House,"Mark Leyva /
@@ -408,24 +408,24 @@ Jared Randall /
 Geoff M. Young",n/a,TRUE,,Safe D,
 Kentucky,04,House,"Thomas Massie /
 Eric Deters /
-Michael McGinnis",n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
+Michael McGinnis",n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Kentucky,05,House,"Hal Rogers /
 Dana Edwards /
 David Kraftchak /
-Brandon Monhollen",n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
+Brandon Monhollen",n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Kentucky,06,House,Andy Barr,"Randy Cravens /
 Todd Kelly /
 Don B. Pratt /
 Jonathan Richardson /
 Shauna Rudd",n/a,TRUE,,Safe R,
-Louisiana,01,House,Steve Scalise,Mel Manuel,n/a,TRUE,,Safe R,Jungle Primary
-Louisiana,02,House,n/a,Troy Carter,Unopposed,TRUE,,Safe D,Jungle Primary
+Louisiana,01,House,Steve Scalise,Mel Manuel,n/a,TRUE,,Safe R,"We are not predicting this race since Louisiana uses a ""jungle primary"" system, where the top two candidates advance to the general election regardless of party affiliation."
+Louisiana,02,House,n/a,Troy Carter,Unopposed,TRUE,,Safe D,"We are not predicting this race since Louisiana uses a ""jungle primary"" system, where the top two candidates advance to the general election regardless of party affiliation."
 Louisiana,03,House,"Clay Higgins /
-Xan John",n/a,Unopposed,TRUE,,Safe R,Jungle Primary
-Louisiana,04,House,Mike Johnson,n/a,Unopposed,TRUE,,Safe R,Jungle Primary
+Xan John",n/a,Unopposed,TRUE,,Safe R,"We are not predicting this race since Louisiana uses a ""jungle primary"" system, where the top two candidates advance to the general election regardless of party affiliation."
+Louisiana,04,House,Mike Johnson,n/a,Unopposed,TRUE,,Safe R,"We are not predicting this race since Louisiana uses a ""jungle primary"" system, where the top two candidates advance to the general election regardless of party affiliation."
 Louisiana,05,House,"Julia Letlow /
-Dany Kitishian",n/a,Rivule Sykes,TRUE,,Safe R,Jungle Primary
-Louisiana,06,House,Garret Graves,Cleo Fields,n/a,TRUE,,Safe D,Jungle Primary
+Dany Kitishian",n/a,Rivule Sykes,TRUE,,Safe R,"We are not predicting this race since Louisiana uses a ""jungle primary"" system, where the top two candidates advance to the general election regardless of party affiliation."
+Louisiana,06,House,Garret Graves,Cleo Fields,n/a,TRUE,,Safe D,"We are not predicting this race since Louisiana uses a ""jungle primary"" system, where the top two candidates advance to the general election regardless of party affiliation."
 Maine,01,House,"Andrew Piantidosi /
 Ronald Russell",Chellie Pingree,Elias Bassile,TRUE,,Safe D,
 Maine,02,House,"Michael Soboleski /
@@ -493,12 +493,12 @@ Nadia Milleron",TRUE,,Safe D,
 Massachusetts,02,House,Jeffrey Sossa-Paquette,Jim McGovern,n/a,TRUE,,Safe D,
 Massachusetts,03,House,Syed Hasan,"Lori Trahan /
 Miranda Tozier-Robbins",n/a,TRUE,,Safe D,
-Massachusetts,04,House,n/a,Jake Auchincloss,Unopposed,TRUE,,Safe D,No Republican candidate
-Massachusetts,05,House,n/a,Katherine Clark,Unopposed,TRUE,,Safe D,No Republican candidate
-Massachusetts,06,House,n/a,Seth Moulton,Unopposed,TRUE,,Safe D,No Republican candidate
-Massachusetts,07,House,n/a,Ayanna Pressley,Unopposed,TRUE,,Safe D,No Republican candidate
-Massachusetts,08,House,n/a,Stephen Lynch,Unopposed,TRUE,,Safe D,No Republican candidate
-Massachusetts,09,House,n/a,Bill Keating,Unopposed,TRUE,,Safe D,No Republican candidate
+Massachusetts,04,House,n/a,Jake Auchincloss,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
+Massachusetts,05,House,n/a,Katherine Clark,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
+Massachusetts,06,House,n/a,Seth Moulton,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
+Massachusetts,07,House,n/a,Ayanna Pressley,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
+Massachusetts,08,House,n/a,Stephen Lynch,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
+Massachusetts,09,House,n/a,Bill Keating,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 MIchigan,01,House,"Jack Bergman /
 Joshua Saul","Callie Barr /
 Bob Lorinser",n/a,TRUE,,Safe R,
@@ -557,7 +557,7 @@ Annette Watson",John Peters,n/a,TRUE,,Safe R,
 Minnesota,08,House,Pete Stauber,Jennifer Schultz,n/a,TRUE,,Safe R,
 Mississippi,01,House,Trent Kelly,Dianne Black,n/a,TRUE,,Safe R,
 Mississippi,02,House,Ronald Eller,Bennie Thompson,n/a,TRUE,,Safe D,
-Mississippi,03,House,Michael Guest,n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
+Mississippi,03,House,Michael Guest,n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Mississippi,04,House,Mike Ezell,Craig Raybon,n/a,TRUE,,Safe R,
 Missouri,01,House,"Andrew Jones Jr. /
 Timothy Gartin /
@@ -625,7 +625,7 @@ Flemming Larsen /
 Ronald Quince /
 Mark Robertson",Dina Titus,n/a,TRUE,,Likely D,
 Nevada,02,House,"Mark Amodei /
-Aaron Kifle",n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
+Aaron Kifle",n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Nevada,03,House,"Elizabeth Helgelien /
 Drew Johnson /
 Steve London /
@@ -713,17 +713,17 @@ New York,07,House,William Kregler,Nydia Velazquez,n/a,TRUE,,Safe D,
 New York,08,House,Darrion Stewart,Hakeem Jeffries,n/a,TRUE,,Safe D,
 New York,09,House,Joel Anabilah-Azumah,Yvette D. Clarke,n/a,TRUE,,Safe D,
 New York,10,House,n/a,"Daniel Goldman /
-Bruno Grandsard",Unopposed,TRUE,,Safe D,No Republican candidate
+Bruno Grandsard",Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 New York,11,House,"Nicole Malliotakis /
 Nicholas Robbins",Sarah Blas,n/a,TRUE,,Safe R,
-New York,12,House,n/a,Jerrold Nadler,Unopposed,TRUE,,Safe D,No Republican candidate
+New York,12,House,n/a,Jerrold Nadler,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 New York,13,House,n/a,"Adriano Espaillat /
-Lindsey Williams",Unopposed,TRUE,,Safe D,No Republican candidate
+Lindsey Williams",Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 New York,14,House,"Stefania Brunetiis /
 Patrick Delices /
 Tina Forte /
 Jonathan Rinaldi",Alexandria Ocasio-Cortez,n/a,TRUE,,Safe D,
-New York,15,House,n/a,Ritchie Torres,Jose Vega,TRUE,,Safe D,No Republican candidate
+New York,15,House,n/a,Ritchie Torres,Jose Vega,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 New York,16,House,"Madeline Brame /
 Chris Wright","Jamaal Bowman /
 Marty Dolan /
@@ -757,10 +757,10 @@ New York,26,House,Anthony Marecki,"Timothy M. Kennedy /
 Nate McMurray",n/a,FALSE,,Safe D,
 North Carolina,01,House,Laurie Buckhout,Donald Davis,n/a,TRUE,,Tossup,
 North Carolina,02,House,Alan Swain,Deborah Ross,n/a,TRUE,,Safe D,
-North Carolina,03,House,Gregory Murphy,n/a,Gheorghe Cormos,TRUE,,Safe R,No Democratic candidate
+North Carolina,03,House,Gregory Murphy,n/a,Gheorghe Cormos,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 North Carolina,04,House,Eric Blankenburg,Valerie Foushee,Guy Meilleur,TRUE,,Safe D,
 North Carolina,05,House,Virginia Foxx,Chuck Hubbard,n/a,TRUE,,Safe R,
-North Carolina,06,House,Addison McDowell,n/a,Unopposed,FALSE,,Safe R,No Democratic candidate
+North Carolina,06,House,Addison McDowell,n/a,Unopposed,FALSE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 North Carolina,07,House,David Rouzer,Marlando Pridgen,n/a,TRUE,,Safe R,
 North Carolina,08,House,Mark Harris,Justin Dues,n/a,FALSE,,Safe R,
 North Carolina,09,House,Richard Hudson,Nigel Bristow,n/a,TRUE,,Safe R,
@@ -794,7 +794,7 @@ Oklahoma,02,House,Josh Brecheen,Brandon Wade,n/a,TRUE,,Safe R,
 Oklahoma,03,House,"Frank Lucas /
 Robin Carder /
 Darren Hamilton /
-Connor Miller",n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
+Connor Miller",n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Oklahoma,04,House,Tom Cole,Kody Macaulay,n/a,TRUE,,Safe R,
 Oklahoma,05,House,Stephanie Bice,Madison Horn,n/a,TRUE,,Safe R,
 Oregon,01,House,Bob Todd,"Suzanne Bonamici /
@@ -825,7 +825,7 @@ Mark Houck /
 Quincy Richardson",Ashley Ehasz,n/a,TRUE,,Likely R,
 Pennsylvania,02,House,Aaron Bashir,Brendan Boyle,n/a,TRUE,,Safe D,
 Pennsylvania,03,House,n/a,"Dwight Evans /
-Tracey Gordon",Unopposed,TRUE,,Safe D,No Republican candidate
+Tracey Gordon",Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 Pennsylvania,04,House,David Winkler,"Madeleine Dean /
 Erik Bonnett",Chuck Keller,TRUE,,Safe D,
 Pennsylvania,05,House,Dasha Pruett,Mary Gay Scanlon,n/a,TRUE,,Safe D,
@@ -916,7 +916,7 @@ Kasandra Smith /
 Corey Strong /
 M. LaTroy Williams","Dennis Clark /
 Wendell Wells",TRUE,,Safe D,
-Texas,01,House,Nathaniel Moran,n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
+Texas,01,House,Nathaniel Moran,n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Texas,02,House,Daniel Crenshaw,Peter Filler,n/a,TRUE,,Safe R,
 Texas,03,House,Keith Self,Sandeep Srivastava,n/a,TRUE,,Safe R,
 Texas,04,House,Pat Fallon,Simon Cardell,n/a,TRUE,,Safe R,
@@ -924,9 +924,9 @@ Texas,05,House,Lance Gooden,Ruth Torres,n/a,TRUE,,Safe R,
 Texas,06,House,Jake Ellzey,John Love III,n/a,TRUE,,Safe R,
 Texas,07,House,Kenneth Omoruyi,Lizzie Pannill Fletcher,n/a,TRUE,,Safe D,
 Texas,08,House,Morgan Luttrell,Laura Jones,n/a,TRUE,,Safe R,
-Texas,09,House,n/a,Al Green,Unopposed,TRUE,,Safe D,No Republican candidate
+Texas,09,House,n/a,Al Green,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 Texas,10,House,Michael McCaul,Theresa Boisseau,n/a,TRUE,,Safe R,
-Texas,11,House,August Pfluger,n/a,Wacey Cody,TRUE,,Safe R,No Democratic candidate
+Texas,11,House,August Pfluger,n/a,Wacey Cody,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Texas,12,House,"Craig Goldman /
 John O'Shea",Trey Hunt,n/a,FALSE,,Safe R,
 Texas,13,House,Ronny L. Jackson,n/a,Mike Kolls,TRUE,,Safe R,
@@ -935,22 +935,22 @@ Texas,15,House,Vangela Churchill,Michelle Vallejo,n/a,TRUE,,Likely R,
 Texas,16,House,Irene Armendariz-Jackson,Veronica Escobar,n/a,TRUE,,Safe D,
 Texas,17,House,Pete Sessions,Mark Lorenzen,n/a,TRUE,,Safe R,
 Texas,18,House,Lana Centonze,Sheila Jackson Lee,n/a,TRUE,,Safe D,
-Texas,19,House,Jodey Arrington,n/a,Bernard Johnson,TRUE,,Safe R,No Democratic candidate
+Texas,19,House,Jodey Arrington,n/a,Bernard Johnson,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Texas,20,House,n/a,Joaquin Castro,"Pat Dixon /
-William Hayward",TRUE,,Safe D,No Republican candidate
+William Hayward",TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 Texas,21,House,Chip Roy,Kristin Hook,n/a,TRUE,,Safe R,
 Texas,22,House,Troy Nehls,Marquette Greene-Scott,n/a,TRUE,,Safe R,
 Texas,23,House,"Tony Gonzales /
 Brandon Herrera",Santos Limon,n/a,TRUE,,Safe R,
 Texas,24,House,Beth Van Duyne,Sam Eppler,n/a,TRUE,,Safe R,
-Texas,25,House,Roger Williams,n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
+Texas,25,House,Roger Williams,n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Texas,26,House,Brandon Gill,Ernest Lineberger III,Phil Gray,FALSE,,Safe R,
 Texas,27,House,Michael Cloud,Tanya Lloyd,Eric Loyd,TRUE,,Safe R,
 Texas,28,House,"Jay Furman /
 Lazaro Garza Jr.",Henry Cuellar,n/a,TRUE,,Likely D,
 Texas,29,House,"Christian Garcia /
 Alan Garza",Sylvia Garcia,n/a,TRUE,,Safe D,
-Texas,30,House,n/a,Jasmine Crockett,Ken Ashby,TRUE,,Safe D,No Republican candidate
+Texas,30,House,n/a,Jasmine Crockett,Ken Ashby,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 Texas,31,House,John Carter,"Brian Walbridge /
 Stuart Whitlow",Caleb Ferrell,TRUE,,Safe R,
 Texas,32,House,"David Blewett /
@@ -987,7 +987,7 @@ Leslie Mehta",n/a,TRUE,,Safe R,
 Virginia,02,House,Jen Kiggans,"Jake Denton /
 Missy Cotter Smasal",n/a,TRUE,,Lean R,
 Virginia,03,House,Jim Wright,Robert Scott,Shanise Williams,TRUE,,Safe D,
-Virginia,04,House,n/a,Jennifer McClellan,Unopposed,TRUE,,Safe D,No Republican candidate
+Virginia,04,House,n/a,Jennifer McClellan,Unopposed,TRUE,,Safe D,We are not predicting this rance since there is no Republican candidate.
 Virginia,05,House,"Bob Good /
 John McGuire",Paul Riley,n/a,TRUE,,Safe R,
 Virginia,06,House,Benjamin Lee Cline,Rod Grandon,n/a,TRUE,,Safe R,
@@ -1038,7 +1038,7 @@ Washington,03,House,"Leslie French /
 Joe Kent /
 Leslie Lewallen",Marie Gluesenkamp Pérez,n/a,TRUE,,Tossup,
 Washington,04,House,"Dan Newhouse /
-Jerrod Sessler",n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
+Jerrod Sessler",n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Washington,05,House,"Cathy McMorris Rodgers /
 Anthony Jensen","Bernadine Bank /
 Carmela Conroy /
@@ -1083,7 +1083,7 @@ Wisconsin,07,House,"Tom Tiffany /
 Cheryl Ann Runkel","Elsa Duranceau /
 Kyle Kilbourn",n/a,TRUE,,Safe R,
 Wisconsin,08,House,Andre Jacque,Kristin Lyerly,n/a,FALSE,,Safe R,
-Wyoming,at-large,House,Harriet Hageman,n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
+Wyoming,at-large,House,Harriet Hageman,n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Arizona,,Senate,"Leonard Fulcher /
 Kari Lake /
 Mark Lamb /
@@ -1137,7 +1137,7 @@ Aleem Young","Andy Horning /
 Sean Dada /
 Richard Kent",FALSE,,Safe R,
 Maine,,Senate,Demi Kouzounas,"Natasha Alcala /
-David Costello",Angus King,TRUE,,Likely I,Independent Incumbent
+David Costello",Angus King,TRUE,,Likely I,We are not predicting this rance since there is an independent incumbent.
 Maryland,,Senate,"Moe Barakat /
 Chris Chaffee /
 Robin Ficker /
@@ -1201,7 +1201,7 @@ Jeremy Mygland /
 Tim Sheehy /
 Charles A. Walking Child",Jon Tester,n/a,TRUE,,Tossup,
 Nebraska,,Senate,"Deb Fischer /
-Arron Kowalski",n/a,Dan Osborn,TRUE,,Safe R,No Democratic candidate
+Arron Kowalski",n/a,Dan Osborn,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Nebraska Special,,Senate,"Pete Ricketts /
 John Glen Weaver",Preston Love Jr.,n/a,FALSE,,Safe R,
 Nevada,,Senate,"Sam Brown /
@@ -1283,7 +1283,7 @@ Brad R. Wilson","Archie Williams III /
 Laird Hamblin /
 Caroline Gleich","Carlton Bowen /
 Robert Newcomb",FALSE,,Safe R,
-Vermont,,Senate,Gerald Malloy,n/a,Unopposed,FALSE,,Safe I,Independent Incumbent
+Vermont,,Senate,Gerald Malloy,n/a,Unopposed,FALSE,,Safe I,We are not predicting this rance since there is an independent incumbent.
 Virginia,,Senate,"Hung Cao /
 Jonathan Walker Emord /
 Craig Ennis /
@@ -1321,7 +1321,7 @@ Patrick Schaefer-Wicke",Tammy Baldwin,"Scott Aubart /
 Phillip Anderson /
 Joshua Harrington",TRUE,,Lean D,
 Wyoming,,Senate,"John Barrasso /
-Reid Rasner",n/a,Unopposed,TRUE,,Safe R,No Democratic candidate
+Reid Rasner",n/a,Unopposed,TRUE,,Safe R,We are not predicting this race since there is no Democratic candidate in this election.
 Delaware,,Governor,Jerry Price,"Bethany Hall-Long /
 Matt Meyer / 
 Collin O'Mara",n/a,FALSE,,Safe D,
@@ -1407,6 +1407,7 @@ KS,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
 KY,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
 LA,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
 ME,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
+ME,1,President,Donald Trump,Joe Biden,n/a,TRUE,,,
 MD,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
 MA,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
 MI,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
@@ -1415,6 +1416,9 @@ MS,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
 MO,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
 MT,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
 NE,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
+NE,1,President,Donald Trump,Joe Biden,n/a,TRUE,,,
+NE,2,President,Donald Trump,Joe Biden,n/a,TRUE,,,
+NE,3,President,Donald Trump,Joe Biden,n/a,TRUE,,,
 NV,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
 NH,,President,Donald Trump,Joe Biden,n/a,TRUE,,,
 NJ,,President,Donald Trump,Joe Biden,n/a,TRUE,,,

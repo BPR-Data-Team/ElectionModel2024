@@ -79,7 +79,12 @@ inflation <- cpi %>%
 fec <- read.csv("cleaned_data/fecData20022024.csv") %>%
   select(-is_open) %>% 
   mutate(state = ifelse(state == "US", list(state.abb), as.list(state))) %>%
-  unnest(cols = c(state))
+  unnest(cols = c(state)) %>%
+  mutate(district = ifelse(state == "ME" & office_type == "President" & year == 2024, 
+                           list(c(0, 1)), as.list(district)), 
+         district = ifelse(state == "NE" & office_type == "President" & year == 2024, 
+                           list(c(0, 1, 2, 3)), district))%>%
+  unnest(cols = c(district))
 
 fec_summary <- fec %>% group_by(year, office_type) %>% summarise(
   across(matches("DEM|REP"), ~sum(., na.rm = TRUE))
@@ -90,7 +95,6 @@ fec_summary <- fec %>% group_by(year, office_type) %>% summarise(
     contribution_ratio = log(individual_contributions_DEM / individual_contributions_REP)
   )
 
-g1 <- lm(year ~ receipt_ratio + disbursement_ratio + contribution_ratio, data = fec_summary)
 
 
 #POLLS... wow this is only two lines lol
@@ -143,6 +147,7 @@ engineered <- combination %>%
          gas_democrat_interaction = democrat_in_presidency * current_gas, 
          cci_democrat_interaction = democrat_in_presidency * current_cci, 
          poll_fundamental_agree = sign(genballot_predicted_margin * unweighted_estimate), 
+         finance_fundamental_agree = sign(genballot_predicted_margin * receipts),
          expert_rating_democrat = case_when(
            grepl(" D", final_rating) ~ 1, 
            grepl("Toss", final_rating) ~ 0, 
@@ -155,7 +160,80 @@ engineered <- combination %>%
            !(state == "CA" & year == 2014 & district %in% c(4,17,19, 25,34, 35, 40, 44)) & 
            !(state == "CA" & year == 2016 & district %in% c(17, 29, 32, 34, 37, 44, 46)))
 
-write.csv(engineered, "cleaned_data/Engineered Dataset.csv")
+
+#Polling should have an increased impact as the election gets closer
+days_until_election <- as.numeric(as.Date("2024-11-04") - today())
+
+#Prior to the election, polls should be weighted as the following:
+poll_weight <- (200 - days_until_election) / 200
+
+#The following should be added to lower bound and upper bound
+bounds_increase <- 5 * days_until_election / 200
+
+#Creating a genballot based off of individual race polls -- if races are considerably 
+#more right/left-wing, we'd expect the generic ballot to be as well!
+genballot_polling_individual <- engineered %>%
+  filter(!is.na(weighted_estimate)) %>%
+  group_by(year) %>%
+  summarize(genballot_individual = case_when(
+  cur_group() == 2024 ~ poll_weight * mean(weighted_estimate - (pvi * 2 + incumbent_differential)), 
+  TRUE ~ mean(weighted_estimate - (pvi * 2 + incumbent_differential))))
+
+#Creating a genballot feature based off of campaign finance -- trying three different weights
+genballot_campaign_finance <- engineered %>%
+  filter(!is.na(receipts_DEM) & !is.na(receipts_REP)) %>%
+  group_by(year) %>%
+  summarize(total_receipts_DEM = sum(receipts_DEM), 
+            total_receipts_REP = sum(receipts_REP)) %>%
+  mutate(genballot_campaign5 = 5*log(total_receipts_DEM/total_receipts_REP), 
+         genballot_campaign10 = 10*log(total_receipts_DEM/total_receipts_REP), 
+         genballot_campaign15 = 15*log(total_receipts_DEM/total_receipts_REP)) %>%
+  select(year, genballot_campaign5, genballot_campaign10, genballot_campaign15)
+
+final <- engineered %>%
+  left_join(genballot_polling_individual, by = c('year')) %>%
+  left_join(genballot_campaign_finance, by = c('year')) %>%
+  mutate(
+    average_genballot = (genballot_individual + weighted_genpoll + genballot_campaign10) / 3,
+    genballot_individual_predicted_margin = pvi * 2 + genballot_individual + incumbent_differential, 
+    genballot_campaign5_predicted_margin = pvi * 2 + genballot_campaign5 + incumbent_differential, 
+    genballot_campaign10_predicted_margin = pvi * 2 + genballot_campaign10 + incumbent_differential, 
+    genballot_campaign15_predicted_margin = pvi * 2 + genballot_campaign15 + incumbent_differential, 
+    average_genballot_predicted_margin = pvi * 2 + average_genballot + incumbent_differential
+  ) 
+
+#We don't just want generic ballot polls to have a reduced effect -- we want 
+#All polls to have a reduced effect! This deals with individual polls
+decreasing_poll_efficacy <- final %>%
+  filter(year == 2024) %>%
+  mutate(across(c(phone_unweighted, online_unweighted, 
+                  unweighted_estimate, weighted_estimate), 
+                ~ (pvi * 2 + incumbent_differential) + poll_weight * (. - (pvi * 2 + incumbent_differential))), 
+         across(c(unweighted_ci_lower, weighted_ci_lower), ~ . - bounds_increase), 
+         across(c(unweighted_ci_upper, weighted_ci_upper), ~ . + bounds_increase))
+
+#Final dataset
+final <- final %>%
+  filter(year != 2024) %>%
+  bind_rows(decreasing_poll_efficacy)
+
+
+name_dataset <- read.csv("data/AllRaces.csv") %>%
+  select(State, District, R_name, D_name) %>% 
+  rename(state = State, 
+         district = District, 
+         rep_name = R_name, 
+         dem_name = D_name) %>% 
+  mutate(district = ifelse(district == "at-large", 1, district), 
+         state = state.abb[match(state, state.name)]) %>%
+  mutate(rep_name = ifelse(grepl("/|n/a", rep_name) | rep_name == "", "Unknown", rep_name), 
+         dem_name = ifelse(grepl("/|n/a", dem_name) | dem_name == "", "Unknown", dem_name), 
+         state = ifelse(is.na(state), "US", state), 
+         district = as.numeric(district), 
+         district = ifelse(is.na(district), 0, district))
+
+write.csv(final, "cleaned_data/Engineered Dataset.csv")
+write.csv(name_dataset, "cleaned_data/Names Dataset.csv")
 
 
 
