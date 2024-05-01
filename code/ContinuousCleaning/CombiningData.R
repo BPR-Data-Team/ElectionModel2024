@@ -142,7 +142,12 @@ engineered <- combination %>%
          democrat_in_presidency = year %in% c(2010, 2012, 2014, 2016, 2022, 2024), 
          gas_democrat_interaction = democrat_in_presidency * current_gas, 
          cci_democrat_interaction = democrat_in_presidency * current_cci, 
-         poll_fundamental_agree = sign(genballot_predicted_margin * unweighted_estimate)) %>%
+         poll_fundamental_agree = sign(genballot_predicted_margin * unweighted_estimate), 
+         expert_rating_democrat = case_when(
+           grepl(" D", final_rating) ~ 1, 
+           grepl("Toss", final_rating) ~ 0, 
+           grepl(" R", final_rating) ~ -1
+         )) %>%
   filter(!is.na(pvi)) %>%
   filter(!(state == "AK" & office_type == "House" & year == 2022) &
            !(state == "LA" & office_type == "House") & 
