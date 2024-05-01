@@ -81,6 +81,18 @@ fec <- read.csv("cleaned_data/fecData20022024.csv") %>%
   mutate(state = ifelse(state == "US", list(state.abb), as.list(state))) %>%
   unnest(cols = c(state))
 
+fec_summary <- fec %>% group_by(year, office_type) %>% summarise(
+  across(matches("DEM|REP"), ~sum(., na.rm = TRUE))
+) %>%
+  mutate(
+    receipt_ratio = log(receipts_DEM / receipts_REP),
+    disbursement_ratio = log(disbursements_DEM / disbursements_REP),
+    contribution_ratio = log(individual_contributions_DEM / individual_contributions_REP)
+  )
+
+g1 <- lm(year ~ receipt_ratio + disbursement_ratio + contribution_ratio, data = fec_summary)
+
+
 #POLLS... wow this is only two lines lol
 polls <- read.csv("cleaned_data/AllPolls.csv") %>% select(-X) %>%
   mutate(office_type = str_remove(office_type, "U\\.S\\. "))
