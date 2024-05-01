@@ -66,7 +66,10 @@ cont_fts = [
     "weighted_ci_lower", "weighted_ci_upper", "white_pct", "black_pct", "asian_pct", "hispanic_pct",
     "median_income", "impoverished_pct", "median_age", "renting_pct", "inflation", "isMidterm",
     "genballot_predicted_margin", "genballot_predicted_lower", "genballot_predicted_upper",
-    "poll_fundamental_agree",  'receipts_DEM', 'receipts_REP', 'disbursements_DEM', 'disbursements_REP'
+    "poll_fundamental_agree",  'receipts_DEM', 'receipts_REP', 'disbursements_DEM', 'disbursements_REP', 
+    'average_genballot', 'genballot_individual_predicted_margin', 'genballot_campaign5_predicted_margin', 
+    'genballot_campaign10_predicted_margin', 'genballot_campaign15_predicted_margin', 
+    'average_genballot_predicted_margin', 'expert_rating_democrat', 'finance_fundamental_agree'
 ]
 
 #We don't care about individual features, we care about all features related to a specific category
@@ -75,7 +78,8 @@ shap_features = {
         "weighted_genpoll_lower",
         "weighted_genpoll_upper", 'mean_specials_differential', 'genballot_predicted_margin',
        'specials_predicted_margin', 'poll_fundamental_agree', 'genballot_predicted_lower',
-       'genballot_predicted_upper', 'prev_gen_margin', 'prev_dem_gen_tp'],
+       'genballot_predicted_upper', 'prev_gen_margin', 'prev_dem_gen_tp', 
+       'average_genballot', 'average_genballot_predicted_margin', 'genballot_individual_predicted_margin'],
         
     "Voting Regulations": ['voteridlaws', 'novoterid', 'nonstrictid', 'strictid', 'strictphoto', 
                     'nofelonreg', 'nofelonsregafterincar', 'nonstrictphoto', 'nopollplacereg', 'nosamedayreg', 'pr16',
@@ -91,7 +95,9 @@ shap_features = {
     
     "Campaign Finance": ["receipts", "from_committee_transfers", "disbursements",
     "to_committee_transfers", "beginning_cash", "ending_cash", "candidate_contributions",
-    "individual_contributions", 'receipts_DEM', 'receipts_REP', 'disbursements_DEM', 'disbursements_REP'], 
+    "individual_contributions", 'receipts_DEM', 'receipts_REP', 'disbursements_DEM', 'disbursements_REP', 
+    'finance_fundamental_agree', 'genballot_campaign5_predicted_margin', 
+        'genballot_campaign10_predicted_margin', 'genballot_campaign15_predicted_margin'], 
         
     "Consumer Confidence Index": ['previous_cci', 'current_cci', 'change_cci'],
     
@@ -99,7 +105,7 @@ shap_features = {
     
     "Unemployment & Inflation":  ['previous_unemployment','current_unemployment', 'change_unemployment', "inflation"],
     
-    "Expert Ratings": ['final_rating'],
+    "Expert Ratings": ['final_rating', 'expert_rating_democrat'],
         
     "Composition of Congress/Presidency": ['democrat_in_presidency', 
               'house_chamber_margin', 'senate_chamber_margin'],
@@ -131,6 +137,7 @@ mean_training_predictions = np.zeros(X_train.shape[0])
 predictions_array = np.zeros((X_predict.shape[0], num_models))
 mean_predictions = np.zeros(X_predict.shape[0])
 shap_contribution_array = np.zeros((X_predict.shape[0], len(feature_names) + 1))
+print(shap_contribution_array.shape)
 
 print(f"We are predicting {X_predict[X_predict['office_type'] == 'House'].shape[0]} house races")
 #Going through each model we trained to get a set of point estimates
@@ -143,9 +150,11 @@ for idx in range(num_models):
     
     training_predictions = trained_pipe.predict(X_train)
     predictions = trained_pipe.predict(X_predict)
-    print(f"In iteration {idx}, the house ratio is {np.sum(np.sign(predictions[X_predict['office_type'] == 'House'])) + 3}")
+    print(f"In iteration {idx}, the house ratio is {np.sum(np.sign(predictions[X_predict['office_type'] == 'House'])) + 4}")
     
     contributions = trained_pipe.predict(X_predict, pred_contrib = True)
+    
+    
     shap_contribution_array += contributions
     training_predictions_array[:, idx] = training_predictions
     predictions_array[:, idx] = predictions
@@ -234,7 +243,7 @@ std_best_params = fmin(fn=std_objective,
                 space=param_dict,
                 algo=tpe.suggest,
                 trials=Trials(),
-                early_stop_fn = no_progress_loss(3))
+                early_stop_fn = no_progress_loss(1))
 
 #once we get the best params for each, we train each sequentially and then return the fitted versions.
 
@@ -248,7 +257,7 @@ std_best_pipe.fit(X_train, std_y_train)
 aleatoric_std_predictions = std_best_pipe.predict(X_predict)
 
 #At this point, we now have the standard deviations for each prediction. We can now calculate the final predictions
-final_std_predictions = np.sqrt(aleatoric_std_predictions ** 2 + epistemic_std_predictions ** 2)
+final_std_predictions = 4 * aleatoric_std_predictions
         
 
 #Getting final race-level dataframe
@@ -256,40 +265,62 @@ predictions_df = pd.DataFrame()
 predictions_df['state'] = X_predict['state']
 predictions_df['district'] = X_predict['district']
 predictions_df['office_type'] = X_predict['office_type']
-predictions_df['mean_margin'] = mean_predictions
 for col in shap_features:
     predictions_df[col] = shap_df[col]
     
     
 #Now working on getting the multivariate normal distribution with the std and the correlation matrix
 cov_matrix = np.diag(final_std_predictions) @ correlations @ np.diag(final_std_predictions)
-cov_matrix = (cov_matrix + cov_matrix.T) / 2 # Ensure symmetry despite small numerical errors
 
 
 multinormal = multivariate_normal(mean_predictions, cov_matrix, allow_singular=True)
-random_samples = multinormal.rvs(size = 50).T
-predictions_df['aleatoric_std'] = aleatoric_std_predictions
+random_samples = multinormal.rvs(size = 150).T
 predictions_df['margins'] = random_samples.tolist()
+predictions_df['median_margin'] = np.median(random_samples, axis = 1)
 
 #Now need to add additional rows for house, senate, and president
 senate_samples = random_samples[predictions_df['office_type'] == 'Senate']
-senate_summary = np.sum(np.sign(senate_samples), axis = 0) - 10 #of the races we're not predicting, the margin is -10
-print(senate_summary)
+US_senate = np.sum(senate_samples >= 0, axis = 0) + 30 #of the races we're not predicting, the margin is -10
 
 house_samples = random_samples[predictions_df['office_type'] == 'House']
-house_summary = np.sum(np.sign(house_samples), axis = 0) + 4
-print(house_summary)
+US_house = np.sum(house_samples >= 0, axis = 0) + 27
 
 electoral_votes = pd.read_csv('../cleaned_data/Electoral Votes Sheet.csv')
+president_samples = random_samples[predictions_df['office_type'] == 'President']
+
 presidential_df = predictions_df[predictions_df['office_type'] == 'President']
-print(presidential_df['state'])
-presidential_df.join(electoral_votes.set_index('state'), on = 'state')
+presidential_df = presidential_df.join(electoral_votes.set_index(['state', 'district']), on = ['state', 'district'])
 
-#presidential_summary = np.sum(np.array(np.sign(presidential_df['margins'])) * presidential_df['electoral_votes'], axis = 0)
-#print(presidential_summary)
+# Assuming president_samples is correctly filtered for presidential predictions
+# Reshape the electoral votes to be broadcastable across the simulations
+electoral_votes_broadcastable = presidential_df['electoral_votes'].values[:, np.newaxis]
 
+# Now, president_samples should be shaped (52, number of simulations)
+# Broadcast multiplication across simulations
+democratic_electoral_votes = (president_samples >= 0) * electoral_votes_broadcastable
+
+# Sum across states for each simulation
+US_president = np.sum(democratic_electoral_votes, axis=0)
+
+
+#Will add this after putting in names to the original predictions_df
+US_rows = pd.DataFrame(
+    data = {
+        'state': ['US', 'US', 'US'], 
+        'district': [0, 0, 0],
+        'dem_name': ['Democrats', 'Democrats', 'Democrats'],
+        'rep_name': ['Republicans', 'Republicans', 'Republicans'],
+        'office_type': ['Senate', 'House', 'President'],
+        'median_margin': [np.median(US_senate), np.median(US_house), np.median(US_president)],
+        'margins': [US_senate.tolist(), US_house.tolist(), US_president.tolist()]
+    }
+)
+
+name_df = pd.read_csv('../cleaned_data/Names Dataset.csv').drop(columns = ['Unnamed: 0'])
+print(name_df.columns)
+predictions_df = predictions_df.join(name_df.set_index(['state', 'district']), on = ['state', 'district'])
+
+predictions_df = pd.concat([predictions_df, US_rows], axis = 'rows')
 
 #shap_df.to_csv('../cleaned_data/SHAP_Values.csv', index = False)
 predictions_df.to_csv('../cleaned_data/Predictions.csv', index = False)
-        
-    

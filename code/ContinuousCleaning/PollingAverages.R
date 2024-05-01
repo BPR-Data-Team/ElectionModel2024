@@ -207,16 +207,44 @@ full_poll_averages <- poll_averages %>%
   left_join(meta_analyses, by = c("state", 'seat_number', 'cycle', 'office_type')) %>%
   rename(year = cycle)
 
+#Polling should have an increased impact as the election gets closer
+days_until_election <- as.numeric(as.Date("2024-11-04") - today())
 
+#Prior to the election, polls should be weighted as the following:
+poll_weight <- (200 - days_until_election) / 200
+
+#The following should be added to lower bound and upper bound
+bounds_increase <- 5 * days_until_election / 200
+
+#Generic ballot based on only actual genballot polls
 generic_polling <- full_poll_averages %>%
   ungroup() %>%
   filter(state == "US" & year > 2000) %>%
   rename(weighted_genpoll = weighted_estimate, 
          weighted_genpoll_lower = weighted_ci_lower, 
          weighted_genpoll_upper = weighted_ci_upper,
-         unweighted_genpoll = unweighted_estimate, ) %>%
+         unweighted_genpoll = unweighted_estimate) %>%
   select(c('year', 'weighted_genpoll','weighted_genpoll_lower', 
            'weighted_genpoll_upper', 'unweighted_genpoll'))
+
+
+generic_polling_2024 <- generic_polling %>%
+  filter(year == 2024) %>% 
+  mutate(
+    true_weighted_genpoll = weighted_genpoll * poll_weight, 
+    true_weighted_genpoll_lower = weighted_genpoll_lower - bounds_increase + 
+      (weighted_genpoll - true_weighted_genpoll), 
+    true_weighted_genpoll_upper = weighted_genpoll_upper + bounds_increase + 
+      (weighted_genpoll - true_weighted_genpoll), 
+    true_unweighted_genpoll = unweighted_genpoll * poll_weight) %>% 
+  select(c('year', 'true_weighted_genpoll','true_weighted_genpoll_lower', 
+           'true_weighted_genpoll_upper', 'true_unweighted_genpoll')) %>%
+  rename_with(~ str_remove(., "true_"))
+
+generic_polling <- generic_polling %>%
+  filter(year != 2024) %>% 
+  bind_rows(generic_polling_2024)
+  
 
 write.csv(full_poll_averages, "cleaned_data/AllPolls.csv")
 write.csv(generic_polling, "cleaned_data/GenPolling.csv")

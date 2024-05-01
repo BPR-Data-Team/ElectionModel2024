@@ -51,15 +51,16 @@ state_pvi <- pres_votes %>%
 current_pres <- read.csv("data/AllRaces.csv") %>%
   filter(Office_type == "President") %>%
   mutate(year = 2024) %>%
-  rename(state = State) %>%
-  select(year, state)
+  rename(state = State, 
+         district = District) %>%
+  select(year, state, district)
 
 #finishing presidential analysis
 pres_finished <- pres_votes %>%
   bind_rows(current_pres) %>%
   mutate(margin = 100 * (dem_votes - rep_votes) / total_votes, 
          dem_tp = 100 * dem_votes/ (dem_votes + rep_votes),
-         district = 0) %>%
+         district = ifelse(is.na(district) | district == "", 0, as.numeric(district))) %>%
   select(c('year', 'state', 'district', 'margin', 'dem_tp')) %>%
   mutate(open_seat = year %in% c(2008, 2016)) %>%
   left_join(state_pvi, by = c('year', 'state', 'district')) %>%
