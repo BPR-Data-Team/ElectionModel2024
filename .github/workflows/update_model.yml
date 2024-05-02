@@ -50,6 +50,7 @@ jobs:
           git add .
           git diff-index --quiet HEAD || git commit -m "Update model"
           git-crypt lock
+          git diff-index --quiet HEAD || git commit -m "Update model"
           git push https://${{ secrets.GITHUB_ACTOR }}:${{ secrets.ELECTIONMODELKEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
 
   run-r-script:
@@ -105,4 +106,5 @@ jobs:
           git add .
           git diff-index --quiet HEAD || git commit -m "Update model"
           git-crypt lock
+          git diff-index --quiet HEAD || git commit -m "Update model"
           git push https://${{ secrets.GITHUB_ACTOR }}:${{ secrets.ELECTIONMODELKEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
