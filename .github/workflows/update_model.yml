@@ -30,7 +30,10 @@ jobs:
       - name: Build and install git-crypt
         run: |
           cd git-crypt
-          make && sudo make install PREFIX=/usr/local
+          sed -i 's/EVP_cleanup()/EVP_cleanup/g' crypto-openssl-10.cpp
+          sed -i 's/AES_set_encrypt_key_v3/AES_set_encrypt_key/g' crypto-openssl-10.cpp
+          sed -i 's/AES_encrypt_v3/AES_encrypt/g' crypto-openssl-10.cpp
+          make
       
       - name: Confirm git-crypt installation
         run: git-crypt --version
