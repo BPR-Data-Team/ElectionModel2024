@@ -27,7 +27,7 @@ jobs:
         run: |
           echo ${{ secrets.GIT_CRYPT_KEY }} | /usr/bin/base64 -d > ./git-crypt-key
           source $GITHUB_ENV
-          /opt/git-crypt/bin/git-crypt unlock ./git-crypt-key
+          git-crypt unlock ./git-crypt-key
           rm ./git-crypt-key
         
       - name: Set up Python
