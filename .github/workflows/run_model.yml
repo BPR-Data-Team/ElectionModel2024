@@ -45,10 +45,10 @@ jobs:
 
       - name: Commit and push if there are changes
         run: |
-          git-crypt lock
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@users.noreply.github.com"
           git pull
           git add .
           git diff-index --quiet HEAD || git commit -m "Update model"
+          git-crypt lock
           git push https://${{ secrets.GITHUB_ACTOR }}:${{ secrets.ELECTIONMODELKEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
