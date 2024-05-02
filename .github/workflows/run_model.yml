@@ -1,0 +1,49 @@
+name: Run Model
+
+on:
+  workflow_run:
+    workflows: ["Update Model"]
+    branches: [main]
+    types: 
+      - completed
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ELECTIONMODELKEY }}
+
+      - name: Unlock secrets
+        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}    
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run the script
+        run: |
+          python code/ModelPredicting.py --all
+
+      - name: Commit and push if there are changes
+        run: |
+          git-crypt lock
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@users.noreply.github.com"
+          git pull
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Update model"
+          git push https://${{ secrets.GITHUB_ACTOR }}:${{ secrets.ELECTIONMODELKEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
