@@ -15,33 +15,12 @@ jobs:
         with:
           token: ${{ secrets.ELECTIONMODELKEY }}
 
-      - name: Install build essentials and OpenSSL
-        run: sudo apt-get update && sudo apt-get install -y build-essential libssl-dev
-        
-      - name: Clone git-crypt repository
-        run: git clone https://github.com/AGWA/git-crypt.git
-        
-      - name: Update OpenSSL functions
+      - name: Install & unlock git-crypt
         run: |
-          sed -i 's/AES_set_encrypt_key/AES_set_encrypt_key_v3/g' git-crypt/crypto-openssl-10.cpp
-          sed -i 's/AES_encrypt/AES_encrypt_v3/g' git-crypt/crypto-openssl-10.cpp
-          sed -i 's/HMAC_cleanup/EVP_cleanup/g' git-crypt/crypto-openssl-10.cpp
-        
-      - name: Build and install git-crypt
-        run: |
-          cd git-crypt
-          sed -i 's/EVP_cleanup()/EVP_cleanup/g' crypto-openssl-10.cpp
-          sed -i 's/AES_set_encrypt_key_v3/AES_set_encrypt_key/g' crypto-openssl-10.cpp
-          sed -i 's/AES_encrypt_v3/AES_encrypt/g' crypto-openssl-10.cpp
-          make
-      
-      - name: Confirm git-crypt installation
-        run: git-crypt --version
-      
-      - name: Unlock git-crypt
-        run: |
-          echo "${{ secrets.GIT_CRYPT_KEY }}" | base64 -d > ./git-crypt-key
-          git-crypt unlock ./git-crypt-key
+          which git-crypt || brew install git-crypt
+          echo "${{ secrets.GIT_CRYPT_KEY }}" | base64  -d > ./production.env.key
+          git-crypt unlock ./production.env.key
+          rm ./production.env.key
         
       - name: Set up Python
         uses: actions/setup-python@v5
