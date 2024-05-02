@@ -270,7 +270,7 @@ cov_matrix = np.diag(final_std_predictions) @ correlations @ np.diag(final_std_p
 
 
 multinormal = multivariate_normal(mean_predictions, cov_matrix, allow_singular=True)
-random_samples = multinormal.rvs(size = 1000).T
+random_samples = multinormal.rvs(size = 500).T
 predictions_df['margins'] = random_samples.tolist()
 predictions_df['median_margin'] = np.median(random_samples, axis = 1)
 
