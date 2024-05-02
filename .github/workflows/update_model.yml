@@ -19,12 +19,13 @@ jobs:
         run: |
           git clone https://github.com/AGWA/git-crypt.git
           cd git-crypt && make && make install PREFIX=/opt/project
-          echo "::add-path::/opt/project/bin"  # Add /opt/project/bin to PATH
+          echo "PATH=\$PATH:/opt/project/bin" >> $GITHUB_ENV
         
       - name: Unlock git-crypt
         run: |
           echo ${{ secrets.GIT_CRYPT_KEY }} | base64 -d > ./git-crypt-key
-          /opt/project/bin/git-crypt unlock ./git-crypt-key
+          export PATH="$PATH:/opt/project/bin"
+          git-crypt unlock ./git-crypt-key
           rm ./git-crypt-key
 
       - name: Set up Python
