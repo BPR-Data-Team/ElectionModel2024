@@ -35,7 +35,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install git-crypt
 
       - name: Run the script
         env:
@@ -62,17 +61,15 @@ jobs:
         with:
           token: ${{ secrets.ELECTIONMODELKEY }}
 
-      - name: Install git-crypt
+      - name: Install & unlock git-crypt
         run: |
-          git clone https://github.com/AGWA/git-crypt.git
-          cd git-crypt && make && make install PREFIX=/opt/project
-          echo "/opt/project/bin" >> $GITHUB_PATH
-
-      - name: Unlock git-crypt
-        run: |
-          echo ${{ secrets.GIT_CRYPT_KEY }} | base64  -d > ./git-crypt-key
-          github-bin/git-crypt unlock ./git-crypt-key
-          rm ./git-crypt-key   
+          if ! command -v git-crypt &> /dev/null; then
+              sudo apt-get update
+              sudo apt-get install -y git-crypt
+          fi
+          echo "${{ secrets.GIT_CRYPT_KEY }}" | base64  -d > ./production.env.key
+          git-crypt unlock ./production.env.key
+          rm ./production.env.key
       
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
