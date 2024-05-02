@@ -217,13 +217,14 @@ final <- final %>%
 
 
 name_dataset <- read.csv("data/AllRaces.csv") %>%
-  select(State, District, R_name, D_name) %>% 
+  select(State, District, Office_type, R_name, D_name) %>% 
   rename(state = State, 
-         district = District, 
+         district = District,
+         office_type = Office_type, 
          rep_name = R_name, 
-         dem_name = D_name) %>% 
+         dem_name = D_name)  %>%
   mutate(district = ifelse(district == "at-large", 1, district), 
-         state = state.abb[match(state, state.name)]) %>%
+         state = ifelse(str_length(state), state, state.abb[match(state, state.name)])) %>% 
   mutate(rep_name = ifelse(grepl("/|n/a", rep_name) | rep_name == "", "Unknown", rep_name), 
          dem_name = ifelse(grepl("/|n/a", dem_name) | dem_name == "", "Unknown", dem_name), 
          state = ifelse(is.na(state), "US", state), 

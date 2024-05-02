@@ -127,7 +127,7 @@ preprocessor = ColumnTransformer([
                                unknown_value=np.nan), ordinal_fts),
         ('num', 'passthrough', cont_fts)])
 
-num_models = 5
+num_models = 100
 
 feature_names = preprocessor.fit(X_train).get_feature_names_out()
 
@@ -137,12 +137,10 @@ mean_training_predictions = np.zeros(X_train.shape[0])
 predictions_array = np.zeros((X_predict.shape[0], num_models))
 mean_predictions = np.zeros(X_predict.shape[0])
 shap_contribution_array = np.zeros((X_predict.shape[0], len(feature_names) + 1))
-print(shap_contribution_array.shape)
 
-print(f"We are predicting {X_predict[X_predict['office_type'] == 'House'].shape[0]} house races")
 #Going through each model we trained to get a set of point estimates
 for idx in range(num_models):
-    file_path = f"../bootstrapped_models_testing/Model_{idx}.pkl"
+    file_path = f"models/Model_{idx}.pkl"
 
     # Open a file to write in binary mode????        
     with open(file_path, 'rb') as file:
@@ -150,7 +148,6 @@ for idx in range(num_models):
     
     training_predictions = trained_pipe.predict(X_train)
     predictions = trained_pipe.predict(X_predict)
-    print(f"In iteration {idx}, the house ratio is {np.sum(np.sign(predictions[X_predict['office_type'] == 'House'])) + 4}")
     
     contributions = trained_pipe.predict(X_predict, pred_contrib = True)
     
@@ -161,7 +158,6 @@ for idx in range(num_models):
 
 mean_training_predictions = np.mean(training_predictions_array, axis = 1)
 mean_predictions = np.mean(predictions_array, axis = 1)
-print(f"Shape of mean predictions is {mean_predictions.shape}")
 epistemic_std_predictions = np.std(predictions_array, axis = 1)
 mean_shap_contributions = shap_contribution_array / num_models
 
@@ -243,7 +239,7 @@ std_best_params = fmin(fn=std_objective,
                 space=param_dict,
                 algo=tpe.suggest,
                 trials=Trials(),
-                early_stop_fn = no_progress_loss(1))
+                early_stop_fn = no_progress_loss(5))
 
 #once we get the best params for each, we train each sequentially and then return the fitted versions.
 
@@ -274,7 +270,7 @@ cov_matrix = np.diag(final_std_predictions) @ correlations @ np.diag(final_std_p
 
 
 multinormal = multivariate_normal(mean_predictions, cov_matrix, allow_singular=True)
-random_samples = multinormal.rvs(size = 150).T
+random_samples = multinormal.rvs(size = 1000).T
 predictions_df['margins'] = random_samples.tolist()
 predictions_df['median_margin'] = np.median(random_samples, axis = 1)
 
@@ -285,7 +281,7 @@ US_senate = np.sum(senate_samples >= 0, axis = 0) + 30 #of the races we're not p
 house_samples = random_samples[predictions_df['office_type'] == 'House']
 US_house = np.sum(house_samples >= 0, axis = 0) + 27
 
-electoral_votes = pd.read_csv('../cleaned_data/Electoral Votes Sheet.csv')
+electoral_votes = pd.read_csv('cleaned_data/Electoral Votes Sheet.csv')
 president_samples = random_samples[predictions_df['office_type'] == 'President']
 
 presidential_df = predictions_df[predictions_df['office_type'] == 'President']
@@ -316,11 +312,9 @@ US_rows = pd.DataFrame(
     }
 )
 
-name_df = pd.read_csv('../cleaned_data/Names Dataset.csv').drop(columns = ['Unnamed: 0'])
-print(name_df.columns)
-predictions_df = predictions_df.join(name_df.set_index(['state', 'district']), on = ['state', 'district'])
+name_df = pd.read_csv('cleaned_data/Names Dataset.csv').drop(columns = ['Unnamed: 0'])
+predictions_df = predictions_df.join(name_df.set_index(['state', 'district', 'office_type']), on = ['state', 'district', 'office_type'])
 
 predictions_df = pd.concat([predictions_df, US_rows], axis = 'rows')
 
-#shap_df.to_csv('../cleaned_data/SHAP_Values.csv', index = False)
-predictions_df.to_csv('../cleaned_data/Predictions.csv', index = False)
+predictions_df.to_csv('cleaned_data/Predictions.csv', index = False)

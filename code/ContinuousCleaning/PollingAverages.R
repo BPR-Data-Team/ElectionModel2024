@@ -227,16 +227,21 @@ generic_polling <- full_poll_averages %>%
   select(c('year', 'weighted_genpoll','weighted_genpoll_lower', 
            'weighted_genpoll_upper', 'unweighted_genpoll'))
 
+historical_genballots <- read.csv("cleaned_data/Generic Ballot.csv")
+average_genballot_margin <- mean(historical_genballots$gen_margin, na.rm = TRUE)
 
+#We want to reduce the importance of polling, so we assume generic ballot will be the same
+#As it has been in previous years and then shift it to the polling value
+#As the election gets closer, the shift happens more and more
 generic_polling_2024 <- generic_polling %>%
   filter(year == 2024) %>% 
   mutate(
-    true_weighted_genpoll = weighted_genpoll * poll_weight, 
+    true_weighted_genpoll = average_genballot_margin + poll_weight * (weighted_genpoll - average_genballot_margin), 
     true_weighted_genpoll_lower = weighted_genpoll_lower - bounds_increase + 
       (weighted_genpoll - true_weighted_genpoll), 
     true_weighted_genpoll_upper = weighted_genpoll_upper + bounds_increase + 
       (weighted_genpoll - true_weighted_genpoll), 
-    true_unweighted_genpoll = unweighted_genpoll * poll_weight) %>% 
+    true_unweighted_genpoll = average_genballot_margin + poll_weight * (unweighted_genpoll - average_genballot_margin)) %>% 
   select(c('year', 'true_weighted_genpoll','true_weighted_genpoll_lower', 
            'true_weighted_genpoll_upper', 'true_unweighted_genpoll')) %>%
   rename_with(~ str_remove(., "true_"))
