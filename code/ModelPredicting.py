@@ -114,7 +114,7 @@ shap_features = {
 }
 
 
-data = pd.read_csv('../cleaned_data/Engineered Dataset.csv')
+data = pd.read_csv('cleaned_data/Engineered Dataset.csv')
 X = data.drop(columns = ['margin'])
 y = data['margin']
 X_train, X_predict, y_train, y_predict = (X.loc[X['year'] < 2024, :], X.loc[X['year'] == 2024, :].reset_index(), 
