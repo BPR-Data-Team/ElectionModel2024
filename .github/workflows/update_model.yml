@@ -15,10 +15,17 @@ jobs:
         with:
           token: ${{ secrets.ELECTIONMODELKEY }}
 
-      - name: Unlock secrets
-        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
-        env:
-          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}    
+      - name: Install git-crypt
+        run: |
+          git clone https://github.com/AGWA/git-crypt.git
+          cd git-crypt && make && make install PREFIX=/opt/project
+          echo "/opt/project/bin" >> $GITHUB_PATH
+
+      - name: Unlock git-crypt
+        run: |
+          echo ${{ secrets.GIT_CRYPT_KEY }} | base64  -d > ./git-crypt-key
+          git-crypt unlock ./git-crypt-key
+          rm ./git-crypt-key
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -57,10 +64,17 @@ jobs:
         with:
           token: ${{ secrets.ELECTIONMODELKEY }}
 
-      - name: Unlock secrets
-        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
-        env:
-          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}    
+      - name: Install git-crypt
+        run: |
+          git clone https://github.com/AGWA/git-crypt.git
+          cd git-crypt && make && make install PREFIX=/opt/project
+          echo "/opt/project/bin" >> $GITHUB_PATH
+
+      - name: Unlock git-crypt
+        run: |
+          echo ${{ secrets.GIT_CRYPT_KEY }} | base64  -d > ./git-crypt-key
+          git-crypt unlock ./git-crypt-key
+          rm ./git-crypt-key   
       
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
