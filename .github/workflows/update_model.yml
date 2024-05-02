@@ -15,16 +15,24 @@ jobs:
         with:
           token: ${{ secrets.ELECTIONMODELKEY }}
 
-      - name: Install git-crypt
+      - name: Install build essentials and OpenSSL
+        run: sudo apt-get update && sudo apt-get install -y build-essential libssl-dev
+        
+      - name: Clone git-crypt repository
+        run: git clone https://github.com/AGWA/git-crypt.git
+        
+      - name: Build and install git-crypt
         run: |
-          git clone https://github.com/AGWA/git-crypt.git
-          cd git-crypt && make && make install
-  
+          cd git-crypt
+          make && sudo make install PREFIX=/usr/local
+      
+      - name: Confirm git-crypt installation
+        run: git-crypt --version
+      
       - name: Unlock git-crypt
         run: |
-          echo ${{ secrets.GIT_CRYPT_KEY }} | base64  -d > ./git-crypt-key
+          echo "${{ secrets.GIT_CRYPT_KEY }}" | base64 -d > ./git-crypt-key
           git-crypt unlock ./git-crypt-key
-          rm ./git-crypt-key
         
       - name: Set up Python
         uses: actions/setup-python@v5
