@@ -84,8 +84,6 @@ jobs:
             any::tidyverse
             any::tidycensus
             any::meta
-            any::missForest
-            any::FNN
 
       - name: List installed packages
         run: Rscript -e "print(installed.packages()[, c('Package', 'LibPath')])"
