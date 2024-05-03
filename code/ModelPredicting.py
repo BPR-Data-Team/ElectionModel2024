@@ -5,7 +5,7 @@ import lightgbm as lgb
 import shap
 import matplotlib.pyplot as plt
 import re
-from scipy.stats import multivariate_normal, Covariance
+from scipy.stats import multivariate_normal, Covariance, mode
 
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
 from sklearn.compose import ColumnTransformer
@@ -127,7 +127,7 @@ preprocessor = ColumnTransformer([
                                unknown_value=np.nan), ordinal_fts),
         ('num', 'passthrough', cont_fts)])
 
-num_models = 100
+num_models = 10
 
 feature_names = preprocessor.fit(X_train).get_feature_names_out()
 
@@ -239,7 +239,7 @@ std_best_params = fmin(fn=std_objective,
                 space=param_dict,
                 algo=tpe.suggest,
                 trials=Trials(),
-                early_stop_fn = no_progress_loss(5))
+                early_stop_fn = no_progress_loss(10))
 
 #once we get the best params for each, we train each sequentially and then return the fitted versions.
 
@@ -253,7 +253,7 @@ std_best_pipe.fit(X_train, std_y_train)
 aleatoric_std_predictions = std_best_pipe.predict(X_predict)
 
 #At this point, we now have the standard deviations for each prediction. We can now calculate the final predictions
-final_std_predictions = 4 * aleatoric_std_predictions
+final_std_predictions = epistemic_std_predictions + 2 * aleatoric_std_predictions
         
 
 #Getting final race-level dataframe
@@ -307,13 +307,17 @@ US_rows = pd.DataFrame(
         'dem_name': ['Democrats', 'Democrats', 'Democrats'],
         'rep_name': ['Republicans', 'Republicans', 'Republicans'],
         'office_type': ['Senate', 'House', 'President'],
-        'median_margin': [np.median(US_senate), np.median(US_house), np.median(US_president)],
+        'median_margin': [mode(US_senate).mode, mode(US_house).mode, mode(US_president).mode],
         'margins': [US_senate.tolist(), US_house.tolist(), US_president.tolist()]
     }
 )
 
 name_df = pd.read_csv('cleaned_data/Names Dataset.csv').drop(columns = ['Unnamed: 0'])
-predictions_df = predictions_df.join(name_df.set_index(['state', 'district', 'office_type']), on = ['state', 'district', 'office_type'])
+predictions_df = predictions_df.join(name_df.set_index(['state', 'district', 'office_type']), on = ['state', 'district', 'office_type'], 
+                                     how = 'outer')
+
+#For nebraska senate, we are manually writing that we are not predicting the regular election
+predictions_df.loc[(predictions_df['state'] == 'NE') & (predictions_df['office_type'] == "Senate"), 'weird'] = ''
 
 predictions_df = pd.concat([predictions_df, US_rows], axis = 'rows')
 

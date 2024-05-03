@@ -44,12 +44,6 @@ genballot <- read.csv("cleaned_data/Generic Ballot.csv")[, -c(1)] %>%
 
 specials <- read.csv("cleaned_data/Specials.csv")[, -c(1)]
 
-
-#PVI contains proprietary information -- needs to be decoded using secret key
-pvi_key <- Sys.getenv("PVI_Key")
-pvi_encoded <- 
-
-
 pvi <- read.csv("cleaned_data/Completed PVI.csv")[, -c(1)]
 chambers <- read.csv("cleaned_data/Chamber Margins.csv") 
 cci <- read.csv("cleaned_data/Consumer Confidence Index.csv")[, -c(1)] %>%
@@ -79,21 +73,10 @@ fec <- read.csv("cleaned_data/fecData20022024.csv") %>%
   mutate(state = ifelse(state == "US", list(state.abb), as.list(state))) %>%
   unnest(cols = c(state)) %>%
   mutate(district = ifelse(state == "ME" & office_type == "President" & year == 2024, 
-                           list(c(0, 1)), as.list(district)), 
+                           list(c(0, 1, 2)), as.list(district)), 
          district = ifelse(state == "NE" & office_type == "President" & year == 2024, 
                            list(c(0, 1, 2, 3)), district))%>%
   unnest(cols = c(district))
-
-fec_summary <- fec %>% group_by(year, office_type) %>% summarise(
-  across(matches("DEM|REP"), ~sum(., na.rm = TRUE))
-) %>%
-  mutate(
-    receipt_ratio = log(receipts_DEM / receipts_REP),
-    disbursement_ratio = log(disbursements_DEM / disbursements_REP),
-    contribution_ratio = log(individual_contributions_DEM / individual_contributions_REP)
-  )
-
-
 
 #POLLS... wow this is only two lines lol
 polls <- read.csv("cleaned_data/AllPolls.csv") %>% select(-X) %>%
@@ -223,12 +206,14 @@ name_dataset <- read.csv("data/AllRaces.csv") %>%
          office_type = Office_type, 
          rep_name = R_name, 
          dem_name = D_name,
-         weird = Weird)  %>%
+         weird = Weird) %>%
   mutate(district = ifelse(district == "at-large", 1, district), 
-         state = ifelse(str_length(state), state, state.abb[match(state, state.name)])) %>% 
+         state = trimws(state),
+         state = ifelse(str_length(state) == 2, state, state.abb[match(state, state.name)])) %>%
+  filter(state != "NE" | weird == "") %>%
   mutate(rep_name = ifelse(grepl("/|n/a", rep_name) | rep_name == "", "Unknown", rep_name), 
          dem_name = ifelse(grepl("/|n/a", dem_name) | dem_name == "", "Unknown", dem_name), 
-         state = ifelse(is.na(state), "US", state), 
+         state = ifelse(is.na(state), "NE", state), 
          district = as.numeric(district), 
          district = ifelse(is.na(district), 0, district))
 

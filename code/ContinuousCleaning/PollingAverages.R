@@ -238,9 +238,9 @@ generic_polling_2024 <- generic_polling %>%
   mutate(
     true_weighted_genpoll = average_genballot_margin + poll_weight * (weighted_genpoll - average_genballot_margin), 
     true_weighted_genpoll_lower = weighted_genpoll_lower - bounds_increase + 
-      (weighted_genpoll - true_weighted_genpoll), 
+      (true_weighted_genpoll - weighted_genpoll), 
     true_weighted_genpoll_upper = weighted_genpoll_upper + bounds_increase + 
-      (weighted_genpoll - true_weighted_genpoll), 
+      (true_weighted_genpoll - weighted_genpoll), 
     true_unweighted_genpoll = average_genballot_margin + poll_weight * (unweighted_genpoll - average_genballot_margin)) %>% 
   select(c('year', 'true_weighted_genpoll','true_weighted_genpoll_lower', 
            'true_weighted_genpoll_upper', 'true_unweighted_genpoll')) %>%
