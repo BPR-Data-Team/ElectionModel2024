@@ -253,7 +253,7 @@ std_best_pipe.fit(X_train, std_y_train)
 aleatoric_std_predictions = std_best_pipe.predict(X_predict)
 
 #At this point, we now have the standard deviations for each prediction. We can now calculate the final predictions
-final_std_predictions = epistemic_std_predictions + 2 * aleatoric_std_predictions
+final_std_predictions = np.sqrt(epistemic_std_predictions**2 + 4 * aleatoric_std_predictions**2)
         
 
 #Getting final race-level dataframe
@@ -263,7 +263,10 @@ predictions_df['district'] = X_predict['district']
 predictions_df['office_type'] = X_predict['office_type']
 for col in shap_features:
     predictions_df[col] = shap_df[col]
-    
+
+#In governor races, we don't have any campaign finance data, so we will add it (which is a small number) to the past elections
+predictions_df.loc[predictions_df['office_type'] == "Governor", 'Past Elections'] += predictions_df.loc[predictions_df['office_type'] == "Governor", 'Campaign Finance']
+predictions_df.loc[predictions_df['office_type'] == "Governor", 'Campaign Finance'] = 0
     
 #Now working on getting the multivariate normal distribution with the std and the correlation matrix
 cov_matrix = np.diag(final_std_predictions) @ correlations @ np.diag(final_std_predictions)
@@ -307,7 +310,7 @@ US_rows = pd.DataFrame(
         'dem_name': ['Democrats', 'Democrats', 'Democrats'],
         'rep_name': ['Republicans', 'Republicans', 'Republicans'],
         'office_type': ['Senate', 'House', 'President'],
-        'median_margin': [mode(US_senate).mode, mode(US_house).mode, mode(US_president).mode],
+        'median_margin': [np.median(US_senate), np.median(US_house), np.median(US_president)],
         'margins': [US_senate.tolist(), US_house.tolist(), US_president.tolist()]
     }
 )
