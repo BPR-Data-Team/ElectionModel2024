@@ -79,7 +79,8 @@ shap_features = {
         "weighted_genpoll_upper", 'mean_specials_differential', 'genballot_predicted_margin',
        'specials_predicted_margin', 'poll_fundamental_agree', 'genballot_predicted_lower',
        'genballot_predicted_upper', 'prev_gen_margin', 'prev_dem_gen_tp', 
-       'average_genballot', 'average_genballot_predicted_margin', 'genballot_individual_predicted_margin'],
+       'average_genballot', 'average_genballot_predicted_margin', 'genballot_individual_predicted_margin', 
+       'genballot_campaign5_predicted_margin', 'genballot_campaign10_predicted_margin', 'genballot_campaign15_predicted_margin'],
         
     "Voting Regulations": ['voteridlaws', 'novoterid', 'nonstrictid', 'strictid', 'strictphoto', 
                     'nofelonreg', 'nofelonsregafterincar', 'nonstrictphoto', 'nopollplacereg', 'nosamedayreg', 'pr16',
@@ -96,8 +97,7 @@ shap_features = {
     "Campaign Finance": ["receipts", "from_committee_transfers", "disbursements",
     "to_committee_transfers", "beginning_cash", "ending_cash", "candidate_contributions",
     "individual_contributions", 'receipts_DEM', 'receipts_REP', 'disbursements_DEM', 'disbursements_REP', 
-    'finance_fundamental_agree', 'genballot_campaign5_predicted_margin', 
-        'genballot_campaign10_predicted_margin', 'genballot_campaign15_predicted_margin'], 
+    'finance_fundamental_agree'], 
         
     "Consumer Confidence Index": ['previous_cci', 'current_cci', 'change_cci'],
     
