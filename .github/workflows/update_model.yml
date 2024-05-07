@@ -59,7 +59,7 @@ jobs:
           git pull
 
       - name: Run the script
-        env: |
+        env: 
             FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
             CENSUS_API_KEY: ${{ secrets.CENSUS_API }}
         run: |
