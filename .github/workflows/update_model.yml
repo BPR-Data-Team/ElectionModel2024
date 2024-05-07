@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-script:
+  run-scripts:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,45 +36,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run the script
-        env:
-            FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-        run: |
-          python code/data_fetcher.py --all
-
-      - name: Commit and push if there are changes
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@users.noreply.github.com"
-          git pull
-          git add .
-          git diff-index --quiet HEAD || git commit -m "Update model"
-          git-crypt lock
-          git diff-index --quiet HEAD || git commit -m "Update model"
-          git push https://${{ secrets.GITHUB_ACTOR }}:${{ secrets.ELECTIONMODELKEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
-
-  run-r-script:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.ELECTIONMODELKEY }}
-
-      - name: Install & unlock git-crypt
-        run: |
-          if ! command -v git-crypt &> /dev/null; then
-              sudo apt-get update
-              sudo apt-get install -y git-crypt
-          fi
-          echo "${{ secrets.GIT_CRYPT_KEY }}" | base64  -d > ./production.env.key
-          git-crypt unlock ./production.env.key
-          rm ./production.env.key
-      
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
-
+  
       - name: Install packages
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -85,26 +49,41 @@ jobs:
             any::tidycensus
             any::meta
 
-      - name: List installed packages
-        run: Rscript -e "print(installed.packages()[, c('Package', 'LibPath')])"
+      # - name: List installed packages
+      #   run: Rscript -e "print(installed.packages()[, c('Package', 'LibPath')])"
 
-      - name: Run the R script
-        env:
-            CENSUS_API_KEY: ${{ secrets.CENSUS_API }}
-        run: |
-          Rscript code/ContinuousCleaning/CensusDemographics.R 
-          Rscript code/ContinuousCleaning/Fundamentals.R
-          Rscript code/ContinuousCleaning/FEC.R
-          Rscript code/ContinuousCleaning/PollingAverages.R
-          Rscript code/ContinuousCleaning/CombiningData.R
-
-      - name: Commit and push if there are changes
+      - name: Config Git
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@users.noreply.github.com"
           git pull
+
+      - name: Run the script
+        env: |
+            FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+            CENSUS_API_KEY: ${{ secrets.CENSUS_API }}
+        run: |
+          python code/data_fetcher.py --all
           git add .
           git diff-index --quiet HEAD || git commit -m "Update model"
+          Rscript code/ContinuousCleaning/CensusDemographics.R
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Update model" 
+          Rscript code/ContinuousCleaning/Fundamentals.R
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Update model"
+          Rscript code/ContinuousCleaning/FEC.R
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Update model"
+          Rscript code/ContinuousCleaning/PollingAverages.R
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Update model"
+          Rscript code/ContinuousCleaning/CombiningData.R
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Update model"
+
+      - name: Encrypt files and push
+        run: |
           git-crypt lock
           git diff-index --quiet HEAD || git commit -m "Update model"
           git push https://${{ secrets.GITHUB_ACTOR }}:${{ secrets.ELECTIONMODELKEY }}@github.com/BPR-Data-Team/ElectionModel2024.git
