@@ -81,7 +81,7 @@ shap_features = {
        'genballot_predicted_upper', 'prev_gen_margin', 'prev_dem_gen_tp', 
        'average_genballot', 'average_genballot_predicted_margin', 'genballot_individual_predicted_margin', 
        'genballot_campaign5_predicted_margin', 'genballot_campaign10_predicted_margin', 'genballot_campaign15_predicted_margin'],
-        
+    
     "Voting Regulations": ['voteridlaws', 'novoterid', 'nonstrictid', 'strictid', 'strictphoto', 
                     'nofelonreg', 'nofelonsregafterincar', 'nonstrictphoto', 'nopollplacereg', 'nosamedayreg', 'pr16',
                     'pr17', 'pr175', 'pr60', 'pr90', 'nopr', 'noallmailvote', 'noearlyvote',
@@ -110,7 +110,7 @@ shap_features = {
     "Composition of Congress/Presidency": ['democrat_in_presidency', 
               'house_chamber_margin', 'senate_chamber_margin'],
     
-    "Other": ['office_type', 'special', 'isMidterm', 'expected_value']
+    "Other": ['special', 'isMidterm', 'expected_value', 'office_type']
 }
 
 
@@ -310,7 +310,7 @@ US_rows = pd.DataFrame(
         'dem_name': ['Democrats', 'Democrats', 'Democrats'],
         'rep_name': ['Republicans', 'Republicans', 'Republicans'],
         'office_type': ['Senate', 'House', 'President'],
-        'median_margin': [np.median(US_senate), np.median(US_house), np.median(US_president)],
+        'median_margin': [np.round(np.median(US_senate)), np.round(np.median(US_house)), np.round(np.median(US_president))],
         'margins': [US_senate.tolist(), US_house.tolist(), US_president.tolist()]
     }
 )

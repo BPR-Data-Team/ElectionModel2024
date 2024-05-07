@@ -285,7 +285,7 @@ sen_rest = read_excel("data/HistoricalElections/Sabato_Ratings/2018-2024 Crystal
 gov_rest = read_excel("data/HistoricalElections/Sabato_Ratings/2018-2024 Crystall Ball Gubernatorial.xlsx")
 house_rest <- read_excel("data/HistoricalElections/Sabato_Ratings/2018-2024 Crystal Ball House.xlsx") %>%
   mutate(District = as.character(District))
-pres_rest <- read_excel("data/HistoricalElections/Sabato_Ratings/2020 Crystal Ball Electoral College.xlsx") %>%
+pres_rest <- read_excel("data/HistoricalElections/Sabato_Ratings/2020-2024 Electoral College.xlsx") %>%
   mutate(race = "President")
 
 #---- Combining all data into one dataframe
