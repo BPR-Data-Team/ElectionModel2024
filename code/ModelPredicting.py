@@ -81,7 +81,7 @@ shap_features = {
        'genballot_predicted_upper', 'prev_gen_margin', 'prev_dem_gen_tp', 
        'average_genballot', 'average_genballot_predicted_margin', 'genballot_individual_predicted_margin', 
        'genballot_campaign5_predicted_margin', 'genballot_campaign10_predicted_margin', 'genballot_campaign15_predicted_margin'],
-        
+    
     "Voting Regulations": ['voteridlaws', 'novoterid', 'nonstrictid', 'strictid', 'strictphoto', 
                     'nofelonreg', 'nofelonsregafterincar', 'nonstrictphoto', 'nopollplacereg', 'nosamedayreg', 'pr16',
                     'pr17', 'pr175', 'pr60', 'pr90', 'nopr', 'noallmailvote', 'noearlyvote',
@@ -110,7 +110,7 @@ shap_features = {
     "Composition of Congress/Presidency": ['democrat_in_presidency', 
               'house_chamber_margin', 'senate_chamber_margin'],
     
-    "Other": ['office_type', 'special', 'isMidterm', 'expected_value']
+    "Other": ['special', 'isMidterm', 'expected_value', 'office_type']
 }
 
 
@@ -265,8 +265,8 @@ for col in shap_features:
     predictions_df[col] = shap_df[col]
 
 #In governor races, we don't have any campaign finance data, so we will add it (which is a small number) to the past elections
-predictions_df.loc[predictions_df['office_type'] == "Governor", 'Past Elections'] += predictions_df.loc[predictions_df['office_type'] == "Governor", 'Campaign Finance']
-predictions_df.loc[predictions_df['office_type'] == "Governor", 'Campaign Finance'] = 0
+#predictions_df.loc[predictions_df['office_type'] == "Governor", 'Past Elections'] += predictions_df.loc[predictions_df['office_type'] == "Governor", 'Campaign Finance']
+#predictions_df.loc[predictions_df['office_type'] == "Governor", 'Campaign Finance'] = 0
     
 #Now working on getting the multivariate normal distribution with the std and the correlation matrix
 cov_matrix = np.diag(final_std_predictions) @ correlations @ np.diag(final_std_predictions)
@@ -310,7 +310,7 @@ US_rows = pd.DataFrame(
         'dem_name': ['Democrats', 'Democrats', 'Democrats'],
         'rep_name': ['Republicans', 'Republicans', 'Republicans'],
         'office_type': ['Senate', 'House', 'President'],
-        'median_margin': [np.median(US_senate), np.median(US_house), np.median(US_president)],
+        'median_margin': [np.round(np.median(US_senate)), np.round(np.median(US_house)), np.round(np.median(US_president))],
         'margins': [US_senate.tolist(), US_house.tolist(), US_president.tolist()]
     }
 )

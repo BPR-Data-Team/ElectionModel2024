@@ -151,13 +151,17 @@ poll_weight <- (200 - days_until_election) / 200
 #The following should be added to lower bound and upper bound
 bounds_increase <- 5 * days_until_election / 200
 
+#Historical average generic ballot
+average_genballot <- 2.05
+
 #Creating a genballot based off of individual race polls -- if races are considerably 
 #more right/left-wing, we'd expect the generic ballot to be as well!
 genballot_polling_individual <- engineered %>%
   filter(!is.na(weighted_estimate)) %>%
   group_by(year) %>%
   summarize(genballot_individual = case_when(
-  cur_group() == 2024 ~ poll_weight * mean(weighted_estimate - (pvi * 2 + incumbent_differential)), 
+  cur_group() == 2024 ~ average_genballot - poll_weight * (
+    mean(weighted_estimate - (pvi * 2 + incumbent_differential)) - average_genballot), 
   TRUE ~ mean(weighted_estimate - (pvi * 2 + incumbent_differential))))
 
 #Creating a genballot feature based off of campaign finance -- trying three different weights
@@ -191,13 +195,12 @@ decreasing_poll_efficacy <- final %>%
                   unweighted_estimate, weighted_estimate), 
                 ~ (pvi * 2 + incumbent_differential) + poll_weight * (. - (pvi * 2 + incumbent_differential))), 
          across(c(unweighted_ci_lower, weighted_ci_lower), ~ . - bounds_increase), 
-         across(c(unweighted_ci_upper, weighted_ci_upper), ~ . + bounds_increase))
+         across(c(unweighted_ci_upper, weighted_ci_upper), ~ . + bounds_increase)) 
 
 #Final dataset
 final <- final %>%
   filter(year != 2024) %>%
   bind_rows(decreasing_poll_efficacy)
-
 
 name_dataset <- read.csv("data/AllRaces.csv") %>%
   select(State, District, Office_type, R_name, D_name, Weird) %>% 
