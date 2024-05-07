@@ -265,8 +265,8 @@ for col in shap_features:
     predictions_df[col] = shap_df[col]
 
 #In governor races, we don't have any campaign finance data, so we will add it (which is a small number) to the past elections
-#predictions_df.loc[predictions_df['office_type'] == "Governor", 'Past Elections'] += predictions_df.loc[predictions_df['office_type'] == "Governor", 'Campaign Finance']
-#predictions_df.loc[predictions_df['office_type'] == "Governor", 'Campaign Finance'] = 0
+predictions_df.loc[predictions_df['office_type'] == "Governor", 'Past Elections'] += predictions_df.loc[predictions_df['office_type'] == "Governor", 'Campaign Finance']
+predictions_df.loc[predictions_df['office_type'] == "Governor", 'Campaign Finance'] = 0
     
 #Now working on getting the multivariate normal distribution with the std and the correlation matrix
 cov_matrix = np.diag(final_std_predictions) @ correlations @ np.diag(final_std_predictions)
