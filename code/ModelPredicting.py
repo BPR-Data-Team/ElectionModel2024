@@ -240,7 +240,7 @@ std_best_params = fmin(fn=std_objective,
                 space=param_dict,
                 algo=tpe.suggest,
                 trials=Trials(),
-                early_stop_fn = no_progress_loss(1))
+                early_stop_fn = no_progress_loss(10))
 
 #once we get the best params for each, we train each sequentially and then return the fitted versions.
 
