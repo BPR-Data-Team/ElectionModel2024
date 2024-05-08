@@ -5,6 +5,7 @@ import lightgbm as lgb
 import shap
 import matplotlib.pyplot as plt
 import re
+from datetime import date
 from scipy.stats import multivariate_normal, Covariance, mode
 
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
@@ -239,7 +240,7 @@ std_best_params = fmin(fn=std_objective,
                 space=param_dict,
                 algo=tpe.suggest,
                 trials=Trials(),
-                early_stop_fn = no_progress_loss(10))
+                early_stop_fn = no_progress_loss(1))
 
 #once we get the best params for each, we train each sequentially and then return the fitted versions.
 
@@ -324,4 +325,17 @@ predictions_df.loc[(predictions_df['state'] == 'NE') & (predictions_df['office_t
 
 predictions_df = pd.concat([predictions_df, US_rows], axis = 'rows')
 
+#Getting predictions for today to add to the predictions over time dataframe, so we can compare over time
+predictions_today = predictions_df[['state', 'district', 'office_type', 'median_margin']]
+predictions_today.loc[:, date.today().strftime("%m/%d/%Y")] = predictions_today['median_margin']
+predictions_today = predictions_today[['state', 'district', 'office_type', date.today().strftime("%m/%d/%Y")]]
+
+predictions_over_time = pd.read_csv('cleaned_data/Predictions over Time.csv')
+if date.today().strftime("%m/%d/%Y") in predictions_over_time.columns:
+    predictions_over_time = predictions_over_time.drop(columns = [date.today().strftime("%m/%d/%Y")])
+
+predictions_over_time = predictions_over_time.merge(predictions_today, on = ['state', 'district', 'office_type'], how = 'outer')
+
+#Saving both dataframes
+predictions_over_time.to_csv('cleaned_data/Predictions over Time.csv', index = False)
 predictions_df.to_csv('cleaned_data/Predictions.csv', index = False)
