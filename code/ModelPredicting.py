@@ -283,7 +283,7 @@ cov_matrix = np.diag(final_std_predictions) @ correlations @ np.diag(final_std_p
 
 
 multinormal = multivariate_normal(mean_predictions, cov_matrix, allow_singular=True)
-random_samples = multinormal.rvs(size = 100000).T
+random_samples = multinormal.rvs(size = 1000).T
 predictions_df['margins'] = random_samples.tolist()
 predictions_df['median_margin'] = np.median(random_samples, axis = 1)
 
@@ -319,8 +319,8 @@ US_rows = pd.DataFrame(
         'district': [0, 0, 0],
         'dem_name': ['Democrats', 'Democrats', 'Democrats'],
         'rep_name': ['Republicans', 'Republicans', 'Republicans'],
-        'bin_bounds': [(40, 60), (0, 435), (0, 538)],
-        'num_bins': [20, 100, 100],
+        'bin_bounds': [(40.5, 59.5), (1.5, 433.5), (3.5, 534.5)],
+        'num_bins': [19, 54, 59],
         'office_type': ['Senate', 'House', 'President'],
         'threshold_winning': [50, 217, 269],
         'median_margin': [np.round(np.median(US_senate)), np.round(np.median(US_house)), np.round(np.median(US_president))],
@@ -361,6 +361,7 @@ predictions_today = predictions_today[['state', 'district', 'office_type', date.
 
 
 predictions_over_time = pd.read_csv('cleaned_data/Predictions over Time.csv')
+print("I have read the predictions over time. It has the following columns:" + str(predictions_over_time.columns))
 if date.today().strftime("%m/%d/%Y") in predictions_over_time.columns:
     predictions_over_time = predictions_over_time.drop(columns = [date.today().strftime("%m/%d/%Y")])
 
@@ -368,4 +369,4 @@ predictions_over_time = predictions_over_time.merge(predictions_today, on = ['st
 
 #Saving both dataframes
 predictions_over_time.to_csv('cleaned_data/Predictions over Time.csv', index = False)
-predictions_df.to_csv('cleaned_data/Predictions.csv', index = False)
+predictions_df.to_csv('cleaned_data/Predictions2.csv', index = False)
