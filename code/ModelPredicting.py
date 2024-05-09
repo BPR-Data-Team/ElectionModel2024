@@ -189,10 +189,14 @@ shap_df['office_type'] = X_predict['office_type']
 #Shap_df is a dataframe that has the three race identifiers and the SHAP values for each feature category
 shap_df = shap_df[['state', 'district', 'office_type'] + list(shap_features.keys())]
 
+#The following code was run once, but not again. It trains a standard-deviation predicting model and saves it in the models folder to be used in
+#Future predictions. 
+
+"""
 #---- Now, we will train a standard-deviation predicting model -- dealing with Aleatoric Uncertainty (Bootstrapping gives us epistemic)
 def neg_log_likelihood(y, y_pred, y_std):
-    """Given a set of true values, predicted values, and standard deviations, returns the negative log likelihood.
-    We want to minimize this value to get the best standard deviations (based on aleatoric uncertainty)."""
+    #Given a set of true values, predicted values, and standard deviations, returns the negative log likelihood.
+    #We want to minimize this value to get the best standard deviations (based on aleatoric uncertainty).
     return np.mean(0.5 * np.log(2 * np.pi * y_std ** 2) + ((y - y_pred) ** 2 / (2 * y_std ** 2)))
 
 ideal_std_predictions = np.abs(y_train - mean_training_predictions)
@@ -207,7 +211,7 @@ def std_objective(params):
             ('preprocessing', preprocessor), 
             ('model', std_reg)])
         
-        """Goes through each fold and calculates loss."""
+        #Goes through each fold and calculates loss.
         pipe.fit(X_train.iloc[train_idx], ideal_std_predictions.iloc[train_idx])
         
         std_predictions = pipe.predict(X_train.iloc[test_idx])
@@ -240,7 +244,7 @@ std_best_params = fmin(fn=std_objective,
                 space=param_dict,
                 algo=tpe.suggest,
                 trials=Trials(),
-                early_stop_fn = no_progress_loss(10))
+                early_stop_fn = no_progress_loss(20))
 
 #once we get the best params for each, we train each sequentially and then return the fitted versions.
 
@@ -251,6 +255,11 @@ std_best_pipe = Pipeline(steps = [
     ('model', std_best_model)])
 std_best_pipe.fit(X_train, std_y_train)
 
+with open("models/std_model.pkl", 'wb') as file:
+    pkl.dump(std_best_pipe, file)"""
+
+with open("models/std_model.pkl", 'rb') as file:
+    std_best_pipe = pkl.load(file)
 aleatoric_std_predictions = std_best_pipe.predict(X_predict)
 
 #At this point, we now have the standard deviations for each prediction. We can now calculate the final predictions
@@ -274,7 +283,7 @@ cov_matrix = np.diag(final_std_predictions) @ correlations @ np.diag(final_std_p
 
 
 multinormal = multivariate_normal(mean_predictions, cov_matrix, allow_singular=True)
-random_samples = multinormal.rvs(size = 500).T
+random_samples = multinormal.rvs(size = 100000).T
 predictions_df['margins'] = random_samples.tolist()
 predictions_df['median_margin'] = np.median(random_samples, axis = 1)
 
@@ -310,25 +319,46 @@ US_rows = pd.DataFrame(
         'district': [0, 0, 0],
         'dem_name': ['Democrats', 'Democrats', 'Democrats'],
         'rep_name': ['Republicans', 'Republicans', 'Republicans'],
+        'bin_bounds': [(40, 60), (0, 435), (0, 538)],
+        'num_bins': [20, 100, 100],
         'office_type': ['Senate', 'House', 'President'],
+        'threshold_winning': [50, 217, 269],
         'median_margin': [np.round(np.median(US_senate)), np.round(np.median(US_house)), np.round(np.median(US_president))],
         'margins': [US_senate.tolist(), US_house.tolist(), US_president.tolist()]
     }
 )
 
 name_df = pd.read_csv('cleaned_data/Names Dataset.csv').drop(columns = ['Unnamed: 0'])
+predictions_df['std'] = final_std_predictions
 predictions_df = predictions_df.join(name_df.set_index(['state', 'district', 'office_type']), on = ['state', 'district', 'office_type'], 
                                      how = 'outer')
 
 #For nebraska senate, we are manually writing that we are not predicting the regular election
 predictions_df.loc[(predictions_df['state'] == 'NE') & (predictions_df['office_type'] == "Senate"), 'weird'] = ''
 
+#Adding all the margins manually would require too much memory, so we instead give how many simulations are in each bin
+predictions_df['bin_bounds'] = predictions_df.apply(lambda x: (-100, 100), axis = 1)
+predictions_df['num_bins'] = 50
+predictions_df['threshold_winning'] = 0
 predictions_df = pd.concat([predictions_df, US_rows], axis = 'rows')
+predictions_df['bins'] = predictions_df.apply(lambda x: np.histogram(x['margins'], bins = x['num_bins'], range = x['bin_bounds'])[0], axis = 1)
+predictions_df['bin_edges'] = predictions_df.apply(lambda x: np.histogram(x['margins'], bins = x['num_bins'], range = x['bin_bounds'])[1], axis = 1)
+predictions_df['democrat_winning_num'] = predictions_df.apply(
+    lambda x: np.sum(np.array(x['margins']) > x['threshold_winning']) , 
+    axis = 1)
+predictions_df['republican_winning_num'] = predictions_df.apply(
+    lambda x: np.sum(np.array(x['margins']) < x['threshold_winning']), axis = 1)
+predictions_df['tie_num'] = predictions_df.apply(
+    lambda x: np.sum(np.array(x['margins']) == x['threshold_winning']), axis = 1)
+
+print(f"At its greatest size, the predictions dataframe has {predictions_df.memory_usage(deep = True).sum() / 1e6} MB")
+predictions_df = predictions_df.drop(columns = ['margins', 'threshold_winning'])
 
 #Getting predictions for today to add to the predictions over time dataframe, so we can compare over time
-predictions_today = predictions_df[['state', 'district', 'office_type', 'median_margin']]
+predictions_today = predictions_df.loc[:, ['state', 'district', 'office_type', 'median_margin']]
 predictions_today.loc[:, date.today().strftime("%m/%d/%Y")] = predictions_today['median_margin']
 predictions_today = predictions_today[['state', 'district', 'office_type', date.today().strftime("%m/%d/%Y")]]
+
 
 predictions_over_time = pd.read_csv('cleaned_data/Predictions over Time.csv')
 if date.today().strftime("%m/%d/%Y") in predictions_over_time.columns:
