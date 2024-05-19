@@ -367,7 +367,7 @@ predictions_today.loc[:, date.today().strftime("%m/%d/%Y")] = predictions_today[
 predictions_today = predictions_today[['state', 'district', 'office_type', date.today().strftime("%m/%d/%Y")]]
 
 #Creating the predictions over time dataframe
-predictions_over_time = pd.read_csv('cleaned_data/Predictions over Time.csv')
+predictions_over_time = pd.read_csv('cleaned_data/Predictions over time.csv')
 if date.today().strftime("%m/%d/%Y") in predictions_over_time.columns:
     predictions_over_time = predictions_over_time.drop(columns = [date.today().strftime("%m/%d/%Y")])
 
