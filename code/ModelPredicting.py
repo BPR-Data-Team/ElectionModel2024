@@ -374,5 +374,5 @@ if date.today().strftime("%m/%d/%Y") in predictions_over_time.columns:
 predictions_over_time = predictions_over_time.merge(predictions_today, on = ['state', 'district', 'office_type'], how = 'outer')
 
 #Saving both dataframes
-predictions_over_time.to_csv('cleaned_data/Predictions over Time.csv', index = False)
+predictions_over_time.to_csv('cleaned_data/Predictions over time.csv', index = False)
 predictions_df.to_csv('cleaned_data/Predictions.csv', index = False)
