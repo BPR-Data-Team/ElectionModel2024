@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import re
 from datetime import date
 from scipy.stats import multivariate_normal, Covariance, mode
+import json
 
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
 from sklearn.compose import ColumnTransformer
@@ -283,7 +284,7 @@ cov_matrix = np.diag(final_std_predictions) @ correlations @ np.diag(final_std_p
 
 
 multinormal = multivariate_normal(mean_predictions, cov_matrix, allow_singular=True)
-random_samples = multinormal.rvs(size = 1000).T
+random_samples = multinormal.rvs(size = 100000).T
 predictions_df['margins'] = random_samples.tolist()
 predictions_df['median_margin'] = np.median(random_samples, axis = 1)
 
@@ -322,7 +323,7 @@ US_rows = pd.DataFrame(
         'bin_bounds': [(40.5, 59.5), (1.5, 433.5), (3.5, 534.5)],
         'num_bins': [19, 54, 59],
         'office_type': ['Senate', 'House', 'President'],
-        'threshold_winning': [50, 217, 269],
+        'threshold_winning': [50, 217.5, 269],
         'median_margin': [np.round(np.median(US_senate)), np.round(np.median(US_house)), np.round(np.median(US_president))],
         'margins': [US_senate.tolist(), US_house.tolist(), US_president.tolist()]
     }
@@ -343,6 +344,12 @@ predictions_df['threshold_winning'] = 0
 predictions_df = pd.concat([predictions_df, US_rows], axis = 'rows')
 predictions_df['bins'] = predictions_df.apply(lambda x: np.histogram(x['margins'], bins = x['num_bins'], range = x['bin_bounds'])[0], axis = 1)
 predictions_df['bin_edges'] = predictions_df.apply(lambda x: np.histogram(x['margins'], bins = x['num_bins'], range = x['bin_bounds'])[1], axis = 1)
+
+#Converting the bins and bin_edges to json strings, which can be easily saved in a csv
+predictions_df['bins'] = predictions_df['bins'].apply(lambda x: json.dumps(x.tolist()))
+predictions_df['bin_edges'] = predictions_df['bin_edges'].apply(lambda x: json.dumps(x.tolist()))
+
+#Getting the number of simulations where each party wins
 predictions_df['democrat_winning_num'] = predictions_df.apply(
     lambda x: np.sum(np.array(x['margins']) > x['threshold_winning']) , 
     axis = 1)
@@ -351,7 +358,7 @@ predictions_df['republican_winning_num'] = predictions_df.apply(
 predictions_df['tie_num'] = predictions_df.apply(
     lambda x: np.sum(np.array(x['margins']) == x['threshold_winning']), axis = 1)
 
-print(f"At its greatest size, the predictions dataframe has {predictions_df.memory_usage(deep = True).sum() / 1e6} MB")
+
 predictions_df = predictions_df.drop(columns = ['margins', 'threshold_winning'])
 
 #Getting predictions for today to add to the predictions over time dataframe, so we can compare over time
@@ -359,9 +366,8 @@ predictions_today = predictions_df.loc[:, ['state', 'district', 'office_type', '
 predictions_today.loc[:, date.today().strftime("%m/%d/%Y")] = predictions_today['median_margin']
 predictions_today = predictions_today[['state', 'district', 'office_type', date.today().strftime("%m/%d/%Y")]]
 
-
+#Creating the predictions over time dataframe
 predictions_over_time = pd.read_csv('cleaned_data/Predictions over Time.csv')
-print("I have read the predictions over time. It has the following columns:" + str(predictions_over_time.columns))
 if date.today().strftime("%m/%d/%Y") in predictions_over_time.columns:
     predictions_over_time = predictions_over_time.drop(columns = [date.today().strftime("%m/%d/%Y")])
 
@@ -369,4 +375,4 @@ predictions_over_time = predictions_over_time.merge(predictions_today, on = ['st
 
 #Saving both dataframes
 predictions_over_time.to_csv('cleaned_data/Predictions over Time.csv', index = False)
-predictions_df.to_csv('cleaned_data/Predictions2.csv', index = False)
+predictions_df.to_csv('cleaned_data/Predictions.csv', index = False)
