@@ -58,6 +58,9 @@ jobs:
           git config --global user.email "actions@users.noreply.github.com"
           git pull
 
+      - name: Collect Workflow Telemetry
+        uses: catchpoint/workflow-telemetry-action@v2
+
       - name: Run the script
         env: 
             FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
