@@ -363,15 +363,14 @@ predictions_df = predictions_df.drop(columns = ['margins', 'threshold_winning'])
 
 #Getting predictions for today to add to the predictions over time dataframe, so we can compare over time
 predictions_today = predictions_df.loc[:, ['state', 'district', 'office_type', 'median_margin']]
-predictions_today.loc[:, date.today().strftime("%m/%d/%Y")] = predictions_today['median_margin']
-predictions_today = predictions_today[['state', 'district', 'office_type', date.today().strftime("%m/%d/%Y")]]
+predictions_today['date'] = date.today().strftime("%m/%d/%Y")
 
 #Creating the predictions over time dataframe
 predictions_over_time = pd.read_csv('cleaned_data/Predictions over time.csv')
-if date.today().strftime("%m/%d/%Y") in predictions_over_time.columns:
-    predictions_over_time = predictions_over_time.drop(columns = [date.today().strftime("%m/%d/%Y")])
+if date.today().strftime("%m/%d/%Y") in predictions_over_time['date'].values:
+    predictions_over_time = predictions_over_time.drop((predictions_over_time['date'] = [date.today().strftime("%m/%d/%Y")]).index)
 
-predictions_over_time = predictions_over_time.merge(predictions_today, on = ['state', 'district', 'office_type'], how = 'outer')
+predictions_over_time = pd.concat([predictions_over_time, predictions_today], ignore_index=True)
 
 #Saving both dataframes
 predictions_over_time.to_csv('cleaned_data/Predictions over time.csv', index = False)
