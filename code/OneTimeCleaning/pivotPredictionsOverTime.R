@@ -1,6 +1,7 @@
 library(tidyverse)
+library(readr)
 
-preds <- read.csv(file = "cleaned_data/Predictions over time.csv")
+preds <- read_csv("cleaned_data/Predictions over time.csv")
 
 preds <- preds %>% 
   pivot_longer(
