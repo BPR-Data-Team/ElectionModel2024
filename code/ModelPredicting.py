@@ -368,7 +368,7 @@ predictions_today['date'] = date.today().strftime("%m/%d/%Y")
 #Creating the predictions over time dataframe
 predictions_over_time = pd.read_csv('cleaned_data/Predictions over time.csv')
 if date.today().strftime("%m/%d/%Y") in predictions_over_time['date'].values:
-    predictions_over_time = predictions_over_time.drop((predictions_over_time['date'] = [date.today().strftime("%m/%d/%Y")]).index)
+    predictions_over_time = predictions_over_time.drop((predictions_over_time['date'] == [date.today().strftime("%m/%d/%Y")]).index)
 
 predictions_over_time = pd.concat([predictions_over_time, predictions_today], ignore_index=True)
 
