@@ -5,12 +5,15 @@
 *If you're looking for the codebase for our website, [click here](https://github.com/BPR-Data-Team/ElectionModel2024-site).*
 
 ---
+Our goal is to ensure any person who wants to re-run our model or understand the underlying math behind it can do so as easily as possible. As such, we have included a README within each directory that explains the contents of that directory. 
 
 See [Git Guide.md](GitGuide.md) for instructions on how to clone the repository and contribute to the project
 
 See the [Data](data) folder for all _non-cleaned_ data. All of this data has a _cleaned counterpart_ in [Cleaned Data](cleaned_data).
 
 See the [Code](code) folder for all cleaning, scraping, and model code.
+
+See [Models](models) folder for a brief description of how to de-serialize and analyze the actual models we used.
 
 See [Data Citations.md](DataCitations.md) for disclosures of authorship on the data we use.
 

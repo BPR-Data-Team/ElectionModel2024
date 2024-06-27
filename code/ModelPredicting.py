@@ -8,6 +8,7 @@ import re
 from datetime import date
 from scipy.stats import multivariate_normal, Covariance, mode
 import json
+from collections import Counter
 
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
 from sklearn.compose import ColumnTransformer
@@ -301,6 +302,75 @@ president_samples = random_samples[predictions_df['office_type'] == 'President']
 presidential_df = predictions_df[predictions_df['office_type'] == 'President']
 presidential_df = presidential_df.join(electoral_votes.set_index(['state', 'district']), on = ['state', 'district'])
 
+#For the two maps on the website, we need to get the two most likely presidential outcomes (Biden wins which states, etc.)
+#The following code does just that!
+#----- BEGINNING OF LIKELY PRES CODE
+def get_winner(margin):
+    "Given a margin, returns the winner of the state."
+    return 'Biden' if margin > 0 else 'Trump'
+
+def create_state_map(margins):
+    "Returns a frozenset of the states and the winner of the state for a single simulation."
+    return frozenset((state, get_winner(margin)) for state, margin in margins.items())
+
+presidential_df['state_district'] = np.where(presidential_df['district'] != 0,
+                                             presidential_df['state'] + '-' + presidential_df['district'].astype(str),
+                                             presidential_df['state'])
+def calculate_evs(states, presidential_df):
+    "Given a set of states, returns the total electoral votes won by those states."
+    evs = 0
+    for _, row in presidential_df.iterrows():
+        state_district = row['state_district']
+        if state_district in states:
+            evs += row['electoral_votes']
+    return evs
+
+
+# Process the data
+simulations = []
+for _, row in presidential_df.iterrows():
+    state = row['state']
+    if row['district'] != 0:
+        state += f"-{row['district']}"
+    margins = row['margins']
+    for i, margin in enumerate(margins):
+        if len(simulations) <= i:
+            simulations.append({})
+        simulations[i][state] = margin
+    
+state_map_counter = Counter(create_state_map(sim) for sim in simulations)
+
+# Create a DataFrame of the most common outcomes
+top_outcomes = []
+
+for rank, (state_map, count) in enumerate(state_map_counter.most_common(10)):
+    biden_states = np.sort([state for state, winner in state_map if winner == 'Biden'])
+    trump_states = np.sort([state for state, winner in state_map if winner == 'Trump'])
+    
+    biden_evs = calculate_evs(biden_states, presidential_df)
+    trump_evs = calculate_evs(trump_states, presidential_df)
+    
+    top_outcomes.append({
+        'Rank': rank,
+        'Frequency': count,
+        'Percentage': round((count / len(simulations) * 100), 1),
+        'Biden States': biden_states.tolist(),
+        'Trump States': trump_states.tolist(),
+        'Biden EVs': biden_evs,
+        'Trump EVs': trump_evs
+    })
+
+top_outcomes = pd.DataFrame(top_outcomes)
+
+# Format the DataFrame
+top_outcomes = top_outcomes.set_index('Rank')
+
+top_outcomes.to_csv('cleaned_data/Top Presidential Outcomes.csv')
+
+presidential_df = presidential_df.drop(columns = ['state_district'])
+
+#---- END OF LIKELY PRES CODE
+
 # Assuming president_samples is correctly filtered for presidential predictions
 # Reshape the electoral votes to be broadcastable across the simulations
 electoral_votes_broadcastable = presidential_df['electoral_votes'].values[:, np.newaxis]
@@ -311,7 +381,6 @@ democratic_electoral_votes = (president_samples >= 0) * electoral_votes_broadcas
 
 # Sum across states for each simulation
 US_president = np.sum(democratic_electoral_votes, axis=0)
-
 
 #Will add this after putting in names to the original predictions_df
 US_rows = pd.DataFrame(
@@ -361,17 +430,20 @@ predictions_df['tie_num'] = predictions_df.apply(
 
 predictions_df = predictions_df.drop(columns = ['margins', 'threshold_winning'])
 
-#Getting predictions for today to add to the predictions over time dataframe, so we can compare over time
+# Getting predictions for today to add to the predictions over time dataframe
 predictions_today = predictions_df.loc[:, ['state', 'district', 'office_type', 'median_margin']]
 predictions_today['date'] = date.today().strftime("%m/%d/%Y")
 
-#Creating the predictions over time dataframe
+# Creating the predictions over time dataframe
 predictions_over_time = pd.read_csv('cleaned_data/Predictions over time.csv')
-if date.today().strftime("%m/%d/%Y") in predictions_over_time['date'].values:
-    predictions_over_time = predictions_over_time.drop((predictions_over_time['date'] == [date.today().strftime("%m/%d/%Y")]).index)
 
+# Remove today's date if it exists in the DataFrame
+today_date = date.today().strftime("%m/%d/%Y")
+predictions_over_time = predictions_over_time[predictions_over_time['date'] != today_date]
+
+# Concatenate the new predictions
 predictions_over_time = pd.concat([predictions_over_time, predictions_today], ignore_index=True)
 
-#Saving both dataframes
-predictions_over_time.to_csv('cleaned_data/Predictions over time.csv', index = False)
-predictions_df.to_csv('cleaned_data/Predictions.csv', index = False)
+# Saving both dataframes
+predictions_over_time.to_csv('cleaned_data/Predictions over time.csv', index=False)
+predictions_df.to_csv('cleaned_data/Predictions.csv', index=False)
