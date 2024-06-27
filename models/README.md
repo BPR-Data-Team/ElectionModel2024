@@ -1,0 +1,3 @@
+This directory contains all pickled (serialized) models created for the purpose of predicting data. There are 10 models to predict point estimates (Model_X), and one model to predict the standard deviation. We combine the standard deviation given by the std_model (which deals with *aleatoric uncertainty*) with the standard deviation from bootstrapping (which deals with *epistemic uncertainty*). Combining the two gives a full picture of the uncertainty for our predictions. 
+
+These models can be de-serialized with the *pickle* library in python. Upon de-serializing, one can go directly into the models and see what hyperparameters we used (found via CV-tuning) and analyze specific trees within the ensemble to get a decent idea of how our models make accurate predictions!
