@@ -1,4 +1,5 @@
 data/PVI.xlsx filter=git-crypt diff=git-crypt
+data/PostRedistrictPVI.csv filter=git-crypt diff=git-crypt
 cleaned_data/District*PVI.csv filter=git-crypt diff=git-crypt
 cleaned_data/Completed*PVI.csv filter=git-crypt diff=git-crypt
 cleaned_data/Engineered*Dataset.csv filter=git-crypt diff=git-crypt
