@@ -138,8 +138,61 @@ feature_names = preprocessor.fit(X_train).get_feature_names_out()
 training_predictions_array = np.zeros((X_train.shape[0], num_models))
 mean_training_predictions = np.zeros(X_train.shape[0])
 predictions_array = np.zeros((X_predict.shape[0], num_models))
+campaign_contributions_df = np.zeros((X_predict.shape[0], num_models, 101))
 mean_predictions = np.zeros(X_predict.shape[0])
 shap_contribution_array = np.zeros((X_predict.shape[0], len(feature_names) + 1))
+
+def new_campaign_contributions(X : pd.DataFrame, update_num) -> pd.DataFrame:
+    """Here, we change the X_predict >100 times with different campaign finance contributions, and then get the expected values
+    For everything
+    We will be only changing a few columns:
+    1. Receipts_DEM / Receipts_REP
+    2. Receipts = ln(Receipts_DEM / Receipts_REP)
+    3. Disbursements_DEM / Disbursements_REP 
+    4. Disbursements = ln(Disbursements_DEM / Disbursements_REP)
+    5. receipts_genballot_interaction = genballot_predicted_margin * receipts
+    6. disbursements_genballot_interaction = genballot_predicted_margin * disbursements
+    7. finance_fundamental_agree = sign(genballot_predicted_margin * receipts)
+    All increases to these values are done via individual_contributions_DEM/REP. Specifically, we add the same value to both 
+    receipts_dem, disbursements_dem, and individual_contributions_dem. This is because we are assuming that the party receives all new cash from individuals, and spends all their money.
+
+    X_predict: the original dataframe
+    update_num: how much we are changing campaign finance values by
+    e.g. if update_num is 1, we add D+100k to every house race and D+1 million to each senate race. 
+         if update_num <0, we add cash to republicans instead
+    """
+    
+    X_predict = X.copy(deep = True)
+    if update_num > 0:
+        X_predict['individual_contributions_DEM'] += np.where(X_predict['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        X_predict['receipts_DEM'] += np.where(X_predict['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        X_predict['disbursements_DEM'] += np.where(X_predict['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        
+    else:
+        X_predict['individual_contributions_REP'] -= np.where(X_predict['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        X_predict['receipts_REP'] -= np.where(X_predict['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        X_predict['disbursements_REP'] -= np.where(X_predict['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        
+    X_predict['receipts'] = X_predict.apply(lambda row: 
+        -6 if pd.isna(row['receipts_DEM']) else (
+            6 if pd.isna(row['receipts_REP']) else 
+            np.log(round(row['receipts_DEM']) / round(row['receipts_REP']))
+        ), axis=1)
+
+    # Calculate disbursements with NA handling
+    X_predict['disbursements'] = X_predict.apply(lambda row: 
+        -6 if pd.isna(row['disbursements_DEM']) else (
+            6 if pd.isna(row['disbursements_REP']) else 
+            np.log(round(row['disbursements_DEM']) / round(row['disbursements_REP']))
+        ), axis=1)
+
+    # Calculate derived columns
+    X_predict["receipts_genballot_interaction"] = X_predict["genballot_predicted_margin"] * X_predict["receipts"]
+    X_predict["disbursements_genballot_interaction"] = X_predict["genballot_predicted_margin"] * X_predict["disbursements"]
+    X_predict["finance_fundamental_agree"] = np.sign(X_predict["genballot_predicted_margin"] * X_predict["receipts"])
+    
+    return X_predict
+
 
 #Going through each model we trained to get a set of point estimates
 for idx in range(num_models):
@@ -154,6 +207,11 @@ for idx in range(num_models):
     
     contributions = trained_pipe.predict(X_predict, pred_contrib = True)
     
+    for campaign in range(101):
+        campaign_contribution_sim = new_campaign_contributions(X_predict, campaign - 50)
+        campaign_contribution_preds = trained_pipe.predict(campaign_contribution_sim)
+        campaign_contributions_df[:, idx, campaign] += 1/101 * campaign_contribution_preds
+        
     
     shap_contribution_array += contributions
     training_predictions_array[:, idx] = training_predictions
