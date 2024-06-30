@@ -161,37 +161,60 @@ def new_campaign_contributions(X : pd.DataFrame, update_num) -> pd.DataFrame:
     e.g. if update_num is 1, we add D+100k to every house race and D+1 million to each senate race. 
          if update_num <0, we add cash to republicans instead
     """
+    X_update = X.copy(deep = True)
     
-    X_predict = X.copy(deep = True)
+    new_individual_contributions_DEM = X_update['individual_contributions_DEM'].copy(deep = True)
+    new_receipts_DEM = X_update['receipts_DEM'].copy(deep = True)
+    new_disbursements_DEM = X_update['disbursements_DEM'].copy(deep = True)
+    
+    new_individual_contributions_REP = X_update['individual_contributions_REP'].copy(deep = True)
+    new_receipts_REP = X_update['receipts_REP'].copy(deep = True)
+    new_disbursements_REP = X_update['disbursements_REP'].copy(deep = True)
+    
     if update_num > 0:
-        X_predict['individual_contributions_DEM'] += np.where(X_predict['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
-        X_predict['receipts_DEM'] += np.where(X_predict['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
-        X_predict['disbursements_DEM'] += np.where(X_predict['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
-        
+        new_individual_contributions_DEM += np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        new_receipts_DEM += np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        new_disbursements_DEM += np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
     else:
-        X_predict['individual_contributions_REP'] -= np.where(X_predict['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
-        X_predict['receipts_REP'] -= np.where(X_predict['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
-        X_predict['disbursements_REP'] -= np.where(X_predict['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        new_individual_contributions_REP -= np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        new_receipts_REP -= np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        new_disbursements_REP -= np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
         
-    X_predict['receipts'] = X_predict.apply(lambda row: 
-        -6 if pd.isna(row['receipts_DEM']) else (
-            6 if pd.isna(row['receipts_REP']) else 
-            np.log(round(row['receipts_DEM']) / round(row['receipts_REP']))
-        ), axis=1)
+    X_update['disbursements_DEM'] = new_disbursements_DEM
+    X_update['receipts_DEM'] = new_receipts_DEM
+    X_update['individual_contributions_DEM'] = new_individual_contributions_DEM
+    X_update['disbursements_REP'] = new_disbursements_REP
+    X_update['receipts_REP'] = new_receipts_REP
+    X_update['individual_contributions_REP'] = new_individual_contributions_REP
+     
+    # Calculate receipts with NA handling using np.where
+    X_update['receipts'] = np.where(
+        pd.isna(new_receipts_DEM),
+        -6,
+        np.where(
+            pd.isna(new_receipts_REP),
+            6,
+            np.log(round(new_receipts_DEM) / round(new_receipts_REP))
+        )
+    )
 
-    # Calculate disbursements with NA handling
-    X_predict['disbursements'] = X_predict.apply(lambda row: 
-        -6 if pd.isna(row['disbursements_DEM']) else (
-            6 if pd.isna(row['disbursements_REP']) else 
-            np.log(round(row['disbursements_DEM']) / round(row['disbursements_REP']))
-        ), axis=1)
+    # Calculate disbursements with NA handling using np.where
+    X_update['disbursements'] = np.where(
+        pd.isna(new_disbursements_DEM),
+        -6,
+        np.where(
+            pd.isna(new_disbursements_REP),
+            6,
+            np.log(round(new_disbursements_DEM) / round(new_disbursements_REP))
+        )
+    )
 
     # Calculate derived columns
     X_predict["receipts_genballot_interaction"] = X_predict["genballot_predicted_margin"] * X_predict["receipts"]
     X_predict["disbursements_genballot_interaction"] = X_predict["genballot_predicted_margin"] * X_predict["disbursements"]
     X_predict["finance_fundamental_agree"] = np.sign(X_predict["genballot_predicted_margin"] * X_predict["receipts"])
     
-    return X_predict
+    return X_update
 
 
 #Going through each model we trained to get a set of point estimates
@@ -206,11 +229,10 @@ for idx in range(num_models):
     predictions = trained_pipe.predict(X_predict)
     
     contributions = trained_pipe.predict(X_predict, pred_contrib = True)
-    
     for campaign in range(101):
         campaign_contribution_sim = new_campaign_contributions(X_predict, campaign - 50)
         campaign_contribution_preds = trained_pipe.predict(campaign_contribution_sim)
-        campaign_contributions_df[:, idx, campaign] += 1/101 * campaign_contribution_preds
+        campaign_contributions_df[:, idx, campaign] = campaign_contribution_preds
         
     
     shap_contribution_array += contributions
@@ -219,6 +241,8 @@ for idx in range(num_models):
 
 mean_training_predictions = np.mean(training_predictions_array, axis = 1)
 mean_predictions = np.mean(predictions_array, axis = 1)
+mean_campaign_contributions = np.mean(campaign_contributions_df, axis = 1)
+print(mean_campaign_contributions.shape)
 epistemic_std_predictions = np.std(predictions_array, axis = 1)
 mean_shap_contributions = shap_contribution_array / num_models
 
@@ -346,6 +370,9 @@ multinormal = multivariate_normal(mean_predictions, cov_matrix, allow_singular=T
 random_samples = multinormal.rvs(size = 100000).T
 predictions_df['margins'] = random_samples.tolist()
 predictions_df['median_margin'] = np.median(random_samples, axis = 1)
+predictions_df['campaign'] = mean_campaign_contributions.tolist()
+predictions_df['campaign_diff'] = predictions_df.apply(lambda x: x['median_margin'] - x['campaign'][0], axis = 1)
+predictions_df['monotonic_campaign'] = predictions_df.apply(lambda x: np.all(np.diff(x['campaign']) >= 0), axis = 1)
 
 #Now need to add additional rows for house, senate, and president
 senate_samples = random_samples[predictions_df['office_type'] == 'Senate']
