@@ -346,8 +346,12 @@ with open("models/std_model.pkl", 'rb') as file:
     std_best_pipe = pkl.load(file)
 aleatoric_std_predictions = std_best_pipe.predict(X_predict)
 
+days_until_election = (date(2024, 11, 5) - date.today()).days
+aleatoric_increase = 0.03*days_until_election + 0.08 #We assume that aleatoric uncertainty decreases as we get closer to the election
+print(f"Aleatoric Increase: {aleatoric_increase}")
+#We chose 0.03 and 0.08 so ~4 months before the election, the std aleatoric uncertainty is multiplied by 2, and ~1 month before, it is multiplied by 1
 #At this point, we now have the standard deviations for each prediction. We can now calculate the final predictions
-final_std_predictions = np.sqrt(epistemic_std_predictions**2 + 4 * aleatoric_std_predictions**2)
+final_std_predictions = np.sqrt(epistemic_std_predictions**2 + aleatoric_increase * aleatoric_std_predictions**2)
         
 
 #Getting final race-level dataframe
@@ -371,8 +375,9 @@ random_samples = multinormal.rvs(size = 100000).T
 predictions_df['margins'] = random_samples.tolist()
 predictions_df['median_margin'] = np.median(random_samples, axis = 1)
 predictions_df['campaign'] = mean_campaign_contributions.tolist()
-predictions_df['campaign_diff'] = predictions_df.apply(lambda x: x['median_margin'] - x['campaign'][0], axis = 1)
-predictions_df['monotonic_campaign'] = predictions_df.apply(lambda x: np.all(np.diff(x['campaign']) >= 0), axis = 1)
+predictions_df['use_campaign'] = (((predictions_df['office_type'] == 'Senate') | (predictions_df['office_type'] == 'House')) & (predictions_df['state'] != 'US') & 
+                                  X_predict['receipts_DEM'].notna() & X_predict['receipts_REP'].notna())
+
 
 #Now need to add additional rows for house, senate, and president
 senate_samples = random_samples[predictions_df['office_type'] == 'Senate']
