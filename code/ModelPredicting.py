@@ -138,8 +138,84 @@ feature_names = preprocessor.fit(X_train).get_feature_names_out()
 training_predictions_array = np.zeros((X_train.shape[0], num_models))
 mean_training_predictions = np.zeros(X_train.shape[0])
 predictions_array = np.zeros((X_predict.shape[0], num_models))
+campaign_contributions_df = np.zeros((X_predict.shape[0], num_models, 101))
 mean_predictions = np.zeros(X_predict.shape[0])
 shap_contribution_array = np.zeros((X_predict.shape[0], len(feature_names) + 1))
+
+def new_campaign_contributions(X : pd.DataFrame, update_num) -> pd.DataFrame:
+    """Here, we change the X_predict >100 times with different campaign finance contributions, and then get the expected values
+    For everything
+    We will be only changing a few columns:
+    1. Receipts_DEM / Receipts_REP
+    2. Receipts = ln(Receipts_DEM / Receipts_REP)
+    3. Disbursements_DEM / Disbursements_REP 
+    4. Disbursements = ln(Disbursements_DEM / Disbursements_REP)
+    5. receipts_genballot_interaction = genballot_predicted_margin * receipts
+    6. disbursements_genballot_interaction = genballot_predicted_margin * disbursements
+    7. finance_fundamental_agree = sign(genballot_predicted_margin * receipts)
+    All increases to these values are done via individual_contributions_DEM/REP. Specifically, we add the same value to both 
+    receipts_dem, disbursements_dem, and individual_contributions_dem. This is because we are assuming that the party receives all new cash from individuals, and spends all their money.
+
+    X_predict: the original dataframe
+    update_num: how much we are changing campaign finance values by
+    e.g. if update_num is 1, we add D+100k to every house race and D+1 million to each senate race. 
+         if update_num <0, we add cash to republicans instead
+    """
+    X_update = X.copy(deep = True)
+    
+    new_individual_contributions_DEM = X_update['individual_contributions_DEM'].copy(deep = True)
+    new_receipts_DEM = X_update['receipts_DEM'].copy(deep = True)
+    new_disbursements_DEM = X_update['disbursements_DEM'].copy(deep = True)
+    
+    new_individual_contributions_REP = X_update['individual_contributions_REP'].copy(deep = True)
+    new_receipts_REP = X_update['receipts_REP'].copy(deep = True)
+    new_disbursements_REP = X_update['disbursements_REP'].copy(deep = True)
+    
+    if update_num > 0:
+        new_individual_contributions_DEM += np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        new_receipts_DEM += np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        new_disbursements_DEM += np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+    else:
+        new_individual_contributions_REP -= np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        new_receipts_REP -= np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        new_disbursements_REP -= np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        
+    X_update['disbursements_DEM'] = new_disbursements_DEM
+    X_update['receipts_DEM'] = new_receipts_DEM
+    X_update['individual_contributions_DEM'] = new_individual_contributions_DEM
+    X_update['disbursements_REP'] = new_disbursements_REP
+    X_update['receipts_REP'] = new_receipts_REP
+    X_update['individual_contributions_REP'] = new_individual_contributions_REP
+     
+    # Calculate receipts with NA handling using np.where
+    X_update['receipts'] = np.where(
+        pd.isna(new_receipts_DEM),
+        -6,
+        np.where(
+            pd.isna(new_receipts_REP),
+            6,
+            np.log(round(new_receipts_DEM) / round(new_receipts_REP))
+        )
+    )
+
+    # Calculate disbursements with NA handling using np.where
+    X_update['disbursements'] = np.where(
+        pd.isna(new_disbursements_DEM),
+        -6,
+        np.where(
+            pd.isna(new_disbursements_REP),
+            6,
+            np.log(round(new_disbursements_DEM) / round(new_disbursements_REP))
+        )
+    )
+
+    # Calculate derived columns
+    X_predict["receipts_genballot_interaction"] = X_predict["genballot_predicted_margin"] * X_predict["receipts"]
+    X_predict["disbursements_genballot_interaction"] = X_predict["genballot_predicted_margin"] * X_predict["disbursements"]
+    X_predict["finance_fundamental_agree"] = np.sign(X_predict["genballot_predicted_margin"] * X_predict["receipts"])
+    
+    return X_update
+
 
 #Going through each model we trained to get a set of point estimates
 for idx in range(num_models):
@@ -153,7 +229,11 @@ for idx in range(num_models):
     predictions = trained_pipe.predict(X_predict)
     
     contributions = trained_pipe.predict(X_predict, pred_contrib = True)
-    
+    for campaign in range(101):
+        campaign_contribution_sim = new_campaign_contributions(X_predict, campaign - 50)
+        campaign_contribution_preds = trained_pipe.predict(campaign_contribution_sim)
+        campaign_contributions_df[:, idx, campaign] = campaign_contribution_preds
+        
     
     shap_contribution_array += contributions
     training_predictions_array[:, idx] = training_predictions
@@ -161,6 +241,8 @@ for idx in range(num_models):
 
 mean_training_predictions = np.mean(training_predictions_array, axis = 1)
 mean_predictions = np.mean(predictions_array, axis = 1)
+mean_campaign_contributions = np.mean(campaign_contributions_df, axis = 1)
+print(mean_campaign_contributions.shape)
 epistemic_std_predictions = np.std(predictions_array, axis = 1)
 mean_shap_contributions = shap_contribution_array / num_models
 
@@ -264,8 +346,12 @@ with open("models/std_model.pkl", 'rb') as file:
     std_best_pipe = pkl.load(file)
 aleatoric_std_predictions = std_best_pipe.predict(X_predict)
 
+days_until_election = (date(2024, 11, 5) - date.today()).days
+aleatoric_increase = 0.03*days_until_election + 0.08 #We assume that aleatoric uncertainty decreases as we get closer to the election
+print(f"Aleatoric Increase: {aleatoric_increase}")
+#We chose 0.03 and 0.08 so ~4 months before the election, the std aleatoric uncertainty is multiplied by 2, and ~1 month before, it is multiplied by 1
 #At this point, we now have the standard deviations for each prediction. We can now calculate the final predictions
-final_std_predictions = np.sqrt(epistemic_std_predictions**2 + 4 * aleatoric_std_predictions**2)
+final_std_predictions = np.sqrt(epistemic_std_predictions**2 + aleatoric_increase * aleatoric_std_predictions**2)
         
 
 #Getting final race-level dataframe
@@ -288,6 +374,10 @@ multinormal = multivariate_normal(mean_predictions, cov_matrix, allow_singular=T
 random_samples = multinormal.rvs(size = 100000).T
 predictions_df['margins'] = random_samples.tolist()
 predictions_df['median_margin'] = np.median(random_samples, axis = 1)
+predictions_df['campaign'] = mean_campaign_contributions.tolist()
+predictions_df['use_campaign'] = (((predictions_df['office_type'] == 'Senate') | (predictions_df['office_type'] == 'House')) & (predictions_df['state'] != 'US') & 
+                                  X_predict['receipts_DEM'].notna() & X_predict['receipts_REP'].notna())
+
 
 #Now need to add additional rows for house, senate, and president
 senate_samples = random_samples[predictions_df['office_type'] == 'Senate']
