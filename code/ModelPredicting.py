@@ -242,7 +242,6 @@ for idx in range(num_models):
 mean_training_predictions = np.mean(training_predictions_array, axis = 1)
 mean_predictions = np.mean(predictions_array, axis = 1)
 mean_campaign_contributions = np.mean(campaign_contributions_df, axis = 1)
-print(mean_campaign_contributions.shape)
 epistemic_std_predictions = np.std(predictions_array, axis = 1)
 mean_shap_contributions = shap_contribution_array / num_models
 
@@ -348,7 +347,6 @@ aleatoric_std_predictions = std_best_pipe.predict(X_predict)
 
 days_until_election = (date(2024, 11, 5) - date.today()).days
 aleatoric_increase = 0.03*days_until_election + 0.08 #We assume that aleatoric uncertainty decreases as we get closer to the election
-print(f"Aleatoric Increase: {aleatoric_increase}")
 #We chose 0.03 and 0.08 so ~4 months before the election, the std aleatoric uncertainty is multiplied by 2, and ~1 month before, it is multiplied by 1
 #At this point, we now have the standard deviations for each prediction. We can now calculate the final predictions
 final_std_predictions = np.sqrt(epistemic_std_predictions**2 + aleatoric_increase * aleatoric_std_predictions**2)
@@ -375,6 +373,7 @@ random_samples = multinormal.rvs(size = 100000).T
 predictions_df['margins'] = random_samples.tolist()
 predictions_df['median_margin'] = np.median(random_samples, axis = 1)
 predictions_df['campaign'] = mean_campaign_contributions.tolist()
+predictions_df['campaign'] = predictions_df['campaign'].apply(lambda x: [round(i, 2) for i in x])
 predictions_df['use_campaign'] = (((predictions_df['office_type'] == 'Senate') | (predictions_df['office_type'] == 'House')) & (predictions_df['state'] != 'US') & 
                                   X_predict['receipts_DEM'].notna() & X_predict['receipts_REP'].notna())
 
