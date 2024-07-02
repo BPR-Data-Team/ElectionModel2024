@@ -174,7 +174,7 @@ def new_campaign_contributions(X : pd.DataFrame, update_num) -> pd.DataFrame:
     if update_num > 0:
         new_individual_contributions_DEM += np.where(X_update['office_type'] == "Senate", 400_000 * update_num, 40_000 * update_num)
         new_receipts_DEM += np.where(X_update['office_type'] == "Senate", 400_000 * update_num, 40_000 * update_num)
-        new_disbursements_DEM += np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        new_disbursements_DEM += np.where(X_update['office_type'] == "Senate", 400_000 * update_num, 40_000 * update_num)
     else:
         new_individual_contributions_REP -= np.where(X_update['office_type'] == "Senate", 400_000 * update_num, 40_000 * update_num)
         new_receipts_REP -= np.where(X_update['office_type'] == "Senate", 400_000 * update_num, 40_000 * update_num)
