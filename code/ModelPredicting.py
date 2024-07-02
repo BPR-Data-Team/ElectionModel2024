@@ -172,13 +172,13 @@ def new_campaign_contributions(X : pd.DataFrame, update_num) -> pd.DataFrame:
     new_disbursements_REP = X_update['disbursements_REP'].copy(deep = True)
     
     if update_num > 0:
-        new_individual_contributions_DEM += np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
-        new_receipts_DEM += np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        new_individual_contributions_DEM += np.where(X_update['office_type'] == "Senate", 400_000 * update_num, 40_000 * update_num)
+        new_receipts_DEM += np.where(X_update['office_type'] == "Senate", 400_000 * update_num, 40_000 * update_num)
         new_disbursements_DEM += np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
     else:
-        new_individual_contributions_REP -= np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
-        new_receipts_REP -= np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
-        new_disbursements_REP -= np.where(X_update['office_type'] == "Senate", 1_000_000 * update_num, 100_000 * update_num)
+        new_individual_contributions_REP -= np.where(X_update['office_type'] == "Senate", 400_000 * update_num, 40_000 * update_num)
+        new_receipts_REP -= np.where(X_update['office_type'] == "Senate", 400_000 * update_num, 40_000 * update_num)
+        new_disbursements_REP -= np.where(X_update['office_type'] == "Senate", 400_000 * update_num, 40_000 * update_num)
         
     X_update['disbursements_DEM'] = new_disbursements_DEM
     X_update['receipts_DEM'] = new_receipts_DEM
