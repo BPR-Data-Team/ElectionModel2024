@@ -138,7 +138,7 @@ feature_names = preprocessor.fit(X_train).get_feature_names_out()
 training_predictions_array = np.zeros((X_train.shape[0], num_models))
 mean_training_predictions = np.zeros(X_train.shape[0])
 predictions_array = np.zeros((X_predict.shape[0], num_models))
-campaign_contributions_df = np.zeros((X_predict.shape[0], num_models, 101))
+campaign_contributions = np.zeros((X_predict.shape[0], 101))
 mean_predictions = np.zeros(X_predict.shape[0])
 shap_contribution_array = np.zeros((X_predict.shape[0], len(feature_names) + 1))
 
@@ -158,7 +158,7 @@ def new_campaign_contributions(X : pd.DataFrame, update_num) -> pd.DataFrame:
 
     X_predict: the original dataframe
     update_num: how much we are changing campaign finance values by
-    e.g. if update_num is 1, we add D+100k to every house race and D+1 million to each senate race. 
+    e.g. if update_num is 1, we add D+40k to every house race and D+400k to each senate race. 
          if update_num <0, we add cash to republicans instead
     """
     X_update = X.copy(deep = True)
@@ -228,12 +228,7 @@ for idx in range(num_models):
     training_predictions = trained_pipe.predict(X_train)
     predictions = trained_pipe.predict(X_predict)
     
-    contributions = trained_pipe.predict(X_predict, pred_contrib = True)
-    for campaign in range(101):
-        campaign_contribution_sim = new_campaign_contributions(X_predict, campaign - 50)
-        campaign_contribution_preds = trained_pipe.predict(campaign_contribution_sim)
-        campaign_contributions_df[:, idx, campaign] = campaign_contribution_preds
-        
+    contributions = trained_pipe.predict(X_predict, pred_contrib = True)        
     
     shap_contribution_array += contributions
     training_predictions_array[:, idx] = training_predictions
@@ -241,9 +236,18 @@ for idx in range(num_models):
 
 mean_training_predictions = np.mean(training_predictions_array, axis = 1)
 mean_predictions = np.mean(predictions_array, axis = 1)
-mean_campaign_contributions = np.mean(campaign_contributions_df, axis = 1)
 epistemic_std_predictions = np.std(predictions_array, axis = 1)
 mean_shap_contributions = shap_contribution_array / num_models
+
+#NOW WORKING WITH CAMPAIGN FINANCE DATA! THE NEW WAY, WITH THE NEW MODEL
+with open("models/CampaignFinanceModel.pkl", 'rb') as file:
+    campaign_pipe = pkl.load(file)
+    
+baseline_predictions = campaign_pipe.predict(X_predict)
+
+for new_campaign in range(101):
+    new_campaign_predict = new_campaign_contributions(X_predict, new_campaign - 50)
+    campaign_contributions[:, new_campaign] = campaign_pipe.predict(new_campaign_predict) - baseline_predictions
 
 #SHAP values are used for interpretation, but it's also used for correlation analysis for the final multivariate normal distribution
 correlations = np.corrcoef(mean_shap_contributions)
@@ -372,7 +376,7 @@ multinormal = multivariate_normal(mean_predictions, cov_matrix, allow_singular=T
 random_samples = multinormal.rvs(size = 100000).T
 predictions_df['margins'] = random_samples.tolist()
 predictions_df['median_margin'] = np.median(random_samples, axis = 1)
-predictions_df['campaign'] = mean_campaign_contributions.tolist()
+predictions_df['campaign'] = campaign_contributions.tolist()
 predictions_df['campaign'] = predictions_df['campaign'].apply(lambda x: [round(i, 2) for i in x])
 predictions_df['use_campaign'] = (((predictions_df['office_type'] == 'Senate') | (predictions_df['office_type'] == 'House')) & (predictions_df['state'] != 'US') & 
                                   X_predict['receipts_DEM'].notna() & X_predict['receipts_REP'].notna())
