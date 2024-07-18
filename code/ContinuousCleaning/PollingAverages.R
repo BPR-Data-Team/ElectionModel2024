@@ -50,22 +50,25 @@ perform_weighted_metaprop <- function(num_democrat, samplesizes, weights) {
   weighted_ci_lower <- NA
   weighted_ci_upper <- NA
   
-  tryCatch({
-    logit_event_rate <- log(num_democrat / (samplesizes - num_democrat))
-    se_logit_event_rate <- sqrt(1 / num_democrat + 1 / (samplesizes - num_democrat))
-    
-   
-    weighted_meta <- rma(yi = logit_event_rate,
-                         sei = se_logit_event_rate,
-                         weights = weights,
-                         method = "REML")
-    
-    #Change the weighted estimates if there ARE estimates
-    weighted_estimate <- reverse_logit(weighted_meta$beta[, 1])
-    weighted_ci_lower <- reverse_logit(weighted_meta$ci.lb)
-    weighted_ci_upper <- reverse_logit(weighted_meta$ci.ub)
-  }, error = function(e) {
-  })
+  if (sum(weights) != 0) {
+    tryCatch({
+      logit_event_rate <- log(num_democrat / (samplesizes - num_democrat))
+      se_logit_event_rate <- sqrt(1 / num_democrat + 1 / (samplesizes - num_democrat))
+      
+      
+      weighted_meta <- rma(yi = logit_event_rate,
+                           sei = se_logit_event_rate,
+                           weights = weights,
+                           method = "DL")
+      
+      #Change the weighted estimates if there ARE estimates
+      weighted_estimate <- reverse_logit(weighted_meta$beta[, 1])
+      weighted_ci_lower <- reverse_logit(weighted_meta$ci.lb)
+      weighted_ci_upper <- reverse_logit(weighted_meta$ci.ub)
+    }, error = function(e) {
+      print(e)
+    }
+  )}
   
   # Return the results as a tibble
   return(tibble(
@@ -92,15 +95,13 @@ cleaned_historical <- raw_polls %>%
   mutate(seat_number = as.numeric(ifelse(is.na(seat_number), 0, seat_number))) %>%
   pivot_wider(names_from = cand1_party, values_from = cand1_pct) %>%
   pivot_wider(names_from = cand2_party, values_from = cand2_pct) %>%
-  #We don't want primary polls or generic polls
+  #We don't want primary polls
   filter(!str_detect(type_simple, "-P")) %>%
   mutate(office_type = case_when(
     str_detect(type_simple, "Sen") ~ "Senate", 
     str_detect(type_simple, "Gov") ~ "Governor",
     str_detect(type_simple, "Pres") ~ "President",
-    str_detect(type_simple, "House") ~ "House"),
-    office_type = ifelse(office_type == "President" & state == "US", 
-                         "House", office_type)) %>%
+    str_detect(type_simple, "House") ~ "House")) %>%
   left_join(pollRatings, by = c("cycle" = 'year', 'pollster_rating_id')) %>%
   rename(sample_size = samplesize) %>%
   select(poll_id, pollster_rating_id, methodology, state, seat_number, sample_size, 
@@ -223,9 +224,9 @@ generic_polling <- full_poll_averages %>%
   rename(weighted_genpoll = weighted_estimate, 
          weighted_genpoll_lower = weighted_ci_lower, 
          weighted_genpoll_upper = weighted_ci_upper,
-         unweighted_genpoll = unweighted_estimate) %>%
+         unweighted_genpoll = unweighted_estimate) %>% 
   select(c('year', 'weighted_genpoll','weighted_genpoll_lower', 
-           'weighted_genpoll_upper', 'unweighted_genpoll'))
+           'weighted_genpoll_upper', 'unweighted_genpoll', 'office_type'))
 
 historical_genballots <- read.csv("cleaned_data/Generic Ballot.csv")
 average_genballot_margin <- mean(historical_genballots$gen_margin, na.rm = TRUE)
