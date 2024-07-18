@@ -120,6 +120,14 @@ cleaned_current <- uncleaned_current %>%
   group_by(state) %>%
   mutate(num_polls = n_distinct(poll_id)) %>%
   ungroup() %>%
+  #Fixing problems with ME/NE where CD is not counted as a seat number, Same with PR
+  mutate(seat_number = case_when(
+    str_detect(state, "CD-1") ~ 1, 
+    str_detect(state, "CD-2") ~ 2, 
+    TRUE ~ seat_number
+  ), 
+  state = str_remove(state, " CD-[0-9]")) %>% 
+  filter(state %in% c("", state.name)) %>%
   select(poll_id, pollster_rating_id, methodology, state, seat_number, question_id, 
          sample_size, population_full, cycle, office_type, party, pct, answer, num_polls)
 
