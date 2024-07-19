@@ -107,20 +107,37 @@ cleaned_historical <- raw_polls %>%
   select(poll_id, pollster_rating_id, methodology, state, seat_number, sample_size, 
          cycle, office_type, DEM, REP, valid, lower_error_diff)
 
+uncleaned_current_genballot <- read.csv("https://projects.fivethirtyeight.com/polls-page/data/generic_ballot_polls.csv") %>% 
+  pivot_longer(cols = c(dem, rep), names_to = "party", values_to = "pct") %>% 
+  mutate(party = toupper(party))
+
 #Get current polls from online, 538 stream
 uncleaned_current <- bind_rows(
   read.csv("https://projects.fivethirtyeight.com/polls-page/data/president_polls.csv"), 
   read.csv("https://projects.fivethirtyeight.com/polls-page/data/senate_polls.csv"), 
   read.csv("https://projects.fivethirtyeight.com/polls-page/data/house_polls.csv"), 
-  read.csv("https://projects.fivethirtyeight.com/polls-page/data/governor_polls.csv")
+  read.csv("https://projects.fivethirtyeight.com/polls-page/data/governor_polls.csv"), 
+  uncleaned_current_genballot
 )
 
 #Initial cleaning
 cleaned_current <- uncleaned_current %>%
   filter(as.Date(Sys.Date()) - as.Date(mdy(end_date)) <= days_counting) %>%
   group_by(state) %>%
-  mutate(num_polls = n_distinct(poll_id)) %>%
+  mutate(num_polls = n_distinct(poll_id), 
+         state = case_when(
+           is.na(state) ~ "", 
+           TRUE ~ state
+         )) %>%
   ungroup() %>%
+  #Fixing problems with ME/NE where CD is not counted as a seat number, Same with PR
+  mutate(seat_number = case_when(
+    str_detect(state, "CD-1") ~ 1, 
+    str_detect(state, "CD-2") ~ 2, 
+    TRUE ~ seat_number
+  ), 
+  state = str_remove(state, " CD-[0-9]")) %>% 
+  filter(state %in% c("", state.name)) %>%
   select(poll_id, pollster_rating_id, methodology, state, seat_number, question_id, 
          sample_size, population_full, cycle, office_type, party, pct, answer, num_polls)
 
@@ -243,13 +260,26 @@ generic_polling_2024 <- generic_polling %>%
     true_weighted_genpoll_upper = weighted_genpoll_upper + bounds_increase + 
       (true_weighted_genpoll - weighted_genpoll), 
     true_unweighted_genpoll = average_genballot_margin + poll_weight * (unweighted_genpoll - average_genballot_margin)) %>% 
-  select(c('year', 'true_weighted_genpoll','true_weighted_genpoll_lower', 
+  select(c('year', 'office_type', 'true_weighted_genpoll','true_weighted_genpoll_lower', 
            'true_weighted_genpoll_upper', 'true_unweighted_genpoll')) %>%
   rename_with(~ str_remove(., "true_"))
 
 generic_polling <- generic_polling %>%
   filter(year != 2024) %>% 
-  bind_rows(generic_polling_2024)
+  bind_rows(generic_polling_2024) %>% 
+  mutate(office_type = str_remove(office_type, "U.S. ")) %>%
+  group_by(year) %>%
+  #For 2004 there are no weighted house polls -- we just augment the pres polls by the difference between
+  #The unweighted house polls and unweighted pres polls to get the house weighted polls
+  mutate(across(starts_with("weighted_genpoll"), .fns = ~ case_when(
+    year == 2004 & office_type == "House" ~ lag(., order_by = desc(office_type)) + unweighted_genpoll - 
+      lag(unweighted_genpoll, order_by = desc(office_type)), 
+    TRUE ~ .))) %>% 
+  mutate(office_type = case_when(
+    office_type == "House" ~ list(c("House", "Senate", "Governor")),
+    TRUE ~ list("President")
+  )) %>% 
+  unnest(office_type)
   
 
 write.csv(full_poll_averages, "cleaned_data/AllPolls.csv")

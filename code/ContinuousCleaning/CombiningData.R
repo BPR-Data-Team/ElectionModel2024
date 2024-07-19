@@ -97,7 +97,7 @@ combination <- all_elections %>%
   left_join(expert, by = c("state" = "State", "district" = "District", "year",
                             "special", "office_type" = "race")) %>% #2024 not included
   left_join(genballot, by = 'year') %>% #2024 included
-  left_join(genpolls, by = 'year') %>%
+  left_join(genpolls, by = c('year', 'office_type')) %>%
   left_join(specials, by = 'year') %>% #2024 included?
   left_join(pvi, by = c('year', 'state', 'district')) %>% #2024 included
   left_join(chambers, by = 'year') %>% #2024 included
