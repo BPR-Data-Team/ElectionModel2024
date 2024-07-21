@@ -11,6 +11,6 @@
 - Historical Elections: All cleaned data regarding past elections, such as special elections, president, house, and governor
 - fec data: All past campaign finance data
 - fecData20022024: Cleaned FEC/Campaign Finance Data
-- Top Presidential Outcomes: The most recent top presidential outcomes (the maps which biden/trump are likely to win, on the main page)
+- Top Presidential Outcomes: The most recent top presidential outcomes (the maps which dem/trump are likely to win, on the main page)
 - SHAP Values: Example data for what SHAP looks like (the explainers we have at the bottom of every individual race)
 - AllX: All cleaned data we have on the given factor (polls, senate races, etc.)

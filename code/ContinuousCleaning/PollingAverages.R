@@ -128,11 +128,14 @@ cleaned_current <- uncleaned_current %>%
   ), 
   state = str_remove(state, " CD-[0-9]")) %>% 
   filter(state %in% c("", state.name)) %>%
+  group_by(question_id) %>%
+  filter(!any(answer == "Biden") & any(answer == "Trump")) %>%
+  ungroup() %>%
   select(poll_id, pollster_rating_id, methodology, state, seat_number, question_id, 
          sample_size, population_full, cycle, office_type, party, pct, answer, num_polls)
 
 #For each question, we only care about the answer that has the max result:
-#For example a question might ask "Biden vs Trump vs I" AND "Biden v Trump", 
+#For example a question might ask "Dem vs Trump vs I" AND "Dem v Trump", 
 #Which is very annoying -- #We take the first
 max_pct_sums <- cleaned_current %>% 
   group_by(poll_id,pollster_rating_id,question_id,state,seat_number) %>% 
