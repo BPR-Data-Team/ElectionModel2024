@@ -106,12 +106,17 @@ cleaned_historical <- raw_polls %>%
   select(poll_id, pollster_rating_id, methodology, state, seat_number, sample_size, 
          cycle, office_type, DEM, REP, valid, lower_error_diff)
 
+uncleaned_current_genballot <- read.csv("https://projects.fivethirtyeight.com/polls-page/data/generic_ballot_polls.csv") %>% 
+  pivot_longer(cols = c(dem, rep), names_to = "party", values_to = "pct") %>% 
+  mutate(party = toupper(party))
+
 #Get current polls from online, 538 stream
 uncleaned_current <- bind_rows(
   read.csv("https://projects.fivethirtyeight.com/polls-page/data/president_polls.csv"), 
   read.csv("https://projects.fivethirtyeight.com/polls-page/data/senate_polls.csv"), 
   read.csv("https://projects.fivethirtyeight.com/polls-page/data/house_polls.csv"), 
-  read.csv("https://projects.fivethirtyeight.com/polls-page/data/governor_polls.csv")
+  read.csv("https://projects.fivethirtyeight.com/polls-page/data/governor_polls.csv"),
+  uncleaned_current_genballot
 )
 
 #Initial cleaning
