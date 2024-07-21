@@ -132,7 +132,7 @@ cleaned_current <- uncleaned_current %>%
          sample_size, population_full, cycle, office_type, party, pct, answer, num_polls)
 
 #For each question, we only care about the answer that has the max result:
-#For example a question might ask "Biden vs Trump vs I" AND "Biden v Trump", 
+#For example a question might ask "Dem vs Trump vs I" AND "Dem v Trump", 
 #Which is very annoying -- #We take the first
 max_pct_sums <- cleaned_current %>% 
   group_by(poll_id,pollster_rating_id,question_id,state,seat_number) %>% 
