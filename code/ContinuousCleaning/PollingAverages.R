@@ -264,6 +264,8 @@ generic_polling_2024 <- generic_polling %>%
            'true_weighted_genpoll_upper', 'true_unweighted_genpoll')) %>%
   rename_with(~ str_remove(., "true_"))
 
+#YOU FINISHED THIS! LOOK AT GENERIC POLLING AND THEN FOCUS ON COMBINING DATA -- YOULL END UP
+#WITH MANY MANY MORE COLS! BUT RESULTS MAY... BE BETTER??
 generic_polling <- generic_polling %>%
   filter(year != 2024) %>% 
   bind_rows(generic_polling_2024) %>% 
@@ -274,12 +276,10 @@ generic_polling <- generic_polling %>%
   mutate(across(starts_with("weighted_genpoll"), .fns = ~ case_when(
     year == 2004 & office_type == "House" ~ lag(., order_by = desc(office_type)) + unweighted_genpoll - 
       lag(unweighted_genpoll, order_by = desc(office_type)), 
-    TRUE ~ .))) %>% 
-  mutate(office_type = case_when(
-    office_type == "House" ~ list(c("House", "Senate", "Governor")),
-    TRUE ~ list("President")
-  )) %>% 
-  unnest(office_type)
+    TRUE ~ .))) %>%
+  pivot_wider(names_from = office_type,
+    names_glue = "{tolower(office_type)}_{.value}",
+    values_from = contains("weighted"))
   
 
 write.csv(full_poll_averages, "cleaned_data/AllPolls.csv")
