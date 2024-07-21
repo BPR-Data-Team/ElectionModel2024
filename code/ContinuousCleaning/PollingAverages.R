@@ -129,7 +129,7 @@ cleaned_current <- uncleaned_current %>%
   state = str_remove(state, " CD-[0-9]")) %>% 
   filter(state %in% c("", state.name)) %>%
   group_by(question_id) %>%
-  filter(!any(answer == "Biden")) %>%
+  filter(!any(answer == "Biden") & any(answer == "Trump")) %>%
   ungroup() %>%
   select(poll_id, pollster_rating_id, methodology, state, seat_number, question_id, 
          sample_size, population_full, cycle, office_type, party, pct, answer, num_polls)
