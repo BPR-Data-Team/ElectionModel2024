@@ -524,7 +524,7 @@ predictions_df['tie_num'] = predictions_df.apply(
 predictions_df = predictions_df.drop(columns = ['margins', 'threshold_winning'])
 
 # Getting predictions for today to add to the predictions over time dataframe
-predictions_today = predictions_df.loc[:, ['state', 'district', 'office_type', 'median_margin']]
+predictions_today = predictions_df.loc[:, ['state', 'district', 'office_type', 'democrat_winning_num', 'republican_winning_num', 'tie_num']]
 predictions_today['date'] = date.today().strftime("%m/%d/%Y")
 
 # Creating the predictions over time dataframe
