@@ -33,6 +33,7 @@ class CustomTimeSeriesCV(BaseCrossValidator):
         return len(self.years) 
     
     
+print("Got through!")
 # Create fold structure so we can make a custom cross-validation for time-series
 folds = [
     (range(2002, 2010, 2), [2010, 2012]),
@@ -373,7 +374,9 @@ cov_matrix = np.diag(final_std_predictions) @ correlations @ np.diag(final_std_p
 
 
 multinormal = multivariate_normal(mean_predictions, cov_matrix, allow_singular=True)
-random_samples = multinormal.rvs(size = 100000).T
+print("Got here!")
+random_samples = multinormal.rvs(size = 10000).T
+print("Finished here")
 predictions_df['margins'] = random_samples.tolist()
 predictions_df['median_margin'] = np.median(random_samples, axis = 1)
 predictions_df['campaign'] = campaign_contributions.tolist()
