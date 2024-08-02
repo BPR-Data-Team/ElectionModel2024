@@ -395,7 +395,7 @@ president_samples = random_samples[predictions_df['office_type'] == 'President']
 presidential_df = predictions_df[predictions_df['office_type'] == 'President']
 presidential_df = presidential_df.join(electoral_votes.set_index(['state', 'district']), on = ['state', 'district'])
 
-#For the two maps on the website, we need to get the two most likely presidential outcomes (Dem wins which states, etc.)
+#For the two maps on the website, we need to get the two most likely presidential outcomes (Harris wins which states, etc.)
 #The following code does just that!
 #----- BEGINNING OF LIKELY PRES CODE
 def get_winner(margin):
