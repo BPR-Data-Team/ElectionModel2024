@@ -141,28 +141,12 @@ engineered <- combination %>%
            !(state == "CA" & year == 2014 & district %in% c(4,17,19, 25,34, 35, 40, 44)) & 
            !(state == "CA" & year == 2016 & district %in% c(17, 29, 32, 34, 37, 44, 46)))
 
-
-#Polling should have an increased impact as the election gets closer
-days_until_election <- as.numeric(as.Date("2024-11-04") - today())
-
-#Prior to the election, polls should be weighted as the following:
-poll_weight <- (200 - days_until_election) / 200
-
-#The following should be added to lower bound and upper bound
-bounds_increase <- 5 * days_until_election / 200
-
-#Historical average generic ballot
-average_genballot <- 2.05
-
 #Creating a genballot based off of individual race polls -- if races are considerably 
 #more right/left-wing, we'd expect the generic ballot to be as well!
 genballot_polling_individual <- engineered %>%
   filter(!is.na(weighted_estimate)) %>%
   group_by(year) %>%
-  summarize(genballot_individual = case_when(
-  cur_group() == 2024 ~ average_genballot - poll_weight * (
-    mean(weighted_estimate - (pvi * 2 + incumbent_differential)) - average_genballot), 
-  TRUE ~ mean(weighted_estimate - (pvi * 2 + incumbent_differential))))
+  summarize(genballot_individual = mean(weighted_estimate - (pvi * 2 + incumbent_differential)))
 
 #Creating a genballot feature based off of campaign finance -- trying three different weights
 genballot_campaign_finance <- engineered %>%
@@ -187,21 +171,6 @@ final <- engineered %>%
     average_genballot_predicted_margin = pvi * 2 + average_genballot + incumbent_differential
   ) 
 
-#We don't just want generic ballot polls to have a reduced effect -- we want 
-#All polls to have a reduced effect! This deals with individual polls
-decreasing_poll_efficacy <- final %>%
-  filter(year == 2024) %>%
-  mutate(across(c(phone_unweighted, online_unweighted, 
-                  unweighted_estimate, weighted_estimate), 
-                ~ (pvi * 2 + incumbent_differential) + poll_weight * (. - (pvi * 2 + incumbent_differential))), 
-         across(c(unweighted_ci_lower, weighted_ci_lower), ~ . - bounds_increase), 
-         across(c(unweighted_ci_upper, weighted_ci_upper), ~ . + bounds_increase)) 
-
-#Final dataset
-final <- final %>%
-  filter(year != 2024) %>%
-  bind_rows(decreasing_poll_efficacy)
-
 name_dataset <- read.csv("data/AllRaces.csv") %>%
   select(State, District, Office_type, R_name, D_name, Weird) %>% 
   rename(state = State, 
@@ -222,6 +191,3 @@ name_dataset <- read.csv("data/AllRaces.csv") %>%
 
 write.csv(final, "cleaned_data/Engineered Dataset.csv")
 write.csv(name_dataset, "cleaned_data/Names Dataset.csv")
-
-
-
