@@ -122,21 +122,21 @@ uncleaned_current <- bind_rows(
 #Initial cleaning
 cleaned_current <- uncleaned_current %>%
   filter(as.Date(Sys.Date()) - as.Date(mdy(end_date)) <= days_counting) %>%
-  group_by(state) %>%
+  group_by(state, office_type) %>%
   mutate(num_polls = n_distinct(poll_id)) %>%
   ungroup() %>%
   #Fixing problems with ME/NE where CD is not counted as a seat number, Same with PR
   mutate(seat_number = case_when(
-    str_detect(state, "CD-1") ~ 1, 
-    str_detect(state, "CD-2") ~ 2, 
+    str_detect(state, "CD-1") ~ 1,
+    str_detect(state, "CD-2") ~ 2,
     TRUE ~ seat_number
-  ), 
-  state = str_remove(state, " CD-[0-9]")) %>% 
+  ),
+  state = str_remove(state, " CD-[0-9]")) %>%
   filter(state %in% c("", state.name)) %>%
   group_by(question_id) %>%
   filter(office_type != "U.S. President" | (!any(answer == "Biden") & any(answer == "Harris") & any(answer == "Trump"))) %>%
   ungroup() %>%
-  select(poll_id, pollster_rating_id, methodology, state, seat_number, question_id, 
+  select(poll_id, pollster_rating_id, methodology, state, seat_number, question_id,
          sample_size, population_full, cycle, office_type, party, pct, answer, num_polls)
 
 #For each question, we only care about the answer that has the max result:
@@ -228,9 +228,11 @@ days_until_election <- as.numeric(as.Date("2024-11-04") - today())
 
 #Prior to the election, polls should be weighted as the following:
 poll_weight <- (200 - days_until_election) / 200
+poll_weight <- 1
 
 #The following should be added to lower bound and upper bound
 bounds_increase <- 5 * days_until_election / 200
+bounds_increase <- 0
 
 #Generic ballot based on only actual genballot polls
 generic_polling <- full_poll_averages %>%
