@@ -347,13 +347,23 @@ with open("models/std_model.pkl", 'wb') as file:
 
 with open("models/std_model.pkl", 'rb') as file:
     std_best_pipe = pkl.load(file)
+
+#We trained the std error on training predictions, so the residuals will be lower. 
+#We need to scale it up to match the residuals of the testing predictions
+std_preds_2022 = np.sum(std_best_pipe.predict(X_train.loc[X_train['year'] == 2022]))
+preds_2022 = pd.read_csv("cleaned_data/predictions_2022.csv")
+residuals_2022 = np.sum(np.abs(preds_2022['Predicted Margin'] - preds_2022['actual_margin']))
+
+std_preds_2020 = np.sum(std_best_pipe.predict(X_train.loc[X_train['year'] == 2020]))
+preds_2020 = pd.read_csv("cleaned_data/Predictions_2020.csv")
+residuals_2020 = np.sum(np.abs(preds_2020['Predicted Margin'] - preds_2020['actual_margin']))
+
+aleatoric_increase = (residuals_2022 + residuals_2020) / (std_preds_2022 + std_preds_2020)
+
 aleatoric_std_predictions = std_best_pipe.predict(X_predict)
 
-days_until_election = (date(2024, 11, 5) - date.today()).days
-aleatoric_increase = 0.03*days_until_election + 0.08 #We assume that aleatoric uncertainty decreases as we get closer to the election
-#We chose 0.03 and 0.08 so ~4 months before the election, the std aleatoric uncertainty is multiplied by 2, and ~1 month before, it is multiplied by 1
 #At this point, we now have the standard deviations for each prediction. We can now calculate the final predictions
-final_std_predictions = np.sqrt(epistemic_std_predictions**2 + aleatoric_increase * aleatoric_std_predictions**2)
+final_std_predictions = np.sqrt(epistemic_std_predictions**2 + (aleatoric_increase * aleatoric_std_predictions)**2)
         
 
 #Getting final race-level dataframe
