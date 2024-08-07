@@ -210,9 +210,9 @@ def new_campaign_contributions(X : pd.DataFrame, update_num) -> pd.DataFrame:
     )
 
     # Calculate derived columns
-    X_predict["receipts_genballot_interaction"] = X_predict["genballot_predicted_margin"] * X_predict["receipts"]
-    X_predict["disbursements_genballot_interaction"] = X_predict["genballot_predicted_margin"] * X_predict["disbursements"]
-    X_predict["finance_fundamental_agree"] = np.sign(X_predict["genballot_predicted_margin"] * X_predict["receipts"])
+    X_update["receipts_genballot_interaction"] = X_update["genballot_predicted_margin"] * X_update["receipts"]
+    X_update["disbursements_genballot_interaction"] = X_update["genballot_predicted_margin"] * X_update["disbursements"]
+    X_update["finance_fundamental_agree"] = np.sign(X_update["genballot_predicted_margin"] * X_update["receipts"])
     
     return X_update
 

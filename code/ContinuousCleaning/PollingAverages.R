@@ -121,7 +121,8 @@ uncleaned_current <- bind_rows(
 
 #Initial cleaning
 cleaned_current <- uncleaned_current %>%
-  filter(as.Date(Sys.Date()) - as.Date(mdy(end_date)) <= days_counting) %>%
+  filter(as.Date(Sys.Date()) - as.Date(mdy(end_date)) <= days_counting & population_full == "lv" & 
+           (office_type != "President" & as.Date(mdy(start_date)) > as.Date("2024-07-21"))) %>%
   group_by(state) %>%
   mutate(num_polls = n_distinct(poll_id)) %>%
   ungroup() %>%
