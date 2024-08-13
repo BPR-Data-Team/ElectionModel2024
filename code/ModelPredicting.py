@@ -65,7 +65,7 @@ cont_fts = [
     "previous_gas", "current_gas", "change_gas", "previous_unemployment", "current_unemployment",
     "change_unemployment",  "receipts", "from_committee_transfers", "disbursements",
     "to_committee_transfers", "beginning_cash", "ending_cash", "candidate_contributions",
-    "individual_contributions", "unconvinced_pct", "phone_unweighted", "online_unweighted", "num_polls",
+    "individual_contributions", "num_polls",
     "unweighted_estimate", "unweighted_ci_lower", "unweighted_ci_upper", "weighted_estimate",
     "weighted_ci_lower", "weighted_ci_upper", "white_pct", "black_pct", "asian_pct", "hispanic_pct",
     "median_income", "impoverished_pct", "median_age", "renting_pct", "inflation", "isMidterm",
@@ -91,7 +91,7 @@ shap_features = {
                     'pr17', 'pr175', 'pr60', 'pr90', 'nopr', 'noallmailvote', 'noearlyvote',
                     'absenteeexcusereq', 'pollhours', 'avgpollhours', 'minpollhours', 'regdeadlines', 'nostateholiday', 'covi_num'],
     
-    "Polls": ['unconvinced_pct', 'phone_unweighted', 'online_unweighted', 'num_polls',
+    "Polls": ['num_polls',
        'unweighted_estimate', 'unweighted_ci_lower', 'unweighted_ci_upper',
        'weighted_estimate', 'weighted_ci_lower', 'weighted_ci_upper'], 
     
@@ -280,7 +280,7 @@ shap_df = shap_df[['state', 'district', 'office_type'] + list(shap_features.keys
 #The following code was run once, but not again. It trains a standard-deviation predicting model and saves it in the models folder to be used in
 #Future predictions. 
 
-"""
+
 #---- Now, we will train a standard-deviation predicting model -- dealing with Aleatoric Uncertainty (Bootstrapping gives us epistemic)
 def neg_log_likelihood(y, y_pred, y_std):
     #Given a set of true values, predicted values, and standard deviations, returns the negative log likelihood.
@@ -344,7 +344,7 @@ std_best_pipe = Pipeline(steps = [
 std_best_pipe.fit(X_train, std_y_train)
 
 with open("models/std_model.pkl", 'wb') as file:
-    pkl.dump(std_best_pipe, file)"""
+    pkl.dump(std_best_pipe, file)
 
 with open("models/std_model.pkl", 'rb') as file:
     std_best_pipe = pkl.load(file)

@@ -97,7 +97,7 @@ combination <- all_elections %>%
   left_join(expert, by = c("state" = "State", "district" = "District", "year",
                             "special", "office_type" = "race")) %>% #2024 not included
   left_join(genballot, by = 'year') %>% #2024 included
-  left_join(genpolls, by = 'year') %>%
+  left_join(genpolls, by = c('year' = 'cycle')) %>%
   left_join(specials, by = 'year') %>% #2024 included?
   left_join(pvi, by = c('year', 'state', 'district')) %>% #2024 included
   left_join(chambers, by = 'year') %>% #2024 included
@@ -105,7 +105,7 @@ combination <- all_elections %>%
   left_join(gas, by = 'year') %>% #2024 included
   left_join(unemployment, by = 'year') %>%  #2024 included
   left_join(fec, by = c('state', 'year', 'district', 'office_type'), relationship = 'many-to-many') %>%
-  left_join(polls, by = c('state', 'year', 'district' = 'seat_number', 'office_type')) %>%
+  left_join(polls, by = c('state', 'year' = 'cycle', 'district', 'office_type')) %>%
   left_join(demographics, by = c('state', 'year', 'district')) %>%
   left_join(inflation, by = 'year') %>%
   mutate(isMidterm = year %% 4 != 0) %>%
@@ -146,13 +146,10 @@ engineered <- combination %>%
 days_until_election <- as.numeric(as.Date("2024-11-04") - today())
 
 #Prior to the election, polls should be weighted as the following:
-poll_weight <- (200 - days_until_election) / 200
+poll_weight <- 1
 
 #The following should be added to lower bound and upper bound
-bounds_increase <- 5 * days_until_election / 200
-
-#Historical average generic ballot
-average_genballot <- 2.05
+bounds_increase <- 0
 
 #Creating a genballot based off of individual race polls -- if races are considerably 
 #more right/left-wing, we'd expect the generic ballot to be as well!
@@ -186,21 +183,6 @@ final <- engineered %>%
     genballot_campaign15_predicted_margin = pvi * 2 + genballot_campaign15 + incumbent_differential, 
     average_genballot_predicted_margin = pvi * 2 + average_genballot + incumbent_differential
   ) 
-
-#We don't just want generic ballot polls to have a reduced effect -- we want 
-#All polls to have a reduced effect! This deals with individual polls
-decreasing_poll_efficacy <- final %>%
-  filter(year == 2024) %>%
-  mutate(across(c(phone_unweighted, online_unweighted, 
-                  unweighted_estimate, weighted_estimate), 
-                ~ (pvi * 2 + incumbent_differential) + poll_weight * (. - (pvi * 2 + incumbent_differential))), 
-         across(c(unweighted_ci_lower, weighted_ci_lower), ~ . - bounds_increase), 
-         across(c(unweighted_ci_upper, weighted_ci_upper), ~ . + bounds_increase)) 
-
-#Final dataset
-final <- final %>%
-  filter(year != 2024) %>%
-  bind_rows(decreasing_poll_efficacy)
 
 name_dataset <- read.csv("data/AllRaces.csv") %>%
   select(State, District, Office_type, R_name, D_name, Weird) %>% 
