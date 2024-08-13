@@ -246,6 +246,8 @@ def combine_polls(race_df):
                          'num_polls': int(num_polls)})
     
 poll_estimates = all_polls.groupby(['cycle', 'office_type', 'state', 'district']).apply(combine_polls).reset_index()
+poll_estimates.rename(columns={'cycle': 'year'}, inplace=True)
+
 non_generic_ballot = poll_estimates[poll_estimates['state'] != 'US']
 generic_ballot = poll_estimates[poll_estimates['state'] == 'US'].drop(columns=['state', 'district'])
 
