@@ -78,7 +78,7 @@ jobs:
           Rscript code/ContinuousCleaning/FEC.R
           git add .
           git diff-index --quiet HEAD || git commit -m "Update model"
-          Rscript code/ContinuousCleaning/PollingAverages.R
+          python code/ContinuousCleaning/PollingAverages.py -all
           git add .
           git diff-index --quiet HEAD || git commit -m "Update model"
           Rscript code/ContinuousCleaning/CombiningData.R
