@@ -81,7 +81,7 @@ fec <- read.csv("cleaned_data/fecData20022024.csv") %>%
 #POLLS... wow this is only two lines lol
 polls <- read.csv("cleaned_data/AllPolls.csv")
 
-genpolls <- read.csv("cleaned_data/GenPolling.csv") %>% select(-X)
+genpolls <- read.csv("cleaned_data/GenPolling.csv")
 
 #DEMOGRAPHICS
 demographics <- read.csv("cleaned_data/Demographics.csv") %>% select(-X) %>%
