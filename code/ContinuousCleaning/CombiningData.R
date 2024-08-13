@@ -104,7 +104,7 @@ combination <- all_elections %>%
   left_join(gas, by = 'year') %>% #2024 included
   left_join(unemployment, by = 'year') %>%  #2024 included
   left_join(fec, by = c('state', 'year', 'district', 'office_type'), relationship = 'many-to-many') %>%
-  left_join(polls, by = c('state', 'year', 'district' = 'seat_number', 'office_type')) %>%
+  left_join(polls, by = c('state', 'year', 'district', 'office_type')) %>%
   left_join(demographics, by = c('state', 'year', 'district')) %>%
   left_join(inflation, by = 'year') %>%
   mutate(isMidterm = year %% 4 != 0) %>%

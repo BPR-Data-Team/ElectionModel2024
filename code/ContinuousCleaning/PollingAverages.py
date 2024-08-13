@@ -249,7 +249,14 @@ poll_estimates = all_polls.groupby(['cycle', 'office_type', 'state', 'district']
 poll_estimates.rename(columns={'cycle': 'year'}, inplace=True)
 
 non_generic_ballot = poll_estimates[poll_estimates['state'] != 'US']
-generic_ballot = poll_estimates[poll_estimates['state'] == 'US'].drop(columns=['state', 'district'])
+generic_ballot = poll_estimates[poll_estimates['state'] == 'US']
+generic_ballot.rename(columns = {
+    "weighted_estimate": "weighted_genpoll",
+    "weighted_ci_lower": "weighted_genpoll_lower",
+    "weighted_ci_upper": "weighted_genpoll_upper",
+    "unweighted_estimate": "unweighted_genpoll"
+}, inplace=True)
+generic_ballot = generic_ballot[['weighted_genpoll', 'weighted_genpoll_lower', 'weighted_genpoll_upper', 'unweighted_genpoll', 'year']]
 
 non_generic_ballot.to_csv("cleaned_data/AllPolls.csv", index = False)
 generic_ballot.to_csv("cleaned_data/GenPolling.csv", index = False)
