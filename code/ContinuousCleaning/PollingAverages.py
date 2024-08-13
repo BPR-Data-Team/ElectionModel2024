@@ -63,9 +63,6 @@ past_polls = past_polls[past_polls['type_simple'].isin(["Pres-G", "Sen-G", "Gov-
 
 #Adding important columns, X and Y
 past_polls['office_type'] = past_polls['type_simple'].map(office_type_dict)
-past_polls['bias'] = past_polls['margin_poll'] - past_polls['margin_actual']
-past_polls['error'] = np.abs(past_polls['bias']) 
-past_polls['greater than 20'] = abs(past_polls['margin_poll']) > 20
 past_polls['state'] = past_polls['location'].apply(lambda x: x.split('-')[0])
 past_polls['district'] = past_polls['location'].apply(lambda x: 0 if "-" not in x else x.split('-')[1])
 past_polls['district'] = 1 if "1" in past_polls['state'] else past_polls['district']
@@ -219,7 +216,7 @@ def combine_polls(race_df):
     variance = race_df['variance']
     bias = race_df['bias']
     
-    weighted_estimate = np.average(margins, weights= 1 / variance) #Inverse weighted average
+    weighted_estimate = np.average(margins, weights = 1 / variance) #Inverse weighted average
     weighted_variance = 1 / np.sum(1 / variance)
     weighted_lower_bound = weighted_estimate - 1.96 * np.sqrt(weighted_variance)
     weighted_upper_bound = weighted_estimate + 1.96 * np.sqrt(weighted_variance)
