@@ -207,7 +207,6 @@ def get_variance_bias(group_df):
 
 all_polls = all_polls[(all_polls['cycle'] >= 2002) & (all_polls['cycle'] % 2 == 0)]
 variance_bias_df = all_polls.groupby('cycle').apply(get_variance_bias).reset_index(drop=True)
-print(len(all_polls), len(variance_bias_df))
 all_polls = pd.concat([all_polls.reset_index(), variance_bias_df], axis=1)
 all_polls['variance'] = np.where(all_polls['variance'] < 1, 1, all_polls['variance'])
 
