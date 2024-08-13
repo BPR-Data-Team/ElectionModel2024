@@ -153,14 +153,13 @@ cleaned_current = cleaned_current.groupby(['poll_id', 'pollster_rating_id', 'met
     
 #Pivoting so that we have one row per poll     
 cleaned_current = cleaned_current[~cleaned_current['methodology'].isna()]
-cleaned_current['state'] = cleaned_current['state'].fillna('Unknown State')
+cleaned_current['state'] = cleaned_current['state'].fillna('US')
 cleaned_current['partisan'] = cleaned_current['partisan'].fillna('Unknown Partisan')   
          
 cleaned_current = cleaned_current.pivot_table(index=['poll_id', 'pollster_rating_id', 'methodology', 'state', 'partisan', 'seat_number',
                                                      'sample_size', 'population_full', 'cycle', 'office_type'],
                                               columns='party', values='pct').reset_index()
 
-cleaned_current['state'] = np.where(cleaned_current['state'] == 'US', np.nan, cleaned_current['state'])
 #Translating stuff to integers
 cleaned_current['district'] = cleaned_current['seat_number'].astype(int)
 cleaned_current['cycle'] = cleaned_current['cycle'].astype(int)
@@ -171,6 +170,7 @@ cleaned_current['samplesize'] = cleaned_current['sample_size'].astype(int)
 cleaned_current = cleaned_current[cleaned_current['population_full'] == "lv"]
 cleaned_current['partisan'] = np.where(cleaned_current['partisan'] == 'Unknown Partisan', np.NaN, cleaned_current['partisan'])
 cleaned_current['margin_poll'] = cleaned_current['DEM'] - cleaned_current['REP']
+cleaned_current = cleaned_current[~cleaned_current['margin_poll'].isna()]
 
 cleaned_current = cleaned_current[['cycle', 'office_type', 'state', 'district', 'pollster_rating_id', 'methodology', 
                                    'partisan', 'samplesize',  'margin_poll']]
@@ -208,6 +208,7 @@ def get_variance_bias(group_df):
 all_polls = all_polls[(all_polls['cycle'] >= 2002) & (all_polls['cycle'] % 2 == 0)]
 variance_bias_df = all_polls.groupby('cycle').apply(get_variance_bias).reset_index(drop=True)
 all_polls = pd.concat([all_polls.reset_index(), variance_bias_df], axis=1)
+#All polls need a small variance
 all_polls['variance'] = np.where(all_polls['variance'] < 1, 1, all_polls['variance'])
 
 def combine_polls(race_df):
@@ -237,3 +238,8 @@ def combine_polls(race_df):
                          'num_polls': int(num_polls)})
     
 poll_estimates = all_polls.groupby(['cycle', 'office_type', 'state', 'district']).apply(combine_polls).reset_index()
+non_generic_ballot = poll_estimates[poll_estimates['state'] != 'US']
+generic_ballot = poll_estimates[poll_estimates['state'] == 'US'].drop(columns=['state', 'district'])
+
+non_generic_ballot.to_csv("../../cleaned_data/AllPolls.csv", index = False)
+generic_ballot.to_csv("../../cleaned_data/GenPolling.csv", index = False)
