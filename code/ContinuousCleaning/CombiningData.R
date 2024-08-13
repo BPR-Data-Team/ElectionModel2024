@@ -79,8 +79,7 @@ fec <- read.csv("cleaned_data/fecData20022024.csv") %>%
   unnest(cols = c(district))
 
 #POLLS... wow this is only two lines lol
-polls <- read.csv("cleaned_data/AllPolls.csv") %>% select(-X) %>%
-  mutate(office_type = str_remove(office_type, "U\\.S\\. "))
+polls <- read.csv("cleaned_data/AllPolls.csv")
 
 genpolls <- read.csv("cleaned_data/GenPolling.csv") %>% select(-X)
 
