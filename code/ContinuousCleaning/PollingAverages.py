@@ -30,7 +30,7 @@ class CustomTimeSeriesCV(BaseCrossValidator):
         return len(self.years) 
 
 
-past_polls = pd.read_csv('../../data/raw_polls.csv')
+past_polls = pd.read_csv('data/raw_polls.csv')
 days_counting = 50
 
 office_type_dict = {
@@ -168,8 +168,12 @@ cleaned_current['samplesize'] = cleaned_current['sample_size'].astype(int)
 
 #We only want likely voter polls
 cleaned_current = cleaned_current[cleaned_current['population_full'] == "lv"]
+
+#Model was trained on partisan being NA sometimes
 cleaned_current['partisan'] = np.where(cleaned_current['partisan'] == 'Unknown Partisan', np.NaN, cleaned_current['partisan'])
 cleaned_current['margin_poll'] = cleaned_current['DEM'] - cleaned_current['REP']
+
+#Don't want polls with NA margin (caused when there's no dem/rep party)
 cleaned_current = cleaned_current[~cleaned_current['margin_poll'].isna()]
 
 cleaned_current = cleaned_current[['cycle', 'office_type', 'state', 'district', 'pollster_rating_id', 'methodology', 
@@ -180,12 +184,15 @@ all_polls = pd.concat([past_polls, cleaned_current], ignore_index=True)
 unique_methods = set()
 for methods in all_polls['methodology']:
     unique_methods.update(methods.split('/'))
+
+#Methods haven't existed for a while
 unique_methods.remove('Mixed')
 unique_methods.remove("App Panel")
 
 for method in unique_methods:
     all_polls[method] = all_polls['methodology'].apply(lambda x: 1 if method in x.split('/') else 0)
 
+#Text/Voice goes to two columns, text and voice both with 1s -- same for every other method combo
 all_polls = all_polls.drop(columns=['methodology'])
 all_polls['office_type'] = all_polls['office_type'].apply(lambda x: x.replace("U.S. ", ""))
 
@@ -193,11 +200,11 @@ def get_variance_bias(group_df):
     year = group_df['cycle'].iloc[0]
     predict_df = group_df.drop(columns=['state', 'district'])
     
-    file_path_error = f'../../models/Polls_{year}_error.pkl'
+    file_path_error = f'models/Polls_{year}_error.pkl'
     with open(file_path_error, 'rb') as file:
         var_model = pkl.load(file)
 
-    file_path_bias = f'../../models/Polls_{year}_bias.pkl'
+    file_path_bias = f'models/Polls_{year}_bias.pkl'
     with open(file_path_bias, 'rb') as file:
         bias_model = pkl.load(file)
     
@@ -205,6 +212,7 @@ def get_variance_bias(group_df):
     bias = bias_model.predict(predict_df)
     return pd.DataFrame({'variance': variance, 'bias': bias})
 
+#Getting variance adn bias for each poll
 all_polls = all_polls[(all_polls['cycle'] >= 2002) & (all_polls['cycle'] % 2 == 0)]
 variance_bias_df = all_polls.groupby('cycle').apply(get_variance_bias).reset_index(drop=True)
 all_polls = pd.concat([all_polls.reset_index(), variance_bias_df], axis=1)
@@ -241,5 +249,5 @@ poll_estimates = all_polls.groupby(['cycle', 'office_type', 'state', 'district']
 non_generic_ballot = poll_estimates[poll_estimates['state'] != 'US']
 generic_ballot = poll_estimates[poll_estimates['state'] == 'US'].drop(columns=['state', 'district'])
 
-non_generic_ballot.to_csv("../../cleaned_data/AllPolls.csv", index = False)
-generic_ballot.to_csv("../../cleaned_data/GenPolling.csv", index = False)
+non_generic_ballot.to_csv("cleaned_data/AllPolls.csv", index = False)
+generic_ballot.to_csv("cleaned_data/GenPolling.csv", index = False)
