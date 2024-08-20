@@ -122,10 +122,7 @@ uncleaned_current <- bind_rows(
 #Initial cleaning
 cleaned_current <- uncleaned_current %>%
   filter(as.Date(Sys.Date()) - as.Date(mdy(end_date)) <= days_counting & population_full == "lv" & 
-           (office_type != "President" | as.Date(mdy(start_date)) > as.Date("2024-07-21"))) %>%
-  group_by(state) %>%
-  mutate(num_polls = n_distinct(poll_id)) %>%
-  ungroup() %>%
+           (office_type != "U.S. President" | (as.Date(mdy(start_date)) > as.Date("2024-07-21")))) %>%
   #Fixing problems with ME/NE where CD is not counted as a seat number, Same with PR
   mutate(seat_number = case_when(
     str_detect(state, "CD-1") ~ 1, 
@@ -138,13 +135,13 @@ cleaned_current <- uncleaned_current %>%
   filter(office_type != "U.S. President" | (!any(answer == "Biden") & any(answer == "Harris") & any(answer == "Trump"))) %>%
   ungroup() %>%
   select(poll_id, pollster_rating_id, methodology, state, seat_number, question_id, 
-         sample_size, population_full, cycle, office_type, party, pct, answer, num_polls)
+         sample_size, population_full, cycle, office_type, party, pct, answer)
 
-#For each question, we only care about the answer that has the max result:
+ #For each question, we only care about the answer that has the max result:
 #For example a question might ask "Harris vs Trump vs I" AND "Harris v Trump", 
 #Which is very annoying -- #We take the first
 max_pct_sums <- cleaned_current %>% 
-  group_by(poll_id,pollster_rating_id,question_id,state,seat_number) %>% 
+  group_by(poll_id,pollster_rating_id,question_id,state,seat_number, office_type) %>% 
   summarize(total_pct = sum(pct)) %>% 
   filter(total_pct == max(total_pct))
 
@@ -152,7 +149,7 @@ max_pct_sums <- cleaned_current %>%
 cleaned_current <- cleaned_current %>%
   #Only keeps poll questions with max total responses, by poll
   right_join(max_pct_sums, by = c('poll_id', 'pollster_rating_id', 'question_id', 
-                                  'state', 'seat_number')) 
+                                  'state', 'seat_number', 'office_type')) 
 
 #Eventually we'll use the independent polls, but not now
 independent_polls <- cleaned_current %>% 
