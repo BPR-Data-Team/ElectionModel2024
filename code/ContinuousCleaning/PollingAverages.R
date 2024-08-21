@@ -4,7 +4,7 @@ library(stringr)
 library(meta)
 library(metafor)
 
-days_counting <- 45
+days_counting <- 50
 population_order <- c('lv', 'rv', 'v', 'a')
 
 #Get poll ratings, extract relevant columns
