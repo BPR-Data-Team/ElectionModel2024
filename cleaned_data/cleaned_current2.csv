@@ -1,0 +1,905 @@
+poll_id,pollster_rating_id,methodology,state,seat_number,question_id,sample_size,population_full,cycle,office_type,party,pct,answer
+88053,555,,,0,207921,2701,lv,2024,U.S. President,DEM,50,Harris
+88053,555,,,0,207921,2701,lv,2024,U.S. President,REP,48,Trump
+88063,88,Online Panel/Text-to-Web,California,0,207931,815,lv,2024,U.S. President,DEM,60.8,Harris
+88063,88,Online Panel/Text-to-Web,California,0,207931,815,lv,2024,U.S. President,REP,38,Trump
+88064,88,Online Panel/Text-to-Web,Florida,0,207932,815,lv,2024,U.S. President,DEM,47.6,Harris
+88064,88,Online Panel/Text-to-Web,Florida,0,207932,815,lv,2024,U.S. President,REP,51.1,Trump
+88065,88,Online Panel/Text-to-Web,Texas,0,207933,845,lv,2024,U.S. President,DEM,48,Harris
+88065,88,Online Panel/Text-to-Web,Texas,0,207933,845,lv,2024,U.S. President,REP,50.9,Trump
+88066,88,Online Panel/Text-to-Web,Ohio,0,207934,945,lv,2024,U.S. President,DEM,44.7,Harris
+88066,88,Online Panel/Text-to-Web,Ohio,0,207934,945,lv,2024,U.S. President,REP,54.3,Trump
+88038,862,Online Panel,,0,207864,1890,lv,2024,U.S. President,DEM,52,Harris
+88038,862,Online Panel,,0,207864,1890,lv,2024,U.S. President,REP,48,Trump
+88035,88,IVR/Online Panel/Text-to-Web,,0,207867,1000,lv,2024,U.S. President,DEM,51.3,Harris
+88035,88,IVR/Online Panel/Text-to-Web,,0,207867,1000,lv,2024,U.S. President,REP,47.6,Trump
+88042,218,Online Panel,,0,207902,11414,lv,2024,U.S. President,DEM,49,Harris
+88042,218,Online Panel,,0,207902,11414,lv,2024,U.S. President,REP,46,Trump
+88027,251,Online Panel,,0,207759,3047,lv,2024,U.S. President,DEM,50,Harris
+88027,251,Online Panel,,0,207759,3047,lv,2024,U.S. President,REP,50,Trump
+88008,721,App Panel,,0,207634,1000,lv,2024,U.S. President,DEM,50.8,Harris
+88008,721,App Panel,,0,207634,1000,lv,2024,U.S. President,REP,49.2,Trump
+88002,851,Online Panel,Ohio,0,207631,600,lv,2024,U.S. President,DEM,43,Harris
+88002,851,Online Panel,Ohio,0,207631,600,lv,2024,U.S. President,REP,52,Trump
+88037,67,Live Phone/Text-to-Web,Alaska,0,207868,400,lv,2024,U.S. President,DEM,43.1,Harris
+88037,67,Live Phone/Text-to-Web,Alaska,0,207868,400,lv,2024,U.S. President,REP,53,Trump
+88030,203,Online Panel,,0,207792,1778,lv,2024,U.S. President,DEM,47.3,Harris
+88030,203,Online Panel,,0,207792,1778,lv,2024,U.S. President,REP,48.8,Trump
+88030,203,Online Panel,,0,207794,1778,lv,2024,U.S. President,DEM,46.6,Harris
+88030,203,Online Panel,,0,207794,1778,lv,2024,U.S. President,REP,46.2,Trump
+88030,203,Online Panel,,0,207794,1778,lv,2024,U.S. President,IND,1,West
+88030,203,Online Panel,,0,207794,1778,lv,2024,U.S. President,GRE,0.8,Stein
+88030,203,Online Panel,,0,207794,1778,lv,2024,U.S. President,LIB,0.9,Oliver
+87989,243,,Nevada,0,207585,800,lv,2024,U.S. President,DEM,46.5,Harris
+87989,243,,Nevada,0,207585,800,lv,2024,U.S. President,REP,47.9,Trump
+87990,243,,Arizona,0,207586,800,lv,2024,U.S. President,DEM,48.4,Harris
+87990,243,,Arizona,0,207586,800,lv,2024,U.S. President,REP,48.6,Trump
+87994,243,,North Carolina,0,207583,800,lv,2024,U.S. President,DEM,48.4,Harris
+87994,243,,North Carolina,0,207583,800,lv,2024,U.S. President,REP,49.2,Trump
+87995,243,,Georgia,0,207584,800,lv,2024,U.S. President,DEM,48.3,Harris
+87995,243,,Georgia,0,207584,800,lv,2024,U.S. President,REP,47.6,Trump
+88028,308,Online Panel,Oklahoma,0,207760,323,lv,2024,U.S. President,DEM,39.9,Harris
+88028,308,Online Panel,Oklahoma,0,207760,323,lv,2024,U.S. President,REP,56,Trump
+87997,721,App Panel,Florida,0,207588,400,lv,2024,U.S. President,DEM,46.6,Harris
+87997,721,App Panel,Florida,0,207588,400,lv,2024,U.S. President,REP,53.4,Trump
+87998,721,App Panel,Texas,0,207589,400,lv,2024,U.S. President,DEM,45.5,Harris
+87998,721,App Panel,Texas,0,207589,400,lv,2024,U.S. President,REP,54.5,Trump
+87996,721,App Panel,North Carolina,0,207587,400,lv,2024,U.S. President,DEM,50,Harris
+87996,721,App Panel,North Carolina,0,207587,400,lv,2024,U.S. President,REP,50,Trump
+87991,338,IVR/Live Phone/Text/Online Panel/Email,Wisconsin,0,207580,1083,lv,2024,U.S. President,DEM,46.2,Harris
+87991,338,IVR/Live Phone/Text/Online Panel/Email,Wisconsin,0,207580,1083,lv,2024,U.S. President,REP,47.3,Trump
+87992,338,IVR/Live Phone/Text/Online Panel/Email,Michigan,0,207581,1089,lv,2024,U.S. President,DEM,46.6,Harris
+87992,338,IVR/Live Phone/Text/Online Panel/Email,Michigan,0,207581,1089,lv,2024,U.S. President,REP,47,Trump
+87993,338,IVR/Live Phone/Text/Online Panel/Email,Pennsylvania,0,207582,1082,lv,2024,U.S. President,DEM,44.9,Harris
+87993,338,IVR/Live Phone/Text/Online Panel/Email,Pennsylvania,0,207582,1082,lv,2024,U.S. President,REP,47,Trump
+88004,562,Online Panel,,0,207630,2078,lv,2024,U.S. President,DEM,44,Harris
+88004,562,Online Panel,,0,207630,2078,lv,2024,U.S. President,REP,42,Trump
+88004,562,Online Panel,,0,207630,2078,lv,2024,U.S. President,LIB,1,Oliver
+88004,562,Online Panel,,0,207630,2078,lv,2024,U.S. President,GRE,1,Stein
+87986,284,IVR/Text-to-Web,Pennsylvania,0,207569,1607,lv,2024,U.S. President,DEM,47,Harris
+87986,284,IVR/Text-to-Web,Pennsylvania,0,207569,1607,lv,2024,U.S. President,REP,48,Trump
+87986,284,IVR/Text-to-Web,Pennsylvania,0,207569,1607,lv,2024,U.S. President,LIB,1,Oliver
+87986,284,IVR/Text-to-Web,Pennsylvania,0,207569,1607,lv,2024,U.S. President,GRE,1,Stein
+87986,284,IVR/Text-to-Web,Pennsylvania,0,207570,1607,lv,2024,U.S. President,DEM,49,Harris
+87986,284,IVR/Text-to-Web,Pennsylvania,0,207570,1607,lv,2024,U.S. President,REP,49,Trump
+87988,325,Online Panel,Minnesota,0,207573,635,lv,2024,U.S. President,DEM,48,Harris
+87988,325,Online Panel,Minnesota,0,207573,635,lv,2024,U.S. President,REP,43,Trump
+87958,862,Online Panel,,0,207435,2191,lv,2024,U.S. President,DEM,52.6,Harris
+87958,862,Online Panel,,0,207435,2191,lv,2024,U.S. President,REP,47.4,Trump
+88036,864,Live Phone/Text-to-Web,Montana,0,207866,600,lv,2024,U.S. President,DEM,41,Harris
+88036,864,Live Phone/Text-to-Web,Montana,0,207866,600,lv,2024,U.S. President,REP,56,Trump
+88015,844,Probability Panel,Arizona,0,207691,682,lv,2024,U.S. President,DEM,44,Harris
+88015,844,Probability Panel,Arizona,0,207691,682,lv,2024,U.S. President,REP,49,Trump
+88015,844,Probability Panel,Arizona,0,207691,682,lv,2024,U.S. President,GRE,2,Stein
+88015,844,Probability Panel,Arizona,0,207691,682,lv,2024,U.S. President,LIB,1,Oliver
+88016,844,Probability Panel,Georgia,0,207692,617,lv,2024,U.S. President,DEM,48,Harris
+88016,844,Probability Panel,Georgia,0,207692,617,lv,2024,U.S. President,REP,47,Trump
+88016,844,Probability Panel,Georgia,0,207692,617,lv,2024,U.S. President,IND,1,West
+88016,844,Probability Panel,Georgia,0,207692,617,lv,2024,U.S. President,GRE,1,Stein
+88016,844,Probability Panel,Georgia,0,207692,617,lv,2024,U.S. President,LIB,1,Oliver
+88018,844,Probability Panel,Nevada,0,207694,626,lv,2024,U.S. President,DEM,48,Harris
+88018,844,Probability Panel,Nevada,0,207694,626,lv,2024,U.S. President,REP,47,Trump
+88018,844,Probability Panel,Nevada,0,207694,626,lv,2024,U.S. President,GRE,1,Stein
+88018,844,Probability Panel,Nevada,0,207694,626,lv,2024,U.S. President,LIB,1,Oliver
+88019,844,Probability Panel,Pennsylvania,0,207695,789,lv,2024,U.S. President,DEM,47,Harris
+88019,844,Probability Panel,Pennsylvania,0,207695,789,lv,2024,U.S. President,REP,47,Trump
+88019,844,Probability Panel,Pennsylvania,0,207695,789,lv,2024,U.S. President,GRE,1,Stein
+88019,844,Probability Panel,Pennsylvania,0,207695,789,lv,2024,U.S. President,LIB,1,Oliver
+88020,844,Probability Panel,Wisconsin,0,207696,976,lv,2024,U.S. President,DEM,50,Harris
+88020,844,Probability Panel,Wisconsin,0,207696,976,lv,2024,U.S. President,REP,44,Trump
+88020,844,Probability Panel,Wisconsin,0,207696,976,lv,2024,U.S. President,IND,0,West
+88020,844,Probability Panel,Wisconsin,0,207696,976,lv,2024,U.S. President,GRE,1,Stein
+88020,844,Probability Panel,Wisconsin,0,207696,976,lv,2024,U.S. President,LIB,2,Oliver
+87967,721,App Panel,Illinois,0,207481,400,lv,2024,U.S. President,DEM,57.8,Harris
+87967,721,App Panel,Illinois,0,207481,400,lv,2024,U.S. President,REP,42.2,Trump
+87966,721,App Panel,Tennessee,0,207480,400,lv,2024,U.S. President,DEM,36.9,Harris
+87966,721,App Panel,Tennessee,0,207480,400,lv,2024,U.S. President,REP,63.1,Trump
+87969,555,Online Panel,,0,207497,2441,lv,2024,U.S. President,DEM,51,Harris
+87969,555,Online Panel,,0,207497,2441,lv,2024,U.S. President,REP,48,Trump
+88011,523,IVR/Text-to-Web,North Carolina,0,207685,920,lv,2024,U.S. President,DEM,46.9,Harris
+88011,523,IVR/Text-to-Web,North Carolina,0,207685,920,lv,2024,U.S. President,REP,47.6,Trump
+88011,523,IVR/Text-to-Web,North Carolina,0,207685,920,lv,2024,U.S. President,LIB,0.4,Oliver
+88011,523,IVR/Text-to-Web,North Carolina,0,207685,920,lv,2024,U.S. President,GRE,0.4,Stein
+88011,523,IVR/Text-to-Web,North Carolina,0,207685,920,lv,2024,U.S. President,CON,0.2,Terry
+88011,523,IVR/Text-to-Web,North Carolina,0,207685,920,lv,2024,U.S. President,IND,1,West
+87935,88,IVR/Online Panel/Text-to-Web,Arizona,0,207317,720,lv,2024,U.S. President,DEM,47.5,Harris
+87935,88,IVR/Online Panel/Text-to-Web,Arizona,0,207317,720,lv,2024,U.S. President,REP,51.2,Trump
+87936,88,IVR/Online Panel/Text-to-Web,Michigan,0,207319,800,lv,2024,U.S. President,DEM,51.2,Harris
+87936,88,IVR/Online Panel/Text-to-Web,Michigan,0,207319,800,lv,2024,U.S. President,REP,47.6,Trump
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,0,207321,1168,lv,2024,U.S. President,DEM,49.4,Harris
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,0,207321,1168,lv,2024,U.S. President,REP,48.8,Trump
+87938,88,IVR/Online Panel/Text-to-Web,Pennsylvania,0,207320,950,lv,2024,U.S. President,DEM,49.4,Harris
+87938,88,IVR/Online Panel/Text-to-Web,Pennsylvania,0,207320,950,lv,2024,U.S. President,REP,49.4,Trump
+87939,88,IVR/Online Panel/Text-to-Web,Wisconsin,0,207323,850,lv,2024,U.S. President,DEM,49.1,Harris
+87939,88,IVR/Online Panel/Text-to-Web,Wisconsin,0,207323,850,lv,2024,U.S. President,REP,49.8,Trump
+87943,88,IVR/Online Panel/Text-to-Web,North Carolina,0,207322,775,lv,2024,U.S. President,DEM,49,Harris
+87943,88,IVR/Online Panel/Text-to-Web,North Carolina,0,207322,775,lv,2024,U.S. President,REP,49.9,Trump
+87944,88,IVR/Online Panel/Text-to-Web,Georgia,0,207318,800,lv,2024,U.S. President,DEM,50.1,Harris
+87944,88,IVR/Online Panel/Text-to-Web,Georgia,0,207318,800,lv,2024,U.S. President,REP,49,Trump
+87945,323,Live Phone,,0,207330,1000,lv,2024,U.S. President,DEM,47.6,Harris
+87945,323,Live Phone,,0,207330,1000,lv,2024,U.S. President,REP,43.3,Trump
+87945,323,Live Phone,,0,207330,1000,lv,2024,U.S. President,IND,1.5,West
+87945,323,Live Phone,,0,207330,1000,lv,2024,U.S. President,GRE,1.2,Stein
+87945,323,Live Phone,,0,207330,1000,lv,2024,U.S. President,LIB,0.7,Oliver
+87971,562,Online Panel,North Carolina,0,207520,812,lv,2024,U.S. President,DEM,44,Harris
+87971,562,Online Panel,North Carolina,0,207520,812,lv,2024,U.S. President,REP,45,Trump
+87971,562,Online Panel,North Carolina,0,207520,812,lv,2024,U.S. President,LIB,1,Oliver
+87971,562,Online Panel,North Carolina,0,207520,812,lv,2024,U.S. President,GRE,1,Stein
+87972,562,Online Panel,Arizona,0,207513,530,lv,2024,U.S. President,DEM,45,Harris
+87972,562,Online Panel,Arizona,0,207513,530,lv,2024,U.S. President,REP,46,Trump
+87972,562,Online Panel,Arizona,0,207513,530,lv,2024,U.S. President,LIB,1,Oliver
+87972,562,Online Panel,Arizona,0,207513,530,lv,2024,U.S. President,GRE,1,Stein
+87973,562,Online Panel,Florida,0,207514,850,lv,2024,U.S. President,DEM,43,Harris
+87973,562,Online Panel,Florida,0,207514,850,lv,2024,U.S. President,REP,48,Trump
+87973,562,Online Panel,Florida,0,207514,850,lv,2024,U.S. President,LIB,1,Oliver
+87973,562,Online Panel,Florida,0,207514,850,lv,2024,U.S. President,GRE,0,Stein
+87974,562,Online Panel,Georgia,0,207515,699,lv,2024,U.S. President,DEM,42,Harris
+87974,562,Online Panel,Georgia,0,207515,699,lv,2024,U.S. President,REP,44,Trump
+87974,562,Online Panel,Georgia,0,207515,699,lv,2024,U.S. President,LIB,0,Oliver
+87974,562,Online Panel,Georgia,0,207515,699,lv,2024,U.S. President,GRE,1,Stein
+87975,562,Online Panel,Michigan,0,207516,761,lv,2024,U.S. President,DEM,47,Harris
+87975,562,Online Panel,Michigan,0,207516,761,lv,2024,U.S. President,REP,44,Trump
+87975,562,Online Panel,Michigan,0,207516,761,lv,2024,U.S. President,LIB,1,Oliver
+87975,562,Online Panel,Michigan,0,207516,761,lv,2024,U.S. President,GRE,1,Stein
+87976,562,Online Panel,Minnesota,0,207517,426,lv,2024,U.S. President,DEM,51,Harris
+87976,562,Online Panel,Minnesota,0,207517,426,lv,2024,U.S. President,REP,42,Trump
+87976,562,Online Panel,Minnesota,0,207517,426,lv,2024,U.S. President,LIB,1,Oliver
+87976,562,Online Panel,Minnesota,0,207517,426,lv,2024,U.S. President,GRE,0,Stein
+87977,562,Online Panel,Nevada,0,207518,490,lv,2024,U.S. President,DEM,47,Harris
+87977,562,Online Panel,Nevada,0,207518,490,lv,2024,U.S. President,REP,47,Trump
+87977,562,Online Panel,Nevada,0,207518,490,lv,2024,U.S. President,LIB,0,Oliver
+87977,562,Online Panel,Nevada,0,207518,490,lv,2024,U.S. President,GRE,1,Stein
+87978,562,Online Panel,New Mexico,0,207519,488,lv,2024,U.S. President,DEM,47,Harris
+87978,562,Online Panel,New Mexico,0,207519,488,lv,2024,U.S. President,REP,40,Trump
+87978,562,Online Panel,New Mexico,0,207519,488,lv,2024,U.S. President,LIB,0,Oliver
+87978,562,Online Panel,New Mexico,0,207519,488,lv,2024,U.S. President,GRE,0,Stein
+87979,562,Online Panel,Pennsylvania,0,207521,1071,lv,2024,U.S. President,DEM,46,Harris
+87979,562,Online Panel,Pennsylvania,0,207521,1071,lv,2024,U.S. President,REP,45,Trump
+87979,562,Online Panel,Pennsylvania,0,207521,1071,lv,2024,U.S. President,LIB,0,Oliver
+87979,562,Online Panel,Pennsylvania,0,207521,1071,lv,2024,U.S. President,GRE,1,Stein
+87980,562,Online Panel,Wisconsin,0,207522,672,lv,2024,U.S. President,DEM,48,Harris
+87980,562,Online Panel,Wisconsin,0,207522,672,lv,2024,U.S. President,REP,44,Trump
+87980,562,Online Panel,Wisconsin,0,207522,672,lv,2024,U.S. President,LIB,0,Oliver
+87980,562,Online Panel,Wisconsin,0,207522,672,lv,2024,U.S. President,GRE,0,Stein
+87929,37,Online Panel,,0,207242,1511,lv,2024,U.S. President,DEM,50.4,Harris
+87929,37,Online Panel,,0,207242,1511,lv,2024,U.S. President,REP,43.2,Trump
+87982,52,Online Panel,,0,207557,1238,lv,2024,U.S. President,DEM,51,Harris
+87982,52,Online Panel,,0,207557,1238,lv,2024,U.S. President,REP,45,Trump
+87926,721,App Panel,Michigan,0,207228,400,lv,2024,U.S. President,DEM,50.1,Harris
+87926,721,App Panel,Michigan,0,207228,400,lv,2024,U.S. President,REP,49.9,Trump
+87917,851,Online Panel,North Carolina,0,207058,612,lv,2024,U.S. President,DEM,46,Harris
+87917,851,Online Panel,North Carolina,0,207058,612,lv,2024,U.S. President,REP,50,Trump
+87919,859,Online Panel,,0,207085,1094,lv,2024,U.S. President,DEM,49,Harris
+87919,859,Online Panel,,0,207085,1094,lv,2024,U.S. President,REP,47,Trump
+87949,267,Live Phone,,0,207360,1611,lv,2024,U.S. President,DEM,49,Harris
+87949,267,Live Phone,,0,207360,1611,lv,2024,U.S. President,REP,47,Trump
+87949,267,Live Phone,,0,207360,1611,lv,2024,U.S. President,GRE,1,Stein
+87949,267,Live Phone,,0,207360,1611,lv,2024,U.S. President,LIB,1,Oliver
+87949,267,Live Phone,,0,207361,1611,lv,2024,U.S. President,DEM,49,Harris
+87949,267,Live Phone,,0,207361,1611,lv,2024,U.S. President,REP,48,Trump
+87951,218,Online Panel,Arizona,0,207451,776,lv,2024,U.S. President,DEM,49,Harris
+87951,218,Online Panel,Arizona,0,207451,776,lv,2024,U.S. President,REP,47,Trump
+87951,218,Online Panel,Arizona,0,207451,776,lv,2024,U.S. President,GRE,0,Stein
+87951,218,Online Panel,Arizona,0,207451,776,lv,2024,U.S. President,LIB,2,Oliver
+87951,218,Online Panel,Arizona,0,207452,776,lv,2024,U.S. President,DEM,48,Harris
+87951,218,Online Panel,Arizona,0,207452,776,lv,2024,U.S. President,REP,48,Trump
+87999,154,Probability Panel,,0,207600,NA,lv,2024,U.S. President,DEM,52,Harris
+87999,154,Probability Panel,,0,207600,NA,lv,2024,U.S. President,REP,46,Trump
+87952,218,Online Panel,Georgia,0,207455,737,lv,2024,U.S. President,DEM,48,Harris
+87952,218,Online Panel,Georgia,0,207455,737,lv,2024,U.S. President,REP,46,Trump
+87952,218,Online Panel,Georgia,0,207455,737,lv,2024,U.S. President,GRE,1,Stein
+87952,218,Online Panel,Georgia,0,207455,737,lv,2024,U.S. President,LIB,3,Oliver
+87952,218,Online Panel,Georgia,0,207456,737,lv,2024,U.S. President,DEM,50,Harris
+87952,218,Online Panel,Georgia,0,207456,737,lv,2024,U.S. President,REP,47,Trump
+87953,218,Online Panel,Michigan,0,207459,651,lv,2024,U.S. President,DEM,49,Harris
+87953,218,Online Panel,Michigan,0,207459,651,lv,2024,U.S. President,REP,47,Trump
+87953,218,Online Panel,Michigan,0,207459,651,lv,2024,U.S. President,GRE,0,Stein
+87953,218,Online Panel,Michigan,0,207459,651,lv,2024,U.S. President,LIB,2,Oliver
+87953,218,Online Panel,Michigan,0,207460,651,lv,2024,U.S. President,DEM,49,Harris
+87953,218,Online Panel,Michigan,0,207460,651,lv,2024,U.S. President,REP,47,Trump
+87954,218,Online Panel,Nevada,0,207463,416,lv,2024,U.S. President,DEM,48,Harris
+87954,218,Online Panel,Nevada,0,207463,416,lv,2024,U.S. President,REP,46,Trump
+87954,218,Online Panel,Nevada,0,207463,416,lv,2024,U.S. President,GRE,2,Stein
+87954,218,Online Panel,Nevada,0,207463,416,lv,2024,U.S. President,LIB,3,Oliver
+87954,218,Online Panel,Nevada,0,207464,416,lv,2024,U.S. President,DEM,50,Harris
+87954,218,Online Panel,Nevada,0,207464,416,lv,2024,U.S. President,REP,46,Trump
+87955,218,Online Panel,North Carolina,0,207467,645,lv,2024,U.S. President,DEM,48,Harris
+87955,218,Online Panel,North Carolina,0,207467,645,lv,2024,U.S. President,REP,48,Trump
+87955,218,Online Panel,North Carolina,0,207467,645,lv,2024,U.S. President,GRE,1,Stein
+87955,218,Online Panel,North Carolina,0,207467,645,lv,2024,U.S. President,LIB,2,Oliver
+87955,218,Online Panel,North Carolina,0,207468,645,lv,2024,U.S. President,DEM,49,Harris
+87955,218,Online Panel,North Carolina,0,207468,645,lv,2024,U.S. President,REP,49,Trump
+87956,218,Online Panel,Pennsylvania,0,207471,758,lv,2024,U.S. President,DEM,51,Harris
+87956,218,Online Panel,Pennsylvania,0,207471,758,lv,2024,U.S. President,REP,46,Trump
+87956,218,Online Panel,Pennsylvania,0,207471,758,lv,2024,U.S. President,GRE,1,Stein
+87956,218,Online Panel,Pennsylvania,0,207471,758,lv,2024,U.S. President,LIB,1,Oliver
+87956,218,Online Panel,Pennsylvania,0,207472,758,lv,2024,U.S. President,DEM,51,Harris
+87956,218,Online Panel,Pennsylvania,0,207472,758,lv,2024,U.S. President,REP,48,Trump
+87957,218,Online Panel,Wisconsin,0,207475,648,lv,2024,U.S. President,DEM,52,Harris
+87957,218,Online Panel,Wisconsin,0,207475,648,lv,2024,U.S. President,REP,44,Trump
+87957,218,Online Panel,Wisconsin,0,207475,648,lv,2024,U.S. President,GRE,1,Stein
+87957,218,Online Panel,Wisconsin,0,207475,648,lv,2024,U.S. President,LIB,1,Oliver
+87957,218,Online Panel,Wisconsin,0,207476,648,lv,2024,U.S. President,DEM,53,Harris
+87957,218,Online Panel,Wisconsin,0,207476,648,lv,2024,U.S. President,REP,44,Trump
+87970,84,Live Phone,Michigan,0,207510,600,lv,2024,U.S. President,DEM,46,Harris
+87970,84,Live Phone,Michigan,0,207510,600,lv,2024,U.S. President,REP,47,Trump
+87964,49,Live Phone,Florida,0,207479,600,lv,2024,U.S. President,DEM,45,Harris
+87964,49,Live Phone,Florida,0,207479,600,lv,2024,U.S. President,REP,52,Trump
+87899,407,Online Panel,,0,206912,1031,lv,2024,U.S. President,DEM,48,Harris
+87899,407,Online Panel,,0,206912,1031,lv,2024,U.S. President,REP,49,Trump
+87899,407,Online Panel,,0,206914,1031,lv,2024,U.S. President,DEM,48,Harris
+87899,407,Online Panel,,0,206914,1031,lv,2024,U.S. President,REP,48,Trump
+87899,407,Online Panel,,0,206914,1031,lv,2024,U.S. President,GRE,1,Stein
+87899,407,Online Panel,,0,206914,1031,lv,2024,U.S. President,IND,1,West
+87899,407,Online Panel,,0,206914,1031,lv,2024,U.S. President,LIB,1,Oliver
+87916,770,IVR/Online Panel,,0,207057,856,lv,2024,U.S. President,DEM,49.1,Harris
+87916,770,IVR/Online Panel,,0,207057,856,lv,2024,U.S. President,REP,44.6,Trump
+87968,572,Online Panel,,0,207491,863,lv,2024,U.S. President,DEM,50,Harris
+87968,572,Online Panel,,0,207491,863,lv,2024,U.S. President,REP,46,Trump
+87900,124,,,0,206917,1190,lv,2024,U.S. President,DEM,52,Harris
+87900,124,,,0,206917,1190,lv,2024,U.S. President,REP,45,Trump
+87894,851,Online Panel,Pennsylvania,0,206829,713,lv,2024,U.S. President,DEM,47,Harris
+87894,851,Online Panel,Pennsylvania,0,206829,713,lv,2024,U.S. President,REP,48,Trump
+87889,721,App Panel,,0,206792,1000,lv,2024,U.S. President,DEM,52.6,Harris
+87889,721,App Panel,,0,206792,1000,lv,2024,U.S. President,REP,47.4,Trump
+87893,144,Online Panel,Michigan,0,206836,741,lv,2024,U.S. President,DEM,48.4,Harris
+87893,144,Online Panel,Michigan,0,206836,741,lv,2024,U.S. President,REP,46,Trump
+87885,555,Online Panel,,0,206736,2404,lv,2024,U.S. President,DEM,49,Harris
+87885,555,Online Panel,,0,206736,2404,lv,2024,U.S. President,REP,49,Trump
+87873,862,Online Panel,,0,206682,1867,lv,2024,U.S. President,DEM,52,Harris
+87873,862,Online Panel,,0,206682,1867,lv,2024,U.S. President,REP,48,Trump
+87877,721,App Panel,Pennsylvania,0,206715,400,lv,2024,U.S. President,DEM,51.1,Harris
+87877,721,App Panel,Pennsylvania,0,206715,400,lv,2024,U.S. President,REP,48.9,Trump
+87878,721,App Panel,Ohio,0,206716,400,lv,2024,U.S. President,DEM,43.8,Harris
+87878,721,App Panel,Ohio,0,206716,400,lv,2024,U.S. President,REP,56.2,Trump
+87879,721,App Panel,Missouri,0,206717,400,lv,2024,U.S. President,DEM,41.3,Harris
+87879,721,App Panel,Missouri,0,206717,400,lv,2024,U.S. President,REP,58.7,Trump
+87870,325,Online Panel,North Carolina,0,206735,941,lv,2024,U.S. President,DEM,47,Harris
+87870,325,Online Panel,North Carolina,0,206735,941,lv,2024,U.S. President,REP,47,Trump
+87940,90,Online Panel/Text-to-Web,Michigan,0,207327,400,lv,2024,U.S. President,DEM,46,Harris
+87940,90,Online Panel/Text-to-Web,Michigan,0,207327,400,lv,2024,U.S. President,REP,48,Trump
+87941,90,Online Panel/Text-to-Web,Pennsylvania,0,207328,400,lv,2024,U.S. President,DEM,46,Harris
+87941,90,Online Panel/Text-to-Web,Pennsylvania,0,207328,400,lv,2024,U.S. President,REP,47,Trump
+87942,90,Online Panel/Text-to-Web,Wisconsin,0,207329,400,lv,2024,U.S. President,DEM,49,Harris
+87942,90,Online Panel/Text-to-Web,Wisconsin,0,207329,400,lv,2024,U.S. President,REP,45,Trump
+87862,721,App Panel,New York,0,206561,400,lv,2024,U.S. President,DEM,58.3,Harris
+87862,721,App Panel,New York,0,206561,400,lv,2024,U.S. President,REP,41.7,Trump
+87915,694,Live Phone,Maryland,0,207052,600,lv,2024,U.S. President,DEM,64,Harris
+87915,694,Live Phone,Maryland,0,207052,600,lv,2024,U.S. President,REP,32,Trump
+87959,508,IVR/Text-to-Web,Arizona,0,207439,600,lv,2024,U.S. President,DEM,47.6,Harris
+87959,508,IVR/Text-to-Web,Arizona,0,207439,600,lv,2024,U.S. President,REP,48.7,Trump
+87960,508,IVR/Text-to-Web,Georgia,0,207441,600,lv,2024,U.S. President,DEM,48.9,Harris
+87960,508,IVR/Text-to-Web,Georgia,0,207441,600,lv,2024,U.S. President,REP,49.3,Trump
+87961,508,IVR/Text-to-Web,North Carolina,0,207443,600,lv,2024,U.S. President,DEM,47.2,Harris
+87961,508,IVR/Text-to-Web,North Carolina,0,207443,600,lv,2024,U.S. President,REP,47.4,Trump
+87962,508,IVR/Text-to-Web,Pennsylvania,0,207445,600,lv,2024,U.S. President,DEM,48.2,Harris
+87962,508,IVR/Text-to-Web,Pennsylvania,0,207445,600,lv,2024,U.S. President,REP,47.2,Trump
+87963,508,IVR/Text-to-Web,Wisconsin,0,207447,600,lv,2024,U.S. President,DEM,47.9,Harris
+87963,508,IVR/Text-to-Web,Wisconsin,0,207447,600,lv,2024,U.S. President,REP,45.2,Trump
+87841,243,,Pennsylvania,0,206432,800,lv,2024,U.S. President,DEM,46,Harris
+87841,243,,Pennsylvania,0,206432,800,lv,2024,U.S. President,REP,46.6,Trump
+87856,357,Probability Panel,New Hampshire,0,206547,2048,lv,2024,U.S. President,DEM,52,Harris
+87856,357,Probability Panel,New Hampshire,0,206547,2048,lv,2024,U.S. President,REP,47,Trump
+87857,357,Probability Panel,Vermont,0,206549,924,lv,2024,U.S. President,DEM,70,Harris
+87857,357,Probability Panel,Vermont,0,206549,924,lv,2024,U.S. President,REP,29,Trump
+87858,357,Probability Panel,Maine,0,206553,951,lv,2024,U.S. President,DEM,58,Harris
+87858,357,Probability Panel,Maine,0,206553,951,lv,2024,U.S. President,REP,41,Trump
+87859,357,Probability Panel,Maine,1,206554,476,lv,2024,U.S. President,DEM,64,Harris
+87859,357,Probability Panel,Maine,1,206554,476,lv,2024,U.S. President,REP,36,Trump
+87860,357,Probability Panel,Maine,2,206555,432,lv,2024,U.S. President,DEM,52,Harris
+87860,357,Probability Panel,Maine,2,206555,432,lv,2024,U.S. President,REP,47,Trump
+87834,721,App Panel,California,0,206401,400,lv,2024,U.S. President,DEM,65.3,Harris
+87834,721,App Panel,California,0,206401,400,lv,2024,U.S. President,REP,34.7,Trump
+87833,851,Online Panel,,0,206400,876,lv,2024,U.S. President,DEM,50,Harris
+87833,851,Online Panel,,0,206400,876,lv,2024,U.S. President,REP,48,Trump
+87810,391,Online Panel,,0,206219,3253,lv,2024,U.S. President,DEM,51,Harris
+87810,391,Online Panel,,0,206219,3253,lv,2024,U.S. President,REP,48,Trump
+87845,292,Live Phone/Online Panel,Virginia,0,206471,691,lv,2024,U.S. President,DEM,47,Harris
+87845,292,Live Phone/Online Panel,Virginia,0,206471,691,lv,2024,U.S. President,REP,44,Trump
+87934,391,Online Panel,Missouri,0,207316,900,lv,2024,U.S. President,DEM,41,Harris
+87934,391,Online Panel,Missouri,0,207316,900,lv,2024,U.S. President,REP,54,Trump
+87812,837,,Pennsylvania,0,206257,719,lv,2024,U.S. President,DEM,50.2,Harris
+87812,837,,Pennsylvania,0,206257,719,lv,2024,U.S. President,REP,49.8,Trump
+87813,837,,Michigan,0,206258,702,lv,2024,U.S. President,DEM,53.1,Harris
+87813,837,,Michigan,0,206258,702,lv,2024,U.S. President,REP,46.9,Trump
+87814,837,,Georgia,0,206259,651,lv,2024,U.S. President,DEM,48,Harris
+87814,837,,Georgia,0,206259,651,lv,2024,U.S. President,REP,52,Trump
+87815,837,,Arizona,0,206260,702,lv,2024,U.S. President,DEM,48.6,Harris
+87815,837,,Arizona,0,206260,702,lv,2024,U.S. President,REP,51.4,Trump
+87816,837,,North Carolina,0,206261,702,lv,2024,U.S. President,DEM,49.8,Harris
+87816,837,,North Carolina,0,206261,702,lv,2024,U.S. President,REP,50.2,Trump
+87817,837,,Wisconsin,0,206262,700,lv,2024,U.S. President,DEM,52.5,Harris
+87817,837,,Wisconsin,0,206262,700,lv,2024,U.S. President,REP,47.5,Trump
+87818,837,,Nevada,0,206263,678,lv,2024,U.S. President,DEM,53.7,Harris
+87818,837,,Nevada,0,206263,678,lv,2024,U.S. President,REP,46.3,Trump
+87800,67,,Pennsylvania,0,206186,800,lv,2024,U.S. President,DEM,47.8,Harris
+87800,67,,Pennsylvania,0,206186,800,lv,2024,U.S. President,REP,47.1,Trump
+87807,448,Live Phone,Nevada,0,206206,677,lv,2024,U.S. President,DEM,47,Harris
+87807,448,Live Phone,Nevada,0,206206,677,lv,2024,U.S. President,REP,48,Trump
+87788,862,Online Panel,,0,206079,1858,lv,2024,U.S. President,DEM,53,Harris
+87788,862,Online Panel,,0,206079,1858,lv,2024,U.S. President,REP,47,Trump
+87806,448,Live Phone,Arizona,0,206203,677,lv,2024,U.S. President,DEM,50,Harris
+87806,448,Live Phone,Arizona,0,206203,677,lv,2024,U.S. President,REP,45,Trump
+87872,48,,,0,206673,2696,lv,2024,U.S. President,DEM,47,Harris
+87872,48,,,0,206673,2696,lv,2024,U.S. President,REP,43,Trump
+87787,721,App Panel,Florida,0,206077,400,lv,2024,U.S. President,DEM,45.9,Harris
+87787,721,App Panel,Florida,0,206077,400,lv,2024,U.S. President,REP,54.1,Trump
+87871,522,,,0,206684,6067,lv,2024,U.S. President,DEM,49,Harris
+87871,522,,,0,206684,6067,lv,2024,U.S. President,REP,46,Trump
+87797,88,IVR/Online Panel/Text-to-Web,Pennsylvania,0,206163,1000,lv,2024,U.S. President,DEM,49.3,Harris
+87797,88,IVR/Online Panel/Text-to-Web,Pennsylvania,0,206163,1000,lv,2024,U.S. President,REP,50.7,Trump
+87781,88,IVR/Online Panel/Text-to-Web,,0,206012,1000,lv,2024,U.S. President,DEM,52.3,Harris
+87781,88,IVR/Online Panel/Text-to-Web,,0,206012,1000,lv,2024,U.S. President,REP,47.7,Trump
+87790,144,Online Panel,Wisconsin,0,206116,976,lv,2024,U.S. President,DEM,47.2,Harris
+87790,144,Online Panel,Wisconsin,0,206116,976,lv,2024,U.S. President,REP,47,Trump
+87796,555,Online Panel,,0,206143,2708,lv,2024,U.S. President,DEM,47,Harris
+87796,555,Online Panel,,0,206143,2708,lv,2024,U.S. President,REP,49,Trump
+87808,448,Live Phone,North Carolina,0,206205,655,lv,2024,U.S. President,DEM,49,Harris
+87808,448,Live Phone,North Carolina,0,206205,655,lv,2024,U.S. President,REP,47,Trump
+87809,448,Live Phone,Georgia,0,206204,661,lv,2024,U.S. President,DEM,46,Harris
+87809,448,Live Phone,Georgia,0,206204,661,lv,2024,U.S. President,REP,50,Trump
+87776,721,App Panel,,0,205883,1000,lv,2024,U.S. President,DEM,52.4,Harris
+87776,721,App Panel,,0,205883,1000,lv,2024,U.S. President,REP,47.6,Trump
+87794,154,Probability Panel,,0,206223,1505,lv,2024,U.S. President,DEM,51,Harris
+87794,154,Probability Panel,,0,206223,1505,lv,2024,U.S. President,REP,45,Trump
+87747,721,App Panel,Texas,0,205745,400,lv,2024,U.S. President,DEM,46.7,Harris
+87747,721,App Panel,Texas,0,205745,400,lv,2024,U.S. President,REP,53.3,Trump
+87777,267,Live Phone,Pennsylvania,0,205901,1738,lv,2024,U.S. President,DEM,50,Harris
+87777,267,Live Phone,Pennsylvania,0,205901,1738,lv,2024,U.S. President,REP,47,Trump
+87761,770,IVR/Online Panel/Text-to-Web,Florida,0,205812,1040,lv,2024,U.S. President,DEM,47,Harris
+87761,770,IVR/Online Panel/Text-to-Web,Florida,0,205812,1040,lv,2024,U.S. President,REP,50,Trump
+87785,694,Live Phone/Text-to-Web,Michigan,0,206075,600,lv,2024,U.S. President,DEM,48,Harris
+87785,694,Live Phone/Text-to-Web,Michigan,0,206075,600,lv,2024,U.S. President,REP,48,Trump
+87773,457,,California,0,205866,3765,lv,2024,U.S. President,DEM,59,Harris
+87773,457,,California,0,205866,3765,lv,2024,U.S. President,REP,34,Trump
+87721,448,Live Phone,Pennsylvania,0,205628,693,lv,2024,U.S. President,DEM,50,Harris
+87721,448,Live Phone,Pennsylvania,0,205628,693,lv,2024,U.S. President,REP,46,Trump
+87713,243,,Michigan,0,205617,800,lv,2024,U.S. President,DEM,49,Harris
+87713,243,,Michigan,0,205617,800,lv,2024,U.S. President,REP,47,Trump
+87791,67,,,0,206119,1500,lv,2024,U.S. President,DEM,47.6,Harris
+87791,67,,,0,206119,1500,lv,2024,U.S. President,REP,47,Trump
+87719,448,Live Phone,Michigan,0,205626,619,lv,2024,U.S. President,DEM,50,Harris
+87719,448,Live Phone,Michigan,0,205626,619,lv,2024,U.S. President,REP,46,Trump
+87720,448,Live Phone,Wisconsin,0,205627,661,lv,2024,U.S. President,DEM,50,Harris
+87720,448,Live Phone,Wisconsin,0,205627,661,lv,2024,U.S. President,REP,46,Trump
+87848,413,Text-to-Web,Arizona,0,206482,600,lv,2024,U.S. President,DEM,46,Harris
+87848,413,Text-to-Web,Arizona,0,206482,600,lv,2024,U.S. President,REP,49,Trump
+87849,413,Text-to-Web,Michigan,0,206483,600,lv,2024,U.S. President,DEM,47,Harris
+87849,413,Text-to-Web,Michigan,0,206483,600,lv,2024,U.S. President,REP,46,Trump
+87850,413,Text-to-Web,North Carolina,0,206484,600,lv,2024,U.S. President,DEM,46,Harris
+87850,413,Text-to-Web,North Carolina,0,206484,600,lv,2024,U.S. President,REP,48,Trump
+87851,413,Text-to-Web,Pennsylvania,0,206485,600,lv,2024,U.S. President,DEM,46,Harris
+87851,413,Text-to-Web,Pennsylvania,0,206485,600,lv,2024,U.S. President,REP,48,Trump
+87852,413,Text-to-Web,Wisconsin,0,206486,600,lv,2024,U.S. President,DEM,48,Harris
+87852,413,Text-to-Web,Wisconsin,0,206486,600,lv,2024,U.S. President,REP,48,Trump
+87714,243,,Wisconsin,0,205618,800,lv,2024,U.S. President,DEM,48.3,Harris
+87714,243,,Wisconsin,0,205618,800,lv,2024,U.S. President,REP,48.6,Trump
+87710,555,Online Panel,,0,205606,NA,lv,2024,U.S. President,DEM,49,Harris
+87710,555,Online Panel,,0,205606,NA,lv,2024,U.S. President,REP,49,Trump
+87700,88,Online Panel/Text-to-Web,Montana,0,205437,1000,lv,2024,U.S. President,DEM,42.5,Harris
+87700,88,Online Panel/Text-to-Web,Montana,0,205437,1000,lv,2024,U.S. President,REP,57.5,Trump
+87694,721,App Panel,,0,205341,1000,lv,2024,U.S. President,DEM,50,Harris
+87694,721,App Panel,,0,205341,1000,lv,2024,U.S. President,REP,50,Trump
+87677,325,Online Panel,,0,205228,1510,lv,2024,U.S. President,DEM,48,Harris
+87677,325,Online Panel,,0,205228,1510,lv,2024,U.S. President,REP,45,Trump
+87706,416,Live Phone,Arizona,0,205574,500,lv,2024,U.S. President,DEM,44.4,Harris
+87706,416,Live Phone,Arizona,0,205574,500,lv,2024,U.S. President,REP,41.6,Trump
+87663,391,Online Panel,,0,205200,3092,lv,2024,U.S. President,DEM,50,Harris
+87663,391,Online Panel,,0,205200,3092,lv,2024,U.S. President,REP,49,Trump
+87763,606,Online Panel/Text-to-Web,Arizona,0,205823,435,lv,2024,U.S. President,DEM,48,Harris
+87763,606,Online Panel/Text-to-Web,Arizona,0,205823,435,lv,2024,U.S. President,REP,46,Trump
+87764,606,Online Panel/Text-to-Web,Georgia,0,205824,405,lv,2024,U.S. President,DEM,48,Harris
+87764,606,Online Panel/Text-to-Web,Georgia,0,205824,405,lv,2024,U.S. President,REP,48,Trump
+87765,606,Online Panel/Text-to-Web,Michigan,0,205825,406,lv,2024,U.S. President,DEM,49,Harris
+87765,606,Online Panel/Text-to-Web,Michigan,0,205825,406,lv,2024,U.S. President,REP,46,Trump
+87766,606,Online Panel/Text-to-Web,Nevada,0,205826,403,lv,2024,U.S. President,DEM,45,Harris
+87766,606,Online Panel/Text-to-Web,Nevada,0,205826,403,lv,2024,U.S. President,REP,48,Trump
+87767,606,Online Panel/Text-to-Web,North Carolina,0,205827,403,lv,2024,U.S. President,DEM,48,Harris
+87767,606,Online Panel/Text-to-Web,North Carolina,0,205827,403,lv,2024,U.S. President,REP,47,Trump
+87768,606,Online Panel/Text-to-Web,Pennsylvania,0,205828,411,lv,2024,U.S. President,DEM,49,Harris
+87768,606,Online Panel/Text-to-Web,Pennsylvania,0,205828,411,lv,2024,U.S. President,REP,48,Trump
+87769,606,Online Panel/Text-to-Web,Wisconsin,0,205829,404,lv,2024,U.S. President,DEM,49,Harris
+87769,606,Online Panel/Text-to-Web,Wisconsin,0,205829,404,lv,2024,U.S. President,REP,46,Trump
+87667,90,Live Phone/Text-to-Web,Pennsylvania,0,205210,600,lv,2024,U.S. President,DEM,48,Harris
+87667,90,Live Phone/Text-to-Web,Pennsylvania,0,205210,600,lv,2024,U.S. President,REP,48,Trump
+87678,305,Live Phone,New York,0,205260,1199,lv,2024,U.S. President,DEM,53,Harris
+87678,305,Live Phone,New York,0,205260,1199,lv,2024,U.S. President,REP,39,Trump
+87698,195,Live Phone/Email,Wisconsin,0,205426,801,lv,2024,U.S. President,DEM,50,Harris
+87698,195,Live Phone/Email,Wisconsin,0,205426,801,lv,2024,U.S. President,REP,49,Trump
+87699,195,Probability Panel,,0,205434,683,lv,2024,U.S. President,DEM,53,Harris
+87699,195,Probability Panel,,0,205434,683,lv,2024,U.S. President,REP,47,Trump
+87704,694,Live Phone,Georgia,0,205572,600,lv,2024,U.S. President,DEM,48,Harris
+87704,694,Live Phone,Georgia,0,205572,600,lv,2024,U.S. President,REP,48,Trump
+87658,671,IVR/Live Phone/Text/Online Panel/Email,Georgia,0,205167,NA,lv,2024,U.S. President,DEM,47,Harris
+87658,671,IVR/Live Phone/Text/Online Panel/Email,Georgia,0,205167,NA,lv,2024,U.S. President,REP,49,Trump
+87668,126,Live Phone,Pennsylvania,0,205212,500,lv,2024,U.S. President,DEM,50,Harris
+87668,126,Live Phone,Pennsylvania,0,205212,500,lv,2024,U.S. President,REP,46,Trump
+87668,126,Live Phone,Pennsylvania,0,205212,500,lv,2024,U.S. President,LIB,2,Oliver
+87643,836,IVR/Live Phone/Online Panel/Text-to-Web,,0,204992,1035,lv,2024,U.S. President,DEM,49.5,Harris
+87643,836,IVR/Live Phone/Online Panel/Text-to-Web,,0,204992,1035,lv,2024,U.S. President,REP,48.3,Trump
+87639,721,App Panel,,0,204876,1000,lv,2024,U.S. President,DEM,48.7,Harris
+87639,721,App Panel,,0,204876,1000,lv,2024,U.S. President,REP,51.3,Trump
+87640,203,Online Panel,,0,204924,1000,lv,2024,U.S. President,DEM,45,Harris
+87640,203,Online Panel,,0,204924,1000,lv,2024,U.S. President,REP,47,Trump
+87644,260,Online Panel/Text-to-Web,Arizona,0,204993,400,lv,2024,U.S. President,DEM,43,Harris
+87644,260,Online Panel/Text-to-Web,Arizona,0,204993,400,lv,2024,U.S. President,REP,48,Trump
+87645,260,Online Panel/Text-to-Web,Michigan,0,204994,400,lv,2024,U.S. President,DEM,45,Harris
+87645,260,Online Panel/Text-to-Web,Michigan,0,204994,400,lv,2024,U.S. President,REP,45,Trump
+87646,260,Online Panel/Text-to-Web,Nevada,0,204995,400,lv,2024,U.S. President,DEM,45,Harris
+87646,260,Online Panel/Text-to-Web,Nevada,0,204995,400,lv,2024,U.S. President,REP,46,Trump
+87647,260,Online Panel/Text-to-Web,Pennsylvania,0,204996,400,lv,2024,U.S. President,DEM,48,Harris
+87647,260,Online Panel/Text-to-Web,Pennsylvania,0,204996,400,lv,2024,U.S. President,REP,45,Trump
+87648,260,Online Panel/Text-to-Web,Wisconsin,0,204997,400,lv,2024,U.S. President,DEM,48,Harris
+87648,260,Online Panel/Text-to-Web,Wisconsin,0,204997,400,lv,2024,U.S. President,REP,46,Trump
+87651,251,Live Phone/Online Panel/Text-to-Web,,0,205035,2919,lv,2024,U.S. President,DEM,49.5,Harris
+87651,251,Live Phone/Online Panel/Text-to-Web,,0,205035,2919,lv,2024,U.S. President,REP,50.5,Trump
+87651,251,Live Phone/Online Panel/Text-to-Web,,0,205037,2919,lv,2024,U.S. President,DEM,47.2,Harris
+87651,251,Live Phone/Online Panel/Text-to-Web,,0,205037,2919,lv,2024,U.S. President,REP,47.9,Trump
+87650,694,Live Phone,Ohio,0,205030,600,lv,2024,U.S. President,DEM,42,Harris
+87650,694,Live Phone,Ohio,0,205030,600,lv,2024,U.S. President,REP,52,Trump
+87617,770,IVR/Online Panel,,0,204773,952,lv,2024,U.S. President,DEM,48,Harris
+87617,770,IVR/Online Panel,,0,204773,952,lv,2024,U.S. President,REP,46,Trump
+87612,360,Live Phone/Text-to-Web,Florida,0,204676,774,lv,2024,U.S. President,DEM,42,Harris
+87612,360,Live Phone/Text-to-Web,Florida,0,204676,774,lv,2024,U.S. President,REP,49,Trump
+87634,141,Live Phone,Oregon,0,204850,700,lv,2024,U.S. President,DEM,49,Harris
+87634,141,Live Phone,Oregon,0,204850,700,lv,2024,U.S. President,REP,44,Trump
+87659,52,Online Panel,,0,205198,995,lv,2024,U.S. President,DEM,48,Harris
+87659,52,Online Panel,,0,205198,995,lv,2024,U.S. President,REP,47,Trump
+87558,357,Online Panel/Text-to-Web,Maine,0,204334,1445,lv,2024,U.S. President,DEM,54,Harris
+87558,357,Online Panel/Text-to-Web,Maine,0,204334,1445,lv,2024,U.S. President,REP,45,Trump
+87559,357,Online Panel/Text-to-Web,New Hampshire,0,204336,2875,lv,2024,U.S. President,DEM,53,Harris
+87559,357,Online Panel/Text-to-Web,New Hampshire,0,204336,2875,lv,2024,U.S. President,REP,46,Trump
+87581,325,Online Panel,Minnesota,0,204502,656,lv,2024,U.S. President,DEM,50,Harris
+87581,325,Online Panel,Minnesota,0,204502,656,lv,2024,U.S. President,REP,40,Trump
+87724,357,Online Panel/Text-to-Web,Maine,1,205674,732,lv,2024,U.S. President,DEM,60,Harris
+87724,357,Online Panel/Text-to-Web,Maine,1,205674,732,lv,2024,U.S. President,REP,39,Trump
+87725,357,Online Panel/Text-to-Web,Maine,2,205675,701,lv,2024,U.S. President,DEM,49,Harris
+87725,357,Online Panel/Text-to-Web,Maine,2,205675,701,lv,2024,U.S. President,REP,51,Trump
+87579,133,Online Panel,,0,204441,2472,lv,2024,U.S. President,DEM,49,Harris
+87579,133,Online Panel,,0,204441,2472,lv,2024,U.S. President,REP,51,Trump
+87557,448,Live Phone,,0,204204,1142,lv,2024,U.S. President,DEM,47,Harris
+87557,448,Live Phone,,0,204204,1142,lv,2024,U.S. President,REP,48,Trump
+87534,166,,Georgia,0,204025,400,lv,2024,U.S. President,DEM,46.7,Harris
+87534,166,,Georgia,0,204025,400,lv,2024,U.S. President,REP,48,Trump
+88063,88,Online Panel/Text-to-Web,California,0,207952,815,lv,2024,U.S. Senate,DEM,54.7,Schiff
+88063,88,Online Panel/Text-to-Web,California,0,207952,815,lv,2024,U.S. Senate,REP,32.5,Garvey
+88064,88,Online Panel/Text-to-Web,Florida,0,207953,815,lv,2024,U.S. Senate,DEM,44.8,Mucarsel-Powell
+88064,88,Online Panel/Text-to-Web,Florida,0,207953,815,lv,2024,U.S. Senate,REP,45.8,Scott
+88065,88,Online Panel/Text-to-Web,Texas,0,207954,845,lv,2024,U.S. Senate,DEM,44.3,Allred
+88065,88,Online Panel/Text-to-Web,Texas,0,207954,845,lv,2024,U.S. Senate,REP,48,Cruz
+88066,88,Online Panel/Text-to-Web,Ohio,0,207955,945,lv,2024,U.S. Senate,DEM,45.6,Brown
+88066,88,Online Panel/Text-to-Web,Ohio,0,207955,945,lv,2024,U.S. Senate,REP,44.2,Moreno
+88041,721,App Panel,Michigan,0,207901,400,lv,2024,U.S. Senate,DEM,53.2,Slotkin
+88041,721,App Panel,Michigan,0,207901,400,lv,2024,U.S. Senate,REP,46.8,Rogers
+88009,721,App Panel,Tennessee,0,207663,400,lv,2024,U.S. Senate,DEM,40.2,Johnson
+88009,721,App Panel,Tennessee,0,207663,400,lv,2024,U.S. Senate,REP,59.8,Blackburn
+88002,851,Online Panel,Ohio,0,207611,600,lv,2024,U.S. Senate,DEM,50,Brown
+88002,851,Online Panel,Ohio,0,207611,600,lv,2024,U.S. Senate,REP,45,Moreno
+88003,721,App Panel,Virginia,0,207612,400,lv,2024,U.S. Senate,DEM,55.3,Kaine
+88003,721,App Panel,Virginia,0,207612,400,lv,2024,U.S. Senate,REP,44.7,Cao
+87989,243,,Nevada,0,207578,800,lv,2024,U.S. Senate,DEM,48.6,Rosen
+87989,243,,Nevada,0,207578,800,lv,2024,U.S. Senate,REP,39.3,Brown
+87990,243,,Arizona,0,207579,800,lv,2024,U.S. Senate,DEM,49.4,Gallego
+87990,243,,Arizona,0,207579,800,lv,2024,U.S. Senate,REP,44.9,Lake
+87986,284,IVR/Text-to-Web,Pennsylvania,0,207571,1607,lv,2024,U.S. Senate,DEM,48,Casey
+87986,284,IVR/Text-to-Web,Pennsylvania,0,207571,1607,lv,2024,U.S. Senate,REP,46,McCormick
+87988,325,Online Panel,Minnesota,0,207688,635,lv,2024,U.S. Senate,DEM,50,Klobuchar
+87988,325,Online Panel,Minnesota,0,207688,635,lv,2024,U.S. Senate,REP,36,White
+88024,117,Live Phone,Michigan,0,207752,600,lv,2024,U.S. Senate,DEM,43.5,Slotkin
+88024,117,Live Phone,Michigan,0,207752,600,lv,2024,U.S. Senate,REP,35,Rogers
+88024,117,Live Phone,Michigan,0,207752,600,lv,2024,U.S. Senate,LIB,3,Solis-Mullen
+88024,117,Live Phone,Michigan,0,207752,600,lv,2024,U.S. Senate,GRE,1.5,Marsh
+88024,117,Live Phone,Michigan,0,207752,600,lv,2024,U.S. Senate,UST,1,Stein
+88024,117,Live Phone,Michigan,0,207752,600,lv,2024,U.S. Senate,NLP,0.3,Dern
+88036,864,Live Phone/Text-to-Web,Montana,0,207858,600,lv,2024,U.S. Senate,DEM,41,Tester
+88036,864,Live Phone/Text-to-Web,Montana,0,207858,600,lv,2024,U.S. Senate,REP,49,Sheehy
+88036,864,Live Phone/Text-to-Web,Montana,0,207858,600,lv,2024,U.S. Senate,LIB,4,Daoud
+88036,864,Live Phone/Text-to-Web,Montana,0,207858,600,lv,2024,U.S. Senate,GRE,1,Downey
+88036,864,Live Phone/Text-to-Web,Montana,0,207859,600,lv,2024,U.S. Senate,DEM,45,Tester
+88036,864,Live Phone/Text-to-Web,Montana,0,207859,600,lv,2024,U.S. Senate,REP,51,Sheehy
+88015,844,Probability Panel,Arizona,0,207744,682,lv,2024,U.S. Senate,DEM,47,Gallego
+88015,844,Probability Panel,Arizona,0,207744,682,lv,2024,U.S. Senate,REP,44,Lake
+88017,844,Probability Panel,Michigan,0,207745,708,lv,2024,U.S. Senate,DEM,47,Slotkin
+88017,844,Probability Panel,Michigan,0,207745,708,lv,2024,U.S. Senate,REP,41,Rogers
+88018,844,Probability Panel,Nevada,0,207746,626,lv,2024,U.S. Senate,DEM,50,Rosen
+88018,844,Probability Panel,Nevada,0,207746,626,lv,2024,U.S. Senate,REP,40,Brown
+88019,844,Probability Panel,Pennsylvania,0,207747,789,lv,2024,U.S. Senate,DEM,46,Casey
+88019,844,Probability Panel,Pennsylvania,0,207747,789,lv,2024,U.S. Senate,REP,46,McCormick
+88020,844,Probability Panel,Wisconsin,0,207748,976,lv,2024,U.S. Senate,DEM,51,Baldwin
+88020,844,Probability Panel,Wisconsin,0,207748,976,lv,2024,U.S. Senate,REP,45,Hovde
+87965,721,App Panel,Texas,0,207478,400,lv,2024,U.S. Senate,DEM,44.8,Allred
+87965,721,App Panel,Texas,0,207478,400,lv,2024,U.S. Senate,REP,55.2,Cruz
+87935,88,IVR/Online Panel/Text-to-Web,Arizona,0,207302,720,lv,2024,U.S. Senate,DEM,49,Gallego
+87935,88,IVR/Online Panel/Text-to-Web,Arizona,0,207302,720,lv,2024,U.S. Senate,REP,42.2,Lake
+87936,88,IVR/Online Panel/Text-to-Web,Michigan,0,207303,800,lv,2024,U.S. Senate,DEM,47.3,Slotkin
+87936,88,IVR/Online Panel/Text-to-Web,Michigan,0,207303,800,lv,2024,U.S. Senate,REP,40.9,Rogers
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,0,207304,1168,lv,2024,U.S. Senate,DEM,50.4,Rosen
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,0,207304,1168,lv,2024,U.S. Senate,REP,39.5,Brown
+87938,88,IVR/Online Panel/Text-to-Web,Pennsylvania,0,207305,950,lv,2024,U.S. Senate,DEM,48.1,Casey
+87938,88,IVR/Online Panel/Text-to-Web,Pennsylvania,0,207305,950,lv,2024,U.S. Senate,REP,43.8,McCormick
+87939,88,IVR/Online Panel/Text-to-Web,Wisconsin,0,207306,850,lv,2024,U.S. Senate,DEM,48.9,Baldwin
+87939,88,IVR/Online Panel/Text-to-Web,Wisconsin,0,207306,850,lv,2024,U.S. Senate,REP,47.7,Hovde
+87972,562,Online Panel,Arizona,0,207523,530,lv,2024,U.S. Senate,DEM,42,Gallego
+87972,562,Online Panel,Arizona,0,207523,530,lv,2024,U.S. Senate,REP,37,Lake
+87972,562,Online Panel,Arizona,0,207523,530,lv,2024,U.S. Senate,GRE,2,Quintana
+87973,562,Online Panel,Florida,0,207524,850,lv,2024,U.S. Senate,DEM,40,Mucarsel-Powell
+87973,562,Online Panel,Florida,0,207524,850,lv,2024,U.S. Senate,REP,43,Scott
+87973,562,Online Panel,Florida,0,207524,850,lv,2024,U.S. Senate,LIB,1,Bonoan
+87975,562,Online Panel,Michigan,0,207525,761,lv,2024,U.S. Senate,DEM,42,Slotkin
+87975,562,Online Panel,Michigan,0,207525,761,lv,2024,U.S. Senate,REP,35,Rogers
+87975,562,Online Panel,Michigan,0,207525,761,lv,2024,U.S. Senate,GRE,2,Marsh
+87975,562,Online Panel,Michigan,0,207525,761,lv,2024,U.S. Senate,LIB,1,Solis-Mullen
+87975,562,Online Panel,Michigan,0,207525,761,lv,2024,U.S. Senate,NLP,1,Dern
+87975,562,Online Panel,Michigan,0,207525,761,lv,2024,U.S. Senate,UST,0,Stein
+87976,562,Online Panel,Minnesota,0,207526,426,lv,2024,U.S. Senate,DEM,41,Klobuchar
+87976,562,Online Panel,Minnesota,0,207526,426,lv,2024,U.S. Senate,REP,34,White
+87976,562,Online Panel,Minnesota,0,207526,426,lv,2024,U.S. Senate,IDP,3,Lacey
+87976,562,Online Panel,Minnesota,0,207526,426,lv,2024,U.S. Senate,LIB,0,Whiting
+87977,562,Online Panel,Nevada,0,207527,490,lv,2024,U.S. Senate,DEM,43,Rosen
+87977,562,Online Panel,Nevada,0,207527,490,lv,2024,U.S. Senate,REP,39,Brown
+87977,562,Online Panel,Nevada,0,207527,490,lv,2024,U.S. Senate,LIB,1,Cunningham
+87977,562,Online Panel,Nevada,0,207527,490,lv,2024,U.S. Senate,IAP,2,Hansen
+87978,562,Online Panel,New Mexico,0,207528,488,lv,2024,U.S. Senate,DEM,43,Heinrich
+87978,562,Online Panel,New Mexico,0,207528,488,lv,2024,U.S. Senate,REP,33,Domenici
+87979,562,Online Panel,Pennsylvania,0,207529,1071,lv,2024,U.S. Senate,DEM,44,Casey
+87979,562,Online Panel,Pennsylvania,0,207529,1071,lv,2024,U.S. Senate,REP,38,McCormick
+87979,562,Online Panel,Pennsylvania,0,207529,1071,lv,2024,U.S. Senate,LIB,1,Thomas
+87979,562,Online Panel,Pennsylvania,0,207529,1071,lv,2024,U.S. Senate,CON,0,Selker
+87979,562,Online Panel,Pennsylvania,0,207529,1071,lv,2024,U.S. Senate,GRE,1,Hazou
+87980,562,Online Panel,Wisconsin,0,207530,672,lv,2024,U.S. Senate,DEM,46,Baldwin
+87980,562,Online Panel,Wisconsin,0,207530,672,lv,2024,U.S. Senate,REP,41,Hovde
+87980,562,Online Panel,Wisconsin,0,207530,672,lv,2024,U.S. Senate,OTH,1,Leager
+87980,562,Online Panel,Wisconsin,0,207530,672,lv,2024,U.S. Senate,OTH,1,Anderson
+87970,84,Live Phone,Michigan,0,207508,600,lv,2024,U.S. Senate,DEM,46,Slotkin
+87970,84,Live Phone,Michigan,0,207508,600,lv,2024,U.S. Senate,REP,42,Rogers
+87964,49,Live Phone,Florida,0,207477,600,lv,2024,U.S. Senate,DEM,44,Mucarsel-Powell
+87964,49,Live Phone,Florida,0,207477,600,lv,2024,U.S. Senate,REP,51,Scott
+87894,851,Online Panel,Pennsylvania,0,206864,713,lv,2024,U.S. Senate,DEM,47,Casey
+87894,851,Online Panel,Pennsylvania,0,206864,713,lv,2024,U.S. Senate,REP,41,McCormick
+87896,721,App Panel,Pennsylvania,0,206867,400,lv,2024,U.S. Senate,DEM,54.9,Casey
+87896,721,App Panel,Pennsylvania,0,206867,400,lv,2024,U.S. Senate,REP,45.1,McCormick
+87893,144,Online Panel,Michigan,0,206866,741,lv,2024,U.S. Senate,DEM,49,Slotkin
+87893,144,Online Panel,Michigan,0,206866,741,lv,2024,U.S. Senate,REP,39,Rogers
+87940,90,Online Panel/Text-to-Web,Michigan,0,207308,400,lv,2024,U.S. Senate,DEM,43,Slotkin
+87940,90,Online Panel/Text-to-Web,Michigan,0,207308,400,lv,2024,U.S. Senate,REP,43,Rogers
+87941,90,Online Panel/Text-to-Web,Pennsylvania,0,207309,400,lv,2024,U.S. Senate,DEM,46,Casey
+87941,90,Online Panel/Text-to-Web,Pennsylvania,0,207309,400,lv,2024,U.S. Senate,REP,43,McCormick
+87942,90,Online Panel/Text-to-Web,Wisconsin,0,207310,400,lv,2024,U.S. Senate,DEM,48,Baldwin
+87942,90,Online Panel/Text-to-Web,Wisconsin,0,207310,400,lv,2024,U.S. Senate,REP,43,Hovde
+87895,260,Live Phone,Montana,0,206861,500,lv,2024,U.S. Senate,DEM,44,Tester
+87895,260,Live Phone,Montana,0,206861,500,lv,2024,U.S. Senate,REP,51,Sheehy
+87895,260,Live Phone,Montana,0,206861,500,lv,2024,U.S. Senate,GRE,1,Downey
+87895,260,Live Phone,Montana,0,206861,500,lv,2024,U.S. Senate,LIB,2,Daoud
+87915,694,Live Phone,Maryland,0,207053,600,lv,2024,U.S. Senate,DEM,46,Alsobrooks
+87915,694,Live Phone,Maryland,0,207053,600,lv,2024,U.S. Senate,REP,46,Hogan
+87857,357,Probability Panel,Vermont,0,206655,924,lv,2024,U.S. Senate,REP,25,Malloy
+87857,357,Probability Panel,Vermont,0,206655,924,lv,2024,U.S. Senate,LIB,1,Hill
+87857,357,Probability Panel,Vermont,0,206655,924,lv,2024,U.S. Senate,IND,66,Sanders
+87857,357,Probability Panel,Vermont,0,206655,924,lv,2024,U.S. Senate,OTH,2,Schoville
+87857,357,Probability Panel,Vermont,0,206655,924,lv,2024,U.S. Senate,IND,0,Berry
+87858,357,Probability Panel,Maine,0,206656,951,lv,2024,U.S. Senate,DEM,9,Costello
+87858,357,Probability Panel,Maine,0,206656,951,lv,2024,U.S. Senate,REP,33,Kouzounas
+87858,357,Probability Panel,Maine,0,206656,951,lv,2024,U.S. Senate,IND,43,King
+87858,357,Probability Panel,Maine,0,206656,951,lv,2024,U.S. Senate,IND,3,Cherry
+87845,292,Live Phone/Online Panel,Virginia,0,206473,691,lv,2024,U.S. Senate,DEM,49,Kaine
+87845,292,Live Phone/Online Panel,Virginia,0,206473,691,lv,2024,U.S. Senate,REP,38,Cao
+87934,391,Online Panel,Missouri,0,207301,900,lv,2024,U.S. Senate,DEM,42,Kunce
+87934,391,Online Panel,Missouri,0,207301,900,lv,2024,U.S. Senate,REP,53,Hawley
+87861,351,Online Panel,Texas,0,206560,1365,lv,2024,U.S. Senate,DEM,44.5,Allred
+87861,351,Online Panel,Texas,0,206560,1365,lv,2024,U.S. Senate,REP,46.6,Cruz
+87861,351,Online Panel,Texas,0,206560,1365,lv,2024,U.S. Senate,LIB,2.5,Brown
+87800,67,,Pennsylvania,0,206184,800,lv,2024,U.S. Senate,DEM,46.2,Casey
+87800,67,,Pennsylvania,0,206184,800,lv,2024,U.S. Senate,REP,42,McCormick
+87800,67,,Pennsylvania,0,206185,800,lv,2024,U.S. Senate,DEM,42.2,Casey
+87800,67,,Pennsylvania,0,206185,800,lv,2024,U.S. Senate,REP,38.5,McCormick
+87800,67,,Pennsylvania,0,206185,800,lv,2024,U.S. Senate,CON,1,Selker
+87800,67,,Pennsylvania,0,206185,800,lv,2024,U.S. Senate,LIB,3,Thomas
+87800,67,,Pennsylvania,0,206185,800,lv,2024,U.S. Senate,GRE,2,Hazou
+87800,67,,Pennsylvania,0,206185,800,lv,2024,U.S. Senate,OTH,1,Messina
+87927,225,,New Jersey,0,207235,600,lv,2024,U.S. Senate,DEM,38,Kim
+87927,225,,New Jersey,0,207235,600,lv,2024,U.S. Senate,REP,33,Bashaw
+87807,448,Live Phone,Nevada,0,206196,677,lv,2024,U.S. Senate,DEM,49,Rosen
+87807,448,Live Phone,Nevada,0,206196,677,lv,2024,U.S. Senate,REP,40,Brown
+87821,562,Online Panel,Arizona,0,206370,592,lv,2024,U.S. Senate,DEM,44,Gallego
+87821,562,Online Panel,Arizona,0,206370,592,lv,2024,U.S. Senate,REP,39,Lake
+87826,562,Online Panel,Nevada,0,206371,536,lv,2024,U.S. Senate,DEM,41,Rosen
+87826,562,Online Panel,Nevada,0,206371,536,lv,2024,U.S. Senate,REP,37,Brown
+87826,562,Online Panel,Nevada,0,206371,536,lv,2024,U.S. Senate,LIB,2,Cunningham
+87826,562,Online Panel,Nevada,0,206371,536,lv,2024,U.S. Senate,IAP,2,Hansen
+87827,562,Online Panel,New Mexico,0,206372,453,lv,2024,U.S. Senate,DEM,42,Heinrich
+87827,562,Online Panel,New Mexico,0,206372,453,lv,2024,U.S. Senate,REP,36,Domenici
+87829,562,Online Panel,Pennsylvania,0,206373,825,lv,2024,U.S. Senate,DEM,44,Casey
+87829,562,Online Panel,Pennsylvania,0,206373,825,lv,2024,U.S. Senate,REP,36,McCormick
+87829,562,Online Panel,Pennsylvania,0,206373,825,lv,2024,U.S. Senate,LIB,0,Thomas
+87829,562,Online Panel,Pennsylvania,0,206373,825,lv,2024,U.S. Senate,CON,0,Selker
+87829,562,Online Panel,Pennsylvania,0,206373,825,lv,2024,U.S. Senate,GRE,1,Hazou
+87806,448,Live Phone,Arizona,0,206194,677,lv,2024,U.S. Senate,DEM,51,Gallego
+87806,448,Live Phone,Arizona,0,206194,677,lv,2024,U.S. Senate,REP,42,Lake
+87797,88,IVR/Online Panel/Text-to-Web,Pennsylvania,0,206162,1000,lv,2024,U.S. Senate,DEM,48.1,Casey
+87797,88,IVR/Online Panel/Text-to-Web,Pennsylvania,0,206162,1000,lv,2024,U.S. Senate,REP,43.5,McCormick
+87790,144,Online Panel,Wisconsin,0,206113,976,lv,2024,U.S. Senate,DEM,50,Baldwin
+87790,144,Online Panel,Wisconsin,0,206113,976,lv,2024,U.S. Senate,REP,43,Hovde
+87799,383,Live Phone,Arizona,0,206172,600,lv,2024,U.S. Senate,DEM,48,Gallego
+87799,383,Live Phone,Arizona,0,206172,600,lv,2024,U.S. Senate,REP,46,Lake
+87799,383,Live Phone,Arizona,0,206172,600,lv,2024,U.S. Senate,GRE,3,Norton
+87777,267,Live Phone,Pennsylvania,0,205902,1738,lv,2024,U.S. Senate,DEM,52,Casey
+87777,267,Live Phone,Pennsylvania,0,205902,1738,lv,2024,U.S. Senate,REP,44,McCormick
+87745,721,App Panel,Ohio,0,205740,400,lv,2024,U.S. Senate,DEM,52.5,Brown
+87745,721,App Panel,Ohio,0,205740,400,lv,2024,U.S. Senate,REP,47.5,Moreno
+87746,721,App Panel,California,0,205741,400,lv,2024,U.S. Senate,DEM,66.3,Schiff
+87746,721,App Panel,California,0,205741,400,lv,2024,U.S. Senate,REP,33.7,Garvey
+87761,770,IVR/Online Panel/Text-to-Web,Florida,0,205809,1040,lv,2024,U.S. Senate,DEM,43,Mucarsel-Powell
+87761,770,IVR/Online Panel/Text-to-Web,Florida,0,205809,1040,lv,2024,U.S. Senate,REP,47,Scott
+87785,694,Live Phone/Text-to-Web,Michigan,0,206072,600,lv,2024,U.S. Senate,DEM,47,Slotkin
+87785,694,Live Phone/Text-to-Web,Michigan,0,206072,600,lv,2024,U.S. Senate,REP,44,Rogers
+87773,457,,California,0,206078,3765,lv,2024,U.S. Senate,DEM,53,Schiff
+87773,457,,California,0,206078,3765,lv,2024,U.S. Senate,REP,33,Garvey
+87721,448,Live Phone,Pennsylvania,0,205640,693,lv,2024,U.S. Senate,DEM,51,Casey
+87721,448,Live Phone,Pennsylvania,0,205640,693,lv,2024,U.S. Senate,REP,37,McCormick
+87748,203,,Florida,0,205747,800,lv,2024,U.S. Senate,DEM,42,Mucarsel-Powell
+87748,203,,Florida,0,205747,800,lv,2024,U.S. Senate,REP,52,Scott
+87719,448,Live Phone,Michigan,0,205638,619,lv,2024,U.S. Senate,DEM,46,Slotkin
+87719,448,Live Phone,Michigan,0,205638,619,lv,2024,U.S. Senate,REP,43,Rogers
+87720,448,Live Phone,Wisconsin,0,205639,661,lv,2024,U.S. Senate,DEM,51,Baldwin
+87720,448,Live Phone,Wisconsin,0,205639,661,lv,2024,U.S. Senate,REP,44,Hovde
+87700,88,Online Panel/Text-to-Web,Montana,0,205459,1000,lv,2024,U.S. Senate,DEM,46.4,Tester
+87700,88,Online Panel/Text-to-Web,Montana,0,205459,1000,lv,2024,U.S. Senate,REP,48.4,Sheehy
+87784,217,,Arizona,0,206071,800,lv,2024,U.S. Senate,DEM,46,Gallego
+87784,217,,Arizona,0,206071,800,lv,2024,U.S. Senate,REP,46,Lake
+87706,416,Live Phone,Arizona,0,205575,500,lv,2024,U.S. Senate,DEM,49.6,Gallego
+87706,416,Live Phone,Arizona,0,205575,500,lv,2024,U.S. Senate,REP,38.6,Lake
+87680,721,App Panel,New York,0,205258,400,lv,2024,U.S. Senate,DEM,63.2,Gillibrand
+87680,721,App Panel,New York,0,205258,400,lv,2024,U.S. Senate,REP,36.8,Sapraicone
+87682,562,Online Panel,Arizona,0,205277,567,lv,2024,U.S. Senate,DEM,42,Gallego
+87682,562,Online Panel,Arizona,0,205277,567,lv,2024,U.S. Senate,REP,36,Lake
+87687,562,Online Panel,Nevada,0,205278,470,lv,2024,U.S. Senate,DEM,41,Rosen
+87687,562,Online Panel,Nevada,0,205278,470,lv,2024,U.S. Senate,REP,38,Brown
+87687,562,Online Panel,Nevada,0,205278,470,lv,2024,U.S. Senate,LIB,1,Cunningham
+87687,562,Online Panel,Nevada,0,205278,470,lv,2024,U.S. Senate,IAP,2,Hansen
+87688,562,Online Panel,New Mexico,0,205279,493,lv,2024,U.S. Senate,DEM,40,Heinrich
+87688,562,Online Panel,New Mexico,0,205279,493,lv,2024,U.S. Senate,REP,34,Domenici
+87690,562,Online Panel,Pennsylvania,0,205280,743,lv,2024,U.S. Senate,DEM,45,Casey
+87690,562,Online Panel,Pennsylvania,0,205280,743,lv,2024,U.S. Senate,REP,40,McCormick
+87690,562,Online Panel,Pennsylvania,0,205280,743,lv,2024,U.S. Senate,LIB,1,Thomas
+87690,562,Online Panel,Pennsylvania,0,205280,743,lv,2024,U.S. Senate,CON,0,Selker
+87690,562,Online Panel,Pennsylvania,0,205280,743,lv,2024,U.S. Senate,GRE,0,Hazou
+87759,165,,North Dakota,0,205773,500,lv,2024,U.S. Senate,DEM,38,Christiansen
+87759,165,,North Dakota,0,205773,500,lv,2024,U.S. Senate,REP,51,Cramer
+87763,606,Online Panel/Text-to-Web,Arizona,0,206006,435,lv,2024,U.S. Senate,DEM,51,Gallego
+87763,606,Online Panel/Text-to-Web,Arizona,0,206006,435,lv,2024,U.S. Senate,REP,42,Lake
+87765,606,Online Panel/Text-to-Web,Michigan,0,206007,406,lv,2024,U.S. Senate,DEM,50,Slotkin
+87765,606,Online Panel/Text-to-Web,Michigan,0,206007,406,lv,2024,U.S. Senate,REP,42,Rogers
+87766,606,Online Panel/Text-to-Web,Nevada,0,206008,403,lv,2024,U.S. Senate,DEM,54,Rosen
+87766,606,Online Panel/Text-to-Web,Nevada,0,206008,403,lv,2024,U.S. Senate,REP,36,Brown
+87768,606,Online Panel/Text-to-Web,Pennsylvania,0,206009,411,lv,2024,U.S. Senate,DEM,53,Casey
+87768,606,Online Panel/Text-to-Web,Pennsylvania,0,206009,411,lv,2024,U.S. Senate,REP,40,McCormick
+87769,606,Online Panel/Text-to-Web,Wisconsin,0,206010,404,lv,2024,U.S. Senate,DEM,50,Baldwin
+87769,606,Online Panel/Text-to-Web,Wisconsin,0,206010,404,lv,2024,U.S. Senate,REP,43,Hovde
+87678,305,Live Phone,New York,0,205257,1199,lv,2024,U.S. Senate,DEM,56,Gillibrand
+87678,305,Live Phone,New York,0,205257,1199,lv,2024,U.S. Senate,REP,33,Sapraicone
+87698,195,Live Phone/Email,Wisconsin,0,205422,801,lv,2024,U.S. Senate,DEM,52,Baldwin
+87698,195,Live Phone/Email,Wisconsin,0,205422,801,lv,2024,U.S. Senate,REP,47,Hovde
+87698,195,Live Phone/Email,Wisconsin,0,205424,801,lv,2024,U.S. Senate,DEM,51,Baldwin
+87698,195,Live Phone/Email,Wisconsin,0,205424,801,lv,2024,U.S. Senate,REP,45,Hovde
+87698,195,Live Phone/Email,Wisconsin,0,205424,801,lv,2024,U.S. Senate,OTH,2,Anderson
+87698,195,Live Phone/Email,Wisconsin,0,205424,801,lv,2024,U.S. Senate,OTH,2,Leager
+87650,694,Live Phone,Ohio,0,205031,600,lv,2024,U.S. Senate,DEM,46,Brown
+87650,694,Live Phone,Ohio,0,205031,600,lv,2024,U.S. Senate,REP,42,Moreno
+87618,326,,Pennsylvania,0,204781,600,lv,2024,U.S. Senate,DEM,47,Casey
+87618,326,,Pennsylvania,0,204781,600,lv,2024,U.S. Senate,REP,42,McCormick
+87612,360,Live Phone/Text-to-Web,Florida,0,204768,774,lv,2024,U.S. Senate,DEM,43,Mucarsel-Powell
+87612,360,Live Phone/Text-to-Web,Florida,0,204768,774,lv,2024,U.S. Senate,REP,47,Scott
+87581,325,Online Panel,Minnesota,0,204872,656,lv,2024,U.S. Senate,DEM,54,Klobuchar
+87581,325,Online Panel,Minnesota,0,204872,656,lv,2024,U.S. Senate,REP,33,Fraser
+87581,325,Online Panel,Minnesota,0,204873,656,lv,2024,U.S. Senate,DEM,55,Klobuchar
+87581,325,Online Panel,Minnesota,0,204873,656,lv,2024,U.S. Senate,REP,33,White
+87562,562,Online Panel,Nevada,0,204347,435,lv,2024,U.S. Senate,DEM,45,Rosen
+87562,562,Online Panel,Nevada,0,204347,435,lv,2024,U.S. Senate,REP,40,Brown
+87562,562,Online Panel,Nevada,0,204347,435,lv,2024,U.S. Senate,LIB,1,Cunningham
+87562,562,Online Panel,Nevada,0,204347,435,lv,2024,U.S. Senate,IAP,2,Hansen
+87563,562,Online Panel,Pennsylvania,0,204348,851,lv,2024,U.S. Senate,DEM,46,Casey
+87563,562,Online Panel,Pennsylvania,0,204348,851,lv,2024,U.S. Senate,REP,39,McCormick
+87563,562,Online Panel,Pennsylvania,0,204348,851,lv,2024,U.S. Senate,LIB,2,Thomas
+87563,562,Online Panel,Pennsylvania,0,204348,851,lv,2024,U.S. Senate,CON,0,Selker
+87563,562,Online Panel,Pennsylvania,0,204348,851,lv,2024,U.S. Senate,GRE,1,Hazou
+87572,117,Live Phone,Michigan,0,204519,600,lv,2024,U.S. Senate,DEM,45.9,Slotkin
+87572,117,Live Phone,Michigan,0,204519,600,lv,2024,U.S. Senate,REP,41.2,Rogers
+87947,454,Online Panel,Florida,0,207340,988,lv,2024,U.S. Senate,DEM,43,Mucarsel-Powell
+87947,454,Online Panel,Florida,0,207340,988,lv,2024,U.S. Senate,REP,49,Scott
+87540,233,Live Phone,Pennsylvania,0,204127,600,lv,2024,U.S. Senate,DEM,49,Casey
+87540,233,Live Phone,Pennsylvania,0,204127,600,lv,2024,U.S. Senate,REP,41,McCormick
+87518,851,Online Ad,Pennsylvania,0,203666,500,lv,2024,U.S. Senate,DEM,50,Casey
+87518,851,Online Ad,Pennsylvania,0,203666,500,lv,2024,U.S. Senate,REP,40,McCormick
+87498,562,Online Panel,Nevada,0,203602,412,lv,2024,U.S. Senate,DEM,41,Rosen
+87498,562,Online Panel,Nevada,0,203602,412,lv,2024,U.S. Senate,REP,37,Brown
+87498,562,Online Panel,Nevada,0,203602,412,lv,2024,U.S. Senate,LIB,2,Cunningham
+87498,562,Online Panel,Nevada,0,203602,412,lv,2024,U.S. Senate,IAP,2,Hansen
+87499,562,Online Panel,Pennsylvania,0,203603,688,lv,2024,U.S. Senate,DEM,44,Casey
+87499,562,Online Panel,Pennsylvania,0,203603,688,lv,2024,U.S. Senate,REP,37,McCormick
+87499,562,Online Panel,Pennsylvania,0,203603,688,lv,2024,U.S. Senate,LIB,1,Thomas
+87499,562,Online Panel,Pennsylvania,0,203603,688,lv,2024,U.S. Senate,CON,1,Selker
+87499,562,Online Panel,Pennsylvania,0,203603,688,lv,2024,U.S. Senate,GRE,1,Hazou
+87501,721,App Panel,Texas,0,203605,400,lv,2024,U.S. Senate,DEM,46.1,Allred
+87501,721,App Panel,Texas,0,203605,400,lv,2024,U.S. Senate,REP,53.9,Cruz
+88037,67,Live Phone/Text-to-Web,Alaska,1,207863,400,lv,2024,U.S. House,DEM,45.8,Peltola
+88037,67,Live Phone/Text-to-Web,Alaska,1,207863,400,lv,2024,U.S. House,REP,45.1,Begich
+88013,383,Live Phone/Text-to-Web,Florida,13,207689,400,lv,2024,U.S. House,DEM,43,Fox
+88013,383,Live Phone/Text-to-Web,Florida,13,207689,400,lv,2024,U.S. House,REP,48,Luna
+88051,14,,Montana,1,207916,500,lv,2024,U.S. House,DEM,44,Tranel
+88051,14,,Montana,1,207916,500,lv,2024,U.S. House,REP,46,Zinke
+88051,14,,Montana,1,207916,500,lv,2024,U.S. House,LIB,4,Hayes
+88036,864,Live Phone/Text-to-Web,Montana,1,207861,310,lv,2024,U.S. House,DEM,43,Tranel
+88036,864,Live Phone/Text-to-Web,Montana,1,207861,310,lv,2024,U.S. House,REP,49,Zinke
+88036,864,Live Phone/Text-to-Web,Montana,2,207862,290,lv,2024,U.S. House,DEM,31,Driscoll
+88036,864,Live Phone/Text-to-Web,Montana,2,207862,290,lv,2024,U.S. House,REP,52,Downing
+88023,235,Live Phone/Text-to-Web,Oregon,5,207750,419,lv,2024,U.S. House,DEM,41,Bynum
+88023,235,Live Phone/Text-to-Web,Oregon,5,207750,419,lv,2024,U.S. House,REP,39,Chavez-DeRemer
+88023,235,Live Phone/Text-to-Web,Oregon,5,207750,419,lv,2024,U.S. House,NPA,1,Aasen
+88023,235,Live Phone/Text-to-Web,Oregon,5,207751,419,lv,2024,U.S. House,DEM,43,Bynum
+88023,235,Live Phone/Text-to-Web,Oregon,5,207751,419,lv,2024,U.S. House,REP,42,Chavez-DeRemer
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,1,207312,280,lv,2024,U.S. House,DEM,46.7,Titus
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,1,207312,280,lv,2024,U.S. House,REP,31.7,Robertson
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,1,207312,280,lv,2024,U.S. House,IAP,0.9,Hoge
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,1,207312,280,lv,2024,U.S. House,LIB,4.2,Havlicek
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,2,207313,309,lv,2024,U.S. House,REP,43.6,Amodei
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,2,207313,309,lv,2024,U.S. House,IAP,5.9,Chapman
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,2,207313,309,lv,2024,U.S. House,LIB,1.1,Tachiquin
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,2,207313,309,lv,2024,U.S. House,NPA,12.9,Kidd
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,3,207314,298,lv,2024,U.S. House,DEM,47.4,Lee
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,3,207314,298,lv,2024,U.S. House,REP,34.6,Johnson
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,4,207315,281,lv,2024,U.S. House,DEM,45.7,Horsford
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,4,207315,281,lv,2024,U.S. House,REP,36.1,Lee
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,4,207315,281,lv,2024,U.S. House,IAP,3.6,Best
+87937,88,IVR/Online Panel/Text-to-Web,Nevada,4,207315,281,lv,2024,U.S. House,LIB,2.1,Ferreira
+87925,314,IVR/Text,Florida,13,207227,843,lv,2024,U.S. House,DEM,47.8,Fox
+87925,314,IVR/Text,Florida,13,207227,843,lv,2024,U.S. House,REP,44.3,Luna
+87857,357,Probability Panel,Vermont,1,206659,924,lv,2024,U.S. House,DEM,61,Balint
+87857,357,Probability Panel,Vermont,1,206659,924,lv,2024,U.S. House,REP,24,Coester
+87857,357,Probability Panel,Vermont,1,206659,924,lv,2024,U.S. House,OTH,1,Diamondstone
+87857,357,Probability Panel,Vermont,1,206659,924,lv,2024,U.S. House,IND,0,Ortiz
+87846,279,IVR,Nebraska,2,206474,656,lv,2024,U.S. House,DEM,44,Vargas
+87846,279,IVR,Nebraska,2,206474,656,lv,2024,U.S. House,REP,46,Bacon
+87864,48,Text-to-Web/Online Ad,California,22,206648,479,lv,2024,U.S. House,DEM,38,Salas
+87864,48,Text-to-Web/Online Ad,California,22,206648,479,lv,2024,U.S. House,REP,44,Valadao
+87865,48,Text-to-Web/Online Ad,Nebraska,2,206649,437,lv,2024,U.S. House,DEM,48,Vargas
+87865,48,Text-to-Web/Online Ad,Nebraska,2,206649,437,lv,2024,U.S. House,REP,43,Bacon
+87866,48,Text-to-Web/Online Ad,New York,17,206650,433,lv,2024,U.S. House,DEM,38,Jones
+87866,48,Text-to-Web/Online Ad,New York,17,206650,433,lv,2024,U.S. House,REP,43,Lawler
+87866,48,Text-to-Web/Online Ad,New York,17,206650,433,lv,2024,U.S. House,OTH,6,Frascone
+87867,48,Text-to-Web/Online Ad,Pennsylvania,7,206651,406,lv,2024,U.S. House,DEM,47,Wild
+87867,48,Text-to-Web/Online Ad,Pennsylvania,7,206651,406,lv,2024,U.S. House,REP,43,Mackenzie
+87868,48,Text-to-Web/Online Ad,Pennsylvania,17,206652,543,lv,2024,U.S. House,DEM,48,Deluzio
+87868,48,Text-to-Web/Online Ad,Pennsylvania,17,206652,543,lv,2024,U.S. House,REP,40,Mercuri
+88012,203,Live Phone/Text-to-Web,New York,4,207687,400,lv,2024,U.S. House,DEM,42,Gillen
+88012,203,Live Phone/Text-to-Web,New York,4,207687,400,lv,2024,U.S. House,REP,48,D'Esposito
+88022,118,,Michigan,10,207749,330,lv,2024,U.S. House,DEM,44,Marlinga
+88022,118,,Michigan,10,207749,330,lv,2024,U.S. House,REP,47,James
+87847,260,Live Phone,Maryland,6,206476,400,lv,2024,U.S. House,DEM,42,Delaney
+87847,260,Live Phone,Maryland,6,206476,400,lv,2024,U.S. House,REP,40,Parrott
+87820,67,Live Phone/Text-to-Web,Oregon,6,206352,516,lv,2024,U.S. House,DEM,44.8,Salinas
+87820,67,Live Phone/Text-to-Web,Oregon,6,206352,516,lv,2024,U.S. House,REP,42.5,Erickson
+87805,14,Live Phone/Text-to-Web,Arizona,1,206192,500,lv,2024,U.S. House,DEM,48,Shah
+87805,14,Live Phone/Text-to-Web,Arizona,1,206192,500,lv,2024,U.S. House,REP,48,Schweikert
+87948,14,,Alabama,2,207359,400,lv,2024,U.S. House,DEM,51,Figures
+87948,14,,Alabama,2,207359,400,lv,2024,U.S. House,REP,39,Dobson
+87795,847,Live Phone/Text-to-Web,Pennsylvania,10,206142,600,lv,2024,U.S. House,DEM,48,Stelson
+87795,847,Live Phone/Text-to-Web,Pennsylvania,10,206142,600,lv,2024,U.S. House,REP,47,Perry
+87705,118,Live Phone/Text-to-Web,Michigan,8,205573,500,lv,2024,U.S. House,DEM,44,McDonald Rivet
+87705,118,Live Phone/Text-to-Web,Michigan,8,205573,500,lv,2024,U.S. House,REP,45,Junge
+87803,232,Live Phone/Text-to-Web,California,45,206190,500,lv,2024,U.S. House,DEM,47,Tran
+87803,232,Live Phone/Text-to-Web,California,45,206190,500,lv,2024,U.S. House,REP,47,Steel
+87732,67,Live Phone/Text-to-Web,Ohio,13,205685,400,lv,2024,U.S. House,DEM,43.7,Sykes
+87732,67,Live Phone/Text-to-Web,Ohio,13,205685,400,lv,2024,U.S. House,REP,39.9,Coughlin
+87681,340,Live Phone/Online Panel,California,16,205259,500,lv,2024,U.S. House,DEM,29,Low
+87681,340,Live Phone/Online Panel,California,16,205259,500,lv,2024,U.S. House,DEM,30,Liccardo
+87775,203,,New York,3,205882,400,lv,2024,U.S. House,DEM,51,Suozzi
+87775,203,,New York,3,205882,400,lv,2024,U.S. House,REP,37,LiPetri
+87636,235,Live Phone/Text,Ohio,9,204866,435,lv,2024,U.S. House,DEM,47,Kaptur
+87636,235,Live Phone/Text,Ohio,9,204866,435,lv,2024,U.S. House,REP,37,Merrin
+87652,333,,Pennsylvania,7,205161,404,lv,2024,U.S. House,DEM,47,Wild
+87652,333,,Pennsylvania,7,205161,404,lv,2024,U.S. House,REP,45,Mackenzie
+87923,48,Text-to-Web/Online Ad,Florida,15,207184,511,lv,2024,U.S. House,DEM,41,Kemp
+87923,48,Text-to-Web/Online Ad,Florida,15,207184,511,lv,2024,U.S. House,REP,44,Lee
+88026,67,Live Phone/Text-to-Web,Washington,0,207758,500,lv,2024,Governor,DEM,48,Ferguson
+88026,67,Live Phone/Text-to-Web,Washington,0,207758,500,lv,2024,Governor,REP,44.5,Reichert
+88036,864,Live Phone/Text-to-Web,Montana,0,207860,600,lv,2024,Governor,DEM,38,Busse
+88036,864,Live Phone/Text-to-Web,Montana,0,207860,600,lv,2024,Governor,REP,54,Gianforte
+88011,523,IVR/Text-to-Web,North Carolina,0,207686,920,lv,2024,Governor,DEM,46.6,Stein
+88011,523,IVR/Text-to-Web,North Carolina,0,207686,920,lv,2024,Governor,REP,40.6,Robinson
+88011,523,IVR/Text-to-Web,North Carolina,0,207686,920,lv,2024,Governor,LIB,0.9,Ross
+88011,523,IVR/Text-to-Web,North Carolina,0,207686,920,lv,2024,Governor,GRE,0.3,Turner
+88011,523,IVR/Text-to-Web,North Carolina,0,207686,920,lv,2024,Governor,CON,0.2,Smith
+87943,88,IVR/Online Panel/Text-to-Web,North Carolina,0,207311,775,lv,2024,Governor,DEM,46.9,Stein
+87943,88,IVR/Online Panel/Text-to-Web,North Carolina,0,207311,775,lv,2024,Governor,REP,40.6,Robinson
+87971,562,Online Panel,North Carolina,0,207512,812,lv,2024,Governor,DEM,44,Stein
+87971,562,Online Panel,North Carolina,0,207512,812,lv,2024,Governor,REP,40,Robinson
+87971,562,Online Panel,North Carolina,0,207512,812,lv,2024,Governor,LIB,2,Ross
+87971,562,Online Panel,North Carolina,0,207512,812,lv,2024,Governor,GRE,1,Turner
+87917,851,Online Panel,North Carolina,0,207059,612,lv,2024,Governor,DEM,47,Stein
+87917,851,Online Panel,North Carolina,0,207059,612,lv,2024,Governor,REP,37,Robinson
+87897,721,App Panel,North Carolina,0,206868,400,lv,2024,Governor,DEM,54.1,Stein
+87897,721,App Panel,North Carolina,0,206868,400,lv,2024,Governor,REP,45.9,Robinson
+87870,325,Online Panel,North Carolina,0,206728,941,lv,2024,Governor,DEM,50,Stein
+87870,325,Online Panel,North Carolina,0,206728,941,lv,2024,Governor,REP,36,Robinson
+87895,260,Live Phone,Montana,0,206857,500,lv,2024,Governor,DEM,34,Busse
+87895,260,Live Phone,Montana,0,206857,500,lv,2024,Governor,REP,53,Gianforte
+87895,260,Live Phone,Montana,0,206857,500,lv,2024,Governor,LIB,4,Leib
+87857,357,Probability Panel,Vermont,0,206658,924,lv,2024,Governor,DEM,28,Charlestin
+87857,357,Probability Panel,Vermont,0,206658,924,lv,2024,Governor,REP,56,Scott
+87857,357,Probability Panel,Vermont,0,206658,924,lv,2024,Governor,OTH,0,Goodband
+87857,357,Probability Panel,Vermont,0,206658,924,lv,2024,Governor,IND,5,Hoyt
+87857,357,Probability Panel,Vermont,0,206658,924,lv,2024,Governor,IND,0,Mutino
+87934,391,Online Panel,Missouri,0,207411,900,lv,2024,Governor,DEM,41,Quade
+87934,391,Online Panel,Missouri,0,207411,900,lv,2024,Governor,REP,51,Kehoe
+87828,562,Online Panel,North Carolina,0,206374,601,lv,2024,Governor,DEM,45,Stein
+87828,562,Online Panel,North Carolina,0,206374,601,lv,2024,Governor,REP,39,Robinson
+87828,562,Online Panel,North Carolina,0,206374,601,lv,2024,Governor,LIB,2,Ross
+87828,562,Online Panel,North Carolina,0,206374,601,lv,2024,Governor,GRE,0,Turner
+87808,448,Live Phone,North Carolina,0,206198,655,lv,2024,Governor,DEM,49,Stein
+87808,448,Live Phone,North Carolina,0,206198,655,lv,2024,Governor,REP,39,Robinson
+87711,67,,North Carolina,0,205614,600,lv,2024,Governor,DEM,42.6,Stein
+87711,67,,North Carolina,0,205614,600,lv,2024,Governor,REP,38.2,Robinson
+87711,67,,North Carolina,0,205614,600,lv,2024,Governor,GRE,0.7,Turner
+87711,67,,North Carolina,0,205614,600,lv,2024,Governor,LIB,3.4,Ross
+87689,562,Online Panel,North Carolina,0,205281,714,lv,2024,Governor,DEM,43,Stein
+87689,562,Online Panel,North Carolina,0,205281,714,lv,2024,Governor,REP,38,Robinson
+87689,562,Online Panel,North Carolina,0,205281,714,lv,2024,Governor,LIB,1,Ross
+87689,562,Online Panel,North Carolina,0,205281,714,lv,2024,Governor,GRE,1,Turner
+87576,263,IVR/Text-to-Web,Washington,0,204523,581,lv,2024,Governor,DEM,49,Ferguson
+87576,263,IVR/Text-to-Web,Washington,0,204523,581,lv,2024,Governor,REP,43,Reichert
+87576,263,IVR/Text-to-Web,Washington,0,204524,581,lv,2024,Governor,DEM,52,Ferguson
+87576,263,IVR/Text-to-Web,Washington,0,204524,581,lv,2024,Governor,REP,38,Bird
+87564,562,Online Panel,North Carolina,0,204349,586,lv,2024,Governor,DEM,38,Stein
+87564,562,Online Panel,North Carolina,0,204349,586,lv,2024,Governor,REP,34,Robinson
+87564,562,Online Panel,North Carolina,0,204349,586,lv,2024,Governor,LIB,3,Ross
+87564,562,Online Panel,North Carolina,0,204349,586,lv,2024,Governor,GRE,1,Turner
+87502,562,Online Panel,North Carolina,0,203606,461,lv,2024,Governor,DEM,37,Stein
+87502,562,Online Panel,North Carolina,0,203606,461,lv,2024,Governor,REP,36,Robinson
+87502,562,Online Panel,North Carolina,0,203606,461,lv,2024,Governor,LIB,1,Ross
+87502,562,Online Panel,North Carolina,0,203606,461,lv,2024,Governor,GRE,1,Turner
+88035,88,IVR/Online Panel/Text-to-Web,NA,NA,207857,1000,lv,2024,U.S. House,DEM,48.3,NA
+88035,88,IVR/Online Panel/Text-to-Web,NA,NA,207857,1000,lv,2024,U.S. House,REP,44.3,NA
+88030,203,Online Panel,NA,NA,207786,1778,lv,2024,U.S. House,DEM,45.3,NA
+88030,203,Online Panel,NA,NA,207786,1778,lv,2024,U.S. House,REP,48.7,NA
+87945,323,Live Phone,NA,NA,207669,1000,lv,2024,U.S. House,DEM,48.4,NA
+87945,323,Live Phone,NA,NA,207669,1000,lv,2024,U.S. House,REP,43,NA
+87982,52,Online Panel,NA,NA,207556,1238,lv,2024,U.S. House,DEM,48,NA
+87982,52,Online Panel,NA,NA,207556,1238,lv,2024,U.S. House,REP,41,NA
+87899,407,Online Panel,NA,NA,206911,1031,lv,2024,U.S. House,DEM,48,NA
+87899,407,Online Panel,NA,NA,206911,1031,lv,2024,U.S. House,REP,48,NA
+87916,770,IVR/Online Panel,NA,NA,207055,856,lv,2024,U.S. House,DEM,46.3,NA
+87916,770,IVR/Online Panel,NA,NA,207055,856,lv,2024,U.S. House,REP,44.1,NA
+87900,124,,NA,NA,206935,1190,lv,2024,U.S. House,DEM,44,NA
+87900,124,,NA,NA,206935,1190,lv,2024,U.S. House,REP,41,NA
+87871,522,,NA,NA,206672,6067,lv,2024,U.S. House,DEM,49,NA
+87871,522,,NA,NA,206672,6067,lv,2024,U.S. House,REP,44,NA
+87781,88,IVR/Online Panel/Text-to-Web,NA,NA,206005,1000,lv,2024,U.S. House,DEM,47.5,NA
+87781,88,IVR/Online Panel/Text-to-Web,NA,NA,206005,1000,lv,2024,U.S. House,REP,45.5,NA
+87791,67,,NA,NA,206110,1500,lv,2024,U.S. House,DEM,46.4,NA
+87791,67,,NA,NA,206110,1500,lv,2024,U.S. House,REP,47.1,NA
+87699,195,Probability Panel,NA,NA,205440,683,lv,2024,U.S. House,DEM,52,NA
+87699,195,Probability Panel,NA,NA,205440,683,lv,2024,U.S. House,REP,48,NA
+87643,836,IVR/Live Phone/Online Panel/Text-to-Web,NA,NA,204990,1035,lv,2024,U.S. House,DEM,46.6,NA
+87643,836,IVR/Live Phone/Online Panel/Text-to-Web,NA,NA,204990,1035,lv,2024,U.S. House,REP,45.2,NA
+87640,203,Online Panel,NA,NA,204910,1000,lv,2024,U.S. House,DEM,44,NA
+87640,203,Online Panel,NA,NA,204910,1000,lv,2024,U.S. House,REP,46,NA
+87651,251,Live Phone/Online Panel/Text-to-Web,NA,NA,205053,2919,lv,2024,U.S. House,DEM,43.7,NA
+87651,251,Live Phone/Online Panel/Text-to-Web,NA,NA,205053,2919,lv,2024,U.S. House,REP,43.7,NA
+87617,770,IVR/Online Panel,NA,NA,204777,952,lv,2024,U.S. House,DEM,47,NA
+87617,770,IVR/Online Panel,NA,NA,204777,952,lv,2024,U.S. House,REP,42,NA
+87659,52,Online Panel,NA,NA,205192,995,lv,2024,U.S. House,DEM,44,NA
+87659,52,Online Panel,NA,NA,205192,995,lv,2024,U.S. House,REP,42,NA
+87579,133,Online Panel,NA,NA,204421,2472,lv,2024,U.S. House,DEM,44,NA
+87579,133,Online Panel,NA,NA,204421,2472,lv,2024,U.S. House,REP,45,NA
+87589,239,Online Panel,NA,NA,204534,800,lv,2024,U.S. House,DEM,44,NA
+87589,239,Online Panel,NA,NA,204534,800,lv,2024,U.S. House,REP,49,NA
+87555,391,Online Panel,NA,NA,204187,1155,lv,2024,U.S. House,DEM,44,NA
+87555,391,Online Panel,NA,NA,204187,1155,lv,2024,U.S. House,REP,44,NA
+87520,407,Online Panel,NA,NA,203776,982,lv,2024,U.S. House,DEM,48,NA
+87520,407,Online Panel,NA,NA,203776,982,lv,2024,U.S. House,REP,47,NA
+87521,133,Online Panel,NA,NA,203729,2169,lv,2024,U.S. House,DEM,41,NA
+87521,133,Online Panel,NA,NA,203729,2169,lv,2024,U.S. House,REP,49,NA
+87528,770,IVR/Online Panel,NA,NA,203902,711,lv,2024,U.S. House,DEM,44.5,NA
+87528,770,IVR/Online Panel,NA,NA,203902,711,lv,2024,U.S. House,REP,45.1,NA
+87538,239,Online Panel,NA,NA,204107,800,lv,2024,U.S. House,DEM,43,NA
+87538,239,Online Panel,NA,NA,204107,800,lv,2024,U.S. House,REP,46,NA

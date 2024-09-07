@@ -119,6 +119,8 @@ uncleaned_current <- bind_rows(
   uncleaned_current_genballot
 )
 
+  
+
 #Initial cleaning
 cleaned_current <- uncleaned_current %>%
   filter(as.Date(Sys.Date()) - as.Date(mdy(end_date)) <= days_counting & population_full == "lv" & 
@@ -129,11 +131,12 @@ cleaned_current <- uncleaned_current %>%
     str_detect(state, "CD-2") ~ 2, 
     TRUE ~ seat_number
   ), 
-  state = str_remove(state, " CD-[0-9]")) %>% 
-  filter(state %in% c("", state.name)) %>%
+  state = str_remove(state, " CD-[0-9]")) %>%
+  filter(state %in% c("", state.name) | is.na(state)) %>%
   group_by(question_id) %>%
   filter(office_type != "U.S. President" | (!any(answer == "Biden") & !(any(answer == "Kennedy")) & any(answer == "Harris") & any(answer == "Trump"))) %>%
   ungroup() %>%
+  {print(nrow(.)); invisible(.)} %>%
   select(poll_id, pollster_rating_id, methodology, state, seat_number, question_id, 
          sample_size, population_full, cycle, office_type, party, pct, answer)
 
@@ -157,8 +160,8 @@ independent_polls <- cleaned_current %>%
   
 cleaned_current <- cleaned_current %>% 
   mutate(party = ifelse(party %in% c("DEM", "REP"), party, "IND")) %>%
-  #filter(party %in% c("DEM", "REP")) %>%
-  #Gets sum of percent by party rather than by candidate
+  filter(party %in% c("DEM", "REP")) %>%
+ #Gets sum of percent by party rather than by candidate
   group_by(poll_id, pollster_rating_id, methodology, state, seat_number, question_id, 
            sample_size, population_full, cycle, office_type, party) %>%
   summarize(pct = sum(pct)) %>%
@@ -171,8 +174,6 @@ cleaned_current <- cleaned_current %>%
                           sample_size, population_full, cycle, office_type),
               names_from = party,
               values_from = pct) %>%
-  #Some polls get values for RV and LV voters, so we are only taking the best
-  #from each poll
   mutate(population_full = factor(population_full, levels = population_order)) %>%
   arrange(population_full) %>%
   group_by(poll_id, state, seat_number, cycle, office_type) %>%
@@ -186,52 +187,52 @@ cleaned_current <- cleaned_current %>%
          state = ifelse(is.na(state), "US", state)) %>%
   arrange(valid, desc(lower_error_diff)) # Arrange rows
 
-all_polls <- cleaned_current %>%
-  bind_rows(cleaned_historical) %>%
-  mutate(IND = ifelse(is.na(IND), 0, IND))
-
-#Splitting up cleaning polls to get 2 types of averages for each race
-#valid_weighted, which looks at the softmax-weighted average for valid pollsters only
-#all_unweighted, which doesn't care about weights/validity
-poll_averages <- all_polls %>%
-  mutate(margin = (DEM - REP), 
-         phone = str_detect(methodology, "Phone|IVR"), 
-         online = str_detect(methodology, "Online|Mail|Email|Text")) %>%
-  group_by(state, seat_number, cycle, office_type) %>%
-  #Deal with the fact that only valid pollsters should be weighted at all
-  mutate(valid = ifelse(is.na(valid), FALSE, valid), 
-         #Softmaxing weights
-         weight = valid_softmax(lower_error_diff, valid),
-         #Num-democrats is required for meta-analyses -- #people who said they'd vote DEM
-         #REALLY important to put DEM tp here, because many polls have significant unconvinced
-         num_democrat = round(sample_size * (DEM) / (DEM + REP)))
-
-#Conducting meta-analyses on the polling averages
-meta_analyses <- poll_averages %>%
-  nest() %>%
-  summarize(meta_results = map(data, ~perform_weighted_metaprop(.$num_democrat, .$sample_size, .$weight))) %>% 
-  unnest(cols = meta_results)
-
-full_poll_averages <- poll_averages %>% 
- summarize(unconvinced_pct = mean(100 - (DEM + REP - IND), na.rm = TRUE),
-            phone_unweighted = mean(ifelse(phone, margin, NA_real_), na.rm = TRUE), 
-            online_unweighted = mean(ifelse(online, margin, NA_real_), na.rm = TRUE),
-            num_polls = n()) %>%
-  mutate(across(everything(), ~ifelse(is.nan(.), NA, .))) %>%
-  left_join(meta_analyses, by = c("state", 'seat_number', 'cycle', 'office_type')) %>%
-  rename(year = cycle)
-
-#Generic ballot based on only actual genballot polls
-generic_polling <- full_poll_averages %>%
-  ungroup() %>%
-  filter(state == "US" & year > 2000) %>%
-  rename(weighted_genpoll = weighted_estimate, 
-         weighted_genpoll_lower = weighted_ci_lower, 
-         weighted_genpoll_upper = weighted_ci_upper,
-         unweighted_genpoll = unweighted_estimate) %>%
-  select(c('year', 'weighted_genpoll','weighted_genpoll_lower', 
-           'weighted_genpoll_upper', 'unweighted_genpoll'))
-  
-
-write.csv(full_poll_averages, "cleaned_data/AllPolls.csv")
-write.csv(generic_polling, "cleaned_data/GenPolling.csv")
+# all_polls <- cleaned_current %>%
+#   bind_rows(cleaned_historical) %>%
+#   mutate(IND = ifelse(is.na(IND), 0, IND))
+# 
+# #Splitting up cleaning polls to get 2 types of averages for each race
+# #valid_weighted, which looks at the softmax-weighted average for valid pollsters only
+# #all_unweighted, which doesn't care about weights/validity
+# poll_averages <- all_polls %>%
+#   mutate(margin = (DEM - REP), 
+#          phone = str_detect(methodology, "Phone|IVR"), 
+#          online = str_detect(methodology, "Online|Mail|Email|Text")) %>%
+#   group_by(state, seat_number, cycle, office_type) %>%
+#   #Deal with the fact that only valid pollsters should be weighted at all
+#   mutate(valid = ifelse(is.na(valid), FALSE, valid), 
+#          #Softmaxing weights
+#          weight = valid_softmax(lower_error_diff, valid),
+#          #Num-democrats is required for meta-analyses -- #people who said they'd vote DEM
+#          #REALLY important to put DEM tp here, because many polls have significant unconvinced
+#          num_democrat = round(sample_size * (DEM) / (DEM + REP)))
+# 
+# #Conducting meta-analyses on the polling averages
+# meta_analyses <- poll_averages %>%
+#   nest() %>%
+#   summarize(meta_results = map(data, ~perform_weighted_metaprop(.$num_democrat, .$sample_size, .$weight))) %>% 
+#   unnest(cols = meta_results)
+# 
+# full_poll_averages <- poll_averages %>% 
+#  summarize(unconvinced_pct = mean(100 - (DEM + REP - IND), na.rm = TRUE),
+#             phone_unweighted = mean(ifelse(phone, margin, NA_real_), na.rm = TRUE), 
+#             online_unweighted = mean(ifelse(online, margin, NA_real_), na.rm = TRUE),
+#             num_polls = n()) %>%
+#   mutate(across(everything(), ~ifelse(is.nan(.), NA, .))) %>%
+#   left_join(meta_analyses, by = c("state", 'seat_number', 'cycle', 'office_type')) %>%
+#   rename(year = cycle)
+# 
+# #Generic ballot based on only actual genballot polls
+# generic_polling <- full_poll_averages %>%
+#   ungroup() %>%
+#   filter(state == "US" & year > 2000) %>%
+#   rename(weighted_genpoll = weighted_estimate, 
+#          weighted_genpoll_lower = weighted_ci_lower, 
+#          weighted_genpoll_upper = weighted_ci_upper,
+#          unweighted_genpoll = unweighted_estimate) %>%
+#   select(c('year', 'weighted_genpoll','weighted_genpoll_lower', 
+#            'weighted_genpoll_upper', 'unweighted_genpoll'))
+#   
+# 
+# write.csv(full_poll_averages, "cleaned_data/AllPolls.csv")
+# write.csv(generic_polling, "cleaned_data/GenPolling.csv")
