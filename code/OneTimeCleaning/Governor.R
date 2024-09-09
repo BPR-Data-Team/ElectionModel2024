@@ -36,9 +36,9 @@ governor_cleaned <- governor_uncleaned %>%
   #Only care about races where no big independent
   filter(dem_votes + rep_votes >= total_votes*0.75) %>%
   rename(year = election_year) %>%
+  mutate(open_seat = (grepl("Open Seat", seat_status))) %>%
   bind_rows(current_governor) %>%
-  mutate(open_seat = (grepl("Open Seat", seat_status)),
-         margin = 100 * (dem_votes - rep_votes) / total_votes,
+  mutate(margin = 100 * (dem_votes - rep_votes) / total_votes,
          dem_tp = dem_votes / (dem_votes + rep_votes)) %>% 
   bind_rows(governor_2022) %>%
   #Only looking at governors who ran in an election year
