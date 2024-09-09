@@ -152,11 +152,10 @@ max_pct_sums = cleaned_current.groupby(['cycle', 'poll_id', 'state', 'seat_numbe
  
 max_pct_sums = max_pct_sums[max_pct_sums.groupby(['cycle', 'poll_id', 'state', 'seat_number', 'office_type'], dropna=False)['total_pct'].transform('max') == max_pct_sums['total_pct']]
 
-max_pct_sums.to_csv("cleaned_data/max_pct_sums2.csv", index=False)
-print(len(max_pct_sums))
 
 # Merging back into the cleaned polls
 cleaned_current = pd.merge(cleaned_current, max_pct_sums, on=['cycle', 'poll_id', 'state', 'seat_number', 'question_id', 'office_type'], how='right')
+
 # Only caring about DEM and REP
 cleaned_current = cleaned_current[cleaned_current['party'].isin(["DEM", "REP"])]
 
@@ -183,5 +182,116 @@ cleaned_current = cleaned_current.pivot_table(index=['poll_id', 'pollster_rating
                                                      'sample_size', 'population_full', 'cycle', 'office_type'],
                                               columns='party', values='pct').reset_index()
 
-cleaned_current.to_csv("cleaned_data/cleaned_polls2.csv", index=False)
+#Translating stuff to integers
+cleaned_current['district'] = cleaned_current['seat_number'].astype(int)
+cleaned_current['cycle'] = cleaned_current['cycle'].astype(int)
+cleaned_current['pollster_rating_id'] = cleaned_current['pollster_rating_id'].astype(int)
+cleaned_current['samplesize'] = cleaned_current['sample_size'].astype(int)
 
+#We only want likely voter polls
+cleaned_current = cleaned_current[cleaned_current['population_full'] == "lv"]
+
+#Model was trained on partisan being NA sometimes
+cleaned_current['partisan'] = np.where(cleaned_current['partisan'] == 'Unknown Partisan', np.NaN, cleaned_current['partisan'])
+cleaned_current['margin_poll'] = cleaned_current['DEM'] - cleaned_current['REP']
+
+#Don't want polls with NA margin (caused when there's no dem/rep party)
+cleaned_current = cleaned_current[~cleaned_current['margin_poll'].isna()]
+
+cleaned_current = cleaned_current[['cycle', 'office_type', 'state', 'district', 'pollster_rating_id', 'methodology', 
+                                   'partisan', 'samplesize',  'margin_poll']]
+
+#Combining current with past polls
+all_polls = pd.concat([past_polls, cleaned_current], ignore_index=True)
+
+
+#CLEANING IS DONE! RATING BEGINS!
+#Methodology can be multiple things, so we want to split it up into multiple dummy columns
+
+unique_methods = set()
+for methods in all_polls['methodology']:
+    unique_methods.update(methods.split('/'))
+
+#These methods only just started to exist
+unique_methods.remove('Mixed')
+unique_methods.remove("App Panel")
+
+for method in unique_methods:
+    all_polls[method] = all_polls['methodology'].apply(lambda x: 1 if method in x.split('/') else 0)
+
+#Text/Voice goes to two columns, text and voice both with 1s -- same for every other method combo
+all_polls = all_polls.drop(columns=['methodology'])
+
+def get_variance_bias(group_df):
+    "This function uses the models to predict the variance and bias of the polls"
+    year = group_df['cycle'].iloc[0]
+    predict_df = group_df.drop(columns=['state', 'district'])
+    
+    file_path_error = f'models/Polls_{year}_error.pkl'
+    with open(file_path_error, 'rb') as file:
+        squared_error_model = pkl.load(file)
+
+    file_path_bias = f'models/Polls_{year}_bias.pkl'
+    with open(file_path_bias, 'rb') as file:
+        bias_model = pkl.load(file)
+    
+    squared_error = squared_error_model.predict(predict_df)
+    bias = bias_model.predict(predict_df)
+    
+    variance = squared_error - bias**2
+    return pd.DataFrame({'variance': variance, 'bias': bias})
+
+#Getting variance and bias for each poll
+all_polls = all_polls[(all_polls['cycle'] >= 2002) & (all_polls['cycle'] % 2 == 0)]
+variance_bias_df = all_polls.groupby('cycle').apply(get_variance_bias).reset_index(drop=True)
+
+all_polls = pd.concat([all_polls.reset_index(), variance_bias_df], axis=1)
+#All polls need a small variance
+all_polls['variance'] = np.where(all_polls['variance'] < 1, 1, np.mean(all_polls['variance']))
+
+
+def combine_polls(race_df):
+    "This combines polls in two methods: a bias-adjusted inverse-variance weighted average and a simple average"
+    margins = race_df['margin_poll']
+    variance = race_df['variance']
+    bias = race_df['bias']
+    
+    #Bias-adjusted nverse-variance weighted average
+    weighted_estimate = np.average(margins - bias, weights = 1 / variance) #Inverse weighted average
+    weighted_variance = 1 / np.sum(1 / variance)
+    weighted_lower_bound = weighted_estimate - 1.96 * np.sqrt(weighted_variance)
+    weighted_upper_bound = weighted_estimate + 1.96 * np.sqrt(weighted_variance)
+    
+    #Simple average
+    unweighted_esimate = np.mean(margins)
+    unweighted_variance = np.var(margins, ddof=1)
+    unweighted_lower_bound = unweighted_esimate - 1.96 * np.sqrt(unweighted_variance)
+    unweighted_upper_bound = unweighted_esimate + 1.96 * np.sqrt(unweighted_variance)
+    
+    num_polls = len(margins)
+    
+    return pd.Series({'weighted_estimate': weighted_estimate, 
+                         'weighted_ci_lower': weighted_lower_bound,
+                         'weighted_ci_upper': weighted_upper_bound,
+                         'unweighted_estimate': unweighted_esimate, 
+                         'unweighted_ci_lower': unweighted_lower_bound,
+                         'unweighted_ci_upper': unweighted_upper_bound, 
+                         'num_polls': int(num_polls)})
+
+poll_estimates = all_polls.groupby(['cycle', 'office_type', 'state', 'district']).apply(combine_polls).reset_index()
+poll_estimates.rename(columns={'cycle': 'year'}, inplace=True)
+
+non_generic_ballot = poll_estimates.loc[poll_estimates['state'] != 'US'].copy()
+
+generic_ballot = poll_estimates.loc[poll_estimates['state'] == 'US'].copy()
+
+generic_ballot.rename(columns = {
+    "weighted_estimate": "weighted_genpoll",
+    "weighted_ci_lower": "weighted_genpoll_lower",
+    "weighted_ci_upper": "weighted_genpoll_upper",
+    "unweighted_estimate": "unweighted_genpoll"
+}, inplace=True)
+generic_ballot = generic_ballot[['weighted_genpoll', 'weighted_genpoll_lower', 'weighted_genpoll_upper', 'unweighted_genpoll', 'year']]
+
+non_generic_ballot.to_csv("cleaned_data/AllPolls.csv", index = False)
+generic_ballot.to_csv("cleaned_data/GenPolling.csv", index = False)
