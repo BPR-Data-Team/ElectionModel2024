@@ -62,7 +62,7 @@ pres_finished <- pres_votes %>%
          dem_tp = 100 * dem_votes/ (dem_votes + rep_votes),
          district = ifelse(is.na(district) | district == "", 0, as.numeric(district))) %>%
   select(c('year', 'state', 'district', 'margin', 'dem_tp')) %>%
-  mutate(open_seat = year %in% c(2008, 2016)) %>%
+  mutate(open_seat = year %in% c(2008, 2016, 2024)) %>%
   left_join(state_pvi, by = c('year', 'state', 'district')) %>%
   left_join(pres_summary, by = 'year') %>%
   group_by(state) %>%
