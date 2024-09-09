@@ -12,7 +12,8 @@ current_governor <- read.csv("data/AllRaces.csv") %>%
          year = 2024, 
          State = state.abb[match(State, state.name)]) %>%
   rename(state = State) %>%
-  select(year, state, open_seat)
+  select(year, state, open_seat) %>% 
+  mutate(open_seat = ifelse(state == "VT", FALSE, open_seat))
 
 governor_2022 <- read.csv("data/HistoricalElections/governor 2022.csv") %>%
   mutate(state = state.abb[match(state, state.name)], 
@@ -36,9 +37,9 @@ governor_cleaned <- governor_uncleaned %>%
   #Only care about races where no big independent
   filter(dem_votes + rep_votes >= total_votes*0.75) %>%
   rename(year = election_year) %>%
-  mutate(open_seat = (grepl("Open Seat", seat_status))) %>%
   bind_rows(current_governor) %>%
-  mutate(margin = 100 * (dem_votes - rep_votes) / total_votes,
+  mutate(open_seat = (grepl("Open Seat", seat_status)),
+         margin = 100 * (dem_votes - rep_votes) / total_votes,
          dem_tp = dem_votes / (dem_votes + rep_votes)) %>% 
   bind_rows(governor_2022) %>%
   #Only looking at governors who ran in an election year
