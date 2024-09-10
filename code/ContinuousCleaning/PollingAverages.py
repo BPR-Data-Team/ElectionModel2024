@@ -96,7 +96,7 @@ governor_polls = pd.read_csv("https://projects.fivethirtyeight.com/polls-page/da
 
 # Combine all poll data into one DataFrame
 uncleaned_current = pd.concat([president_polls, senate_polls, house_polls, governor_polls, uncleaned_current_genballot], ignore_index=True)
-
+uncleaned_current['office_type'] = uncleaned_current.apply(lambda x: 'U.S. House' if x['office_type'] == 'U.S. President' and pd.isna(x['state']) else x['office_type'], axis=1)
 
 #Only getting the polls that are within the last 50 days and after Biden dropped out
 cleaned_current = uncleaned_current[
