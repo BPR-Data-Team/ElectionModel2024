@@ -364,6 +364,7 @@ aleatoric_std_predictions = std_best_pipe.predict(X_predict)
 
 #At this point, we now have the standard deviations for each prediction. We can now calculate the final predictions
 final_std_predictions = np.sqrt(epistemic_std_predictions**2 + (aleatoric_increase * aleatoric_std_predictions)**2)
+print(np.mean(epistemic_std_predictions))
         
 
 #Getting final race-level dataframe
@@ -397,7 +398,7 @@ senate_samples = random_samples[predictions_df['office_type'] == 'Senate']
 US_senate = np.sum(senate_samples >= 0, axis = 0) + 30 #of the races we're not predicting, the margin is -10
 
 house_samples = random_samples[predictions_df['office_type'] == 'House']
-US_house = np.sum(house_samples >= 0, axis = 0) + 27
+US_house = np.sum(house_samples >= 0, axis = 0) + 24
 
 electoral_votes = pd.read_csv('cleaned_data/Electoral Votes Sheet.csv')
 president_samples = random_samples[predictions_df['office_type'] == 'President']

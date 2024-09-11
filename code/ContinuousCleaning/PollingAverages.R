@@ -108,7 +108,8 @@ cleaned_historical <- raw_polls %>%
 
 uncleaned_current_genballot <- read.csv("https://projects.fivethirtyeight.com/polls-page/data/generic_ballot_polls.csv") %>% 
   pivot_longer(cols = c(dem, rep), names_to = "party", values_to = "pct") %>% 
-  mutate(party = toupper(party))
+  mutate(party = toupper(party), 
+         seat_number = replace_na(seat_number, 0))
 
 #Get current polls from online, 538 stream
 uncleaned_current <- bind_rows(
@@ -130,7 +131,7 @@ cleaned_current <- uncleaned_current %>%
     TRUE ~ seat_number
   ), 
   state = str_remove(state, " CD-[0-9]")) %>% 
-  filter(state %in% c("", state.name)) %>%
+  filter(state %in% c("", state.name) | is.na(state)) %>%
   group_by(question_id) %>%
   filter(office_type != "U.S. President" | (!any(answer == "Biden") & !(any(answer == "Kennedy")) & any(answer == "Harris") & any(answer == "Trump"))) %>%
   ungroup() %>%
@@ -181,9 +182,11 @@ cleaned_current <- cleaned_current %>%
   select(-population_full) %>%
   #Combining with pollRatings
   left_join(pollRatings, by = c('cycle' = 'year', 'pollster_rating_id')) %>%
-  mutate(valid = ifelse(is.na(valid), FALSE, valid), 
+  mutate(valid = replace_na(valid, FALSE),
          state = state.abb[match(state, state.name)], 
-         state = ifelse(is.na(state), "US", state)) %>%
+         state = replace_na(state, "US"), 
+         office_type = ifelse(office_type == "U.S. House" & state == "US", "U.S. President", office_type),
+         sample_size = replace_na(sample_size, 600)) %>%
   arrange(valid, desc(lower_error_diff)) # Arrange rows
 
 all_polls <- cleaned_current %>%
