@@ -14,7 +14,7 @@ pvi <- read.csv("cleaned_data/Completed PVI.csv")
 generic_ballot <- read.csv("cleaned_data/Generic Ballot.csv")
 
 current_senate <- read.csv("data/AllRaces.csv") %>%
-  filter(Office_type == "Senate" & Weird == "")
+  filter(Office_type == "Senate" & Weird == "") %>%
   mutate(special_election = str_detect(State, " Special"), 
          State = str_remove(State, " Special"),
          open_seat = !Incumbent, 

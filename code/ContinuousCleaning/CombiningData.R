@@ -79,10 +79,10 @@ fec <- read.csv("cleaned_data/fecData20022024.csv") %>%
   unnest(cols = c(district))
 
 #POLLS... wow this is only two lines lol
-polls <- read.csv("cleaned_data/AllPolls.csv") %>% select(-X) %>%
+polls <- read.csv("cleaned_data/AllPolls.csv") %>%
   mutate(office_type = str_remove(office_type, "U\\.S\\. "))
 
-genpolls <- read.csv("cleaned_data/GenPolling.csv") %>% select(-X)
+genpolls <- read.csv("cleaned_data/GenPolling.csv") 
 
 #DEMOGRAPHICS
 demographics <- read.csv("cleaned_data/Demographics.csv") %>% select(-X) %>%
@@ -105,7 +105,7 @@ combination <- all_elections %>%
   left_join(gas, by = 'year') %>% #2024 included
   left_join(unemployment, by = 'year') %>%  #2024 included
   left_join(fec, by = c('state', 'year', 'district', 'office_type'), relationship = 'many-to-many') %>%
-  left_join(polls, by = c('state', 'year', 'district' = 'seat_number', 'office_type')) %>%
+  left_join(polls, by = c('state', 'year', 'district', 'office_type')) %>%
   left_join(demographics, by = c('state', 'year', 'district')) %>%
   left_join(inflation, by = 'year') %>%
   mutate(isMidterm = year %% 4 != 0) %>%
