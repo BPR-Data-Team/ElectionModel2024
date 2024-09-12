@@ -108,7 +108,8 @@ cleaned_historical <- raw_polls %>%
 
 uncleaned_current_genballot <- read.csv("https://projects.fivethirtyeight.com/polls-page/data/generic_ballot_polls.csv") %>% 
   pivot_longer(cols = c(dem, rep), names_to = "party", values_to = "pct") %>% 
-  mutate(party = toupper(party))
+  mutate(party = toupper(party), 
+         replace_na(seat_number, 0))
 
 #Get current polls from online, 538 stream
 uncleaned_current <- bind_rows(
@@ -183,7 +184,8 @@ cleaned_current <- cleaned_current %>%
   left_join(pollRatings, by = c('cycle' = 'year', 'pollster_rating_id')) %>%
   mutate(valid = ifelse(is.na(valid), FALSE, valid), 
          state = state.abb[match(state, state.name)], 
-         state = ifelse(is.na(state), "US", state)) %>%
+         state = ifelse(is.na(state), "US", state), 
+         office_type = ifelse(state == "US", "U.S. President", office_type)) %>%
   arrange(valid, desc(lower_error_diff)) # Arrange rows
 
 all_polls <- cleaned_current %>%
@@ -231,5 +233,5 @@ generic_polling <- full_poll_averages %>%
            'weighted_genpoll_upper', 'unweighted_genpoll'))
 #   
 # 
-# write.csv(full_poll_averages, "cleaned_data/AllPolls.csv")
-# write.csv(generic_polling, "cleaned_data/GenPolling.csv")
+write.csv(full_poll_averages, "cleaned_data/AllPolls.csv")
+write.csv(generic_polling, "cleaned_data/GenPolling.csv")

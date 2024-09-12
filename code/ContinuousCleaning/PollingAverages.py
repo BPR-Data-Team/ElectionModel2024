@@ -96,7 +96,6 @@ governor_polls = pd.read_csv("https://projects.fivethirtyeight.com/polls-page/da
 
 # Combine all poll data into one DataFrame
 uncleaned_current = pd.concat([president_polls, senate_polls, house_polls, governor_polls, uncleaned_current_genballot], ignore_index=True)
-uncleaned_current['office_type'] = uncleaned_current.apply(lambda x: 'U.S. House' if x['office_type'] == 'U.S. President' and pd.isna(x['state']) else x['office_type'], axis=1)
 
 #Only getting the polls that are within the last 50 days and after Biden dropped out
 cleaned_current = uncleaned_current[
@@ -105,7 +104,6 @@ cleaned_current = uncleaned_current[
     ((uncleaned_current['office_type'] != "U.S. President") | 
      (pd.to_datetime(uncleaned_current['start_date'], format="%m/%d/%y") > pd.to_datetime('2024-07-21', format="%Y-%m-%d")))
 ].copy()
-
 
 
 #Non-House races have a seat number of 0
@@ -124,6 +122,7 @@ cleaned_current = cleaned_current[(cleaned_current['state'].isin(state_name_to_a
 cleaned_current['state'] = cleaned_current['state'].map(state_name_to_abb)
 cleaned_current['state'] = cleaned_current['state'].fillna('US')
 
+
 #Getting number of polls
 cleaned_current['num_polls'] = cleaned_current.groupby(['state', 'office_type', 'seat_number'], dropna=False)['poll_id'].transform('nunique')
 
@@ -140,7 +139,8 @@ def filter_presidents(group):
 
 cleaned_current = cleaned_current.groupby('question_id').apply(filter_presidents).reset_index(drop=True)
 
-cleaned_current['office_type'] = np.where(cleaned_current['state'].isna(), 'U.S. House', cleaned_current['office_type']) #General US polls are counted as House polls
+
+cleaned_current['office_type'] = cleaned_current.apply(lambda x: 'U.S. President' if x['office_type'] == 'U.S. House' and x['state'] == "US" else x['office_type'], axis=1)
 
 cleaned_current = cleaned_current[['poll_id', 'pollster_rating_id', 'methodology', 'state', 'seat_number', 'question_id', 
          'sample_size', 'population_full', 'cycle', 'partisan', 'office_type', 'party', 'pct', 'answer', 'num_polls']]

@@ -133,12 +133,12 @@ uncontested_party_summaries <- house_including_unopposed %>%
 generic_ballot <- contested_party_summaries %>%
   full_join(uncontested_party_summaries, by = "year") %>%
   mutate(
-    total_dem = contested_dem + num_dem_unopposed*mean_votes*unopposed_prop + num_rep_unopposed*mean_votes*(1-unopposed_prop), 
+    total_dem = contested_dem + num_dem_unopposed*mean_votes*unopposed_prop + num_rep_unopposed*mean_votes*(1-unopposed_prop),
     total_rep = contested_rep + num_dem_unopposed*mean_votes*(1-unopposed_prop) + num_rep_unopposed*mean_votes*unopposed_prop
   ) %>% #formula that gets the total votes for dems/reps each year, assuming unopposed would get a certain % of the vote
-  mutate(dem_pct = 100 * total_dem/(435 * mean_votes), 
+  mutate(dem_pct = 100 * total_dem/(435 * mean_votes),
          rep_pct = 100 * total_rep/(435 * mean_votes)) %>%
-  mutate(gen_margin = dem_pct - rep_pct, 
+  mutate(gen_margin = dem_pct - rep_pct,
          gen_dem_tp = 100 * dem_pct / (dem_pct + rep_pct)) %>%
   select(c('year', 'gen_margin', 'gen_dem_tp')) %>%
   #adding on generic ballot for previous years
