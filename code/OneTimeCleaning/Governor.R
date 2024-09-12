@@ -12,7 +12,7 @@ current_governor <- read.csv("data/AllRaces.csv") %>%
          year = 2024, 
          State = state.abb[match(State, state.name)]) %>%
   rename(state = State) %>%
-  select(year, state, open_seat) 
+  select(year, state, open_seat)
 
 governor_2022 <- read.csv("data/HistoricalElections/governor 2022.csv") %>%
   mutate(state = state.abb[match(state, state.name)], 

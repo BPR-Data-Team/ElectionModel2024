@@ -145,7 +145,7 @@ generic_ballot <- contested_party_summaries %>%
   bind_rows(list(year = 2024, gen_margin = NA_real_, gen_dem_tp = NA_real_)) %>%
   mutate(prev_gen_margin = lag(gen_margin, order_by = year),
          prev_dem_gen_tp = lag(gen_dem_tp, order_by = year)) %>% #lagging margin
-  filter(year >= 1996)
+  filter(year >= 1996) 
 
 #combining all house data to get incumbent differential
 house_finished <- house_finished %>%
