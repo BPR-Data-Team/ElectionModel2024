@@ -391,7 +391,7 @@
 "390",2024,"MS","Safe R","Senate",FALSE,0
 "391",2024,"MT","Leans R","Senate",FALSE,0
 "392",2024,"ND","Safe R","Senate",FALSE,0
-"393",2024,"NE","Likely R","Senate",FALSE,0
+"393",2024,"NE","Leans R","Senate",FALSE,0
 "394",2024,"NE","Safe R","Senate",TRUE,0
 "395",2024,"NJ","Safe D","Senate",FALSE,0
 "396",2024,"NM","Safe D","Senate",FALSE,0
@@ -1702,7 +1702,7 @@
 "1701",2024,"CA","Likely R","House",FALSE,3
 "1702",2024,"CA","Likely D","House",FALSE,9
 "1703",2024,"CA","Toss-up","House",FALSE,13
-"1704",2024,"CA","Toss-up","House",FALSE,22
+"1704",2024,"CA","Leans R","House",FALSE,22
 "1705",2024,"CA","Toss-up","House",FALSE,27
 "1706",2024,"CA","Likely R","House",FALSE,40
 "1707",2024,"CA","Leans R","House",FALSE,41
@@ -1729,7 +1729,7 @@
 "1728",2024,"MI","Leans R","House",FALSE,10
 "1729",2024,"MN","Leans D","House",FALSE,2
 "1730",2024,"MT","Leans R","House",FALSE,1
-"1731",2024,"NC","Toss-up","House",FALSE,1
+"1731",2024,"NC","Leans D","House",FALSE,1
 "1732",2024,"NC","Safe R","House",FALSE,6
 "1733",2024,"NC","Safe R","House",FALSE,13
 "1734",2024,"NC","Safe R","House",FALSE,14
@@ -1751,12 +1751,12 @@
 "1750",2024,"NY","Leans D","House",FALSE,22
 "1751",2024,"OH","Likely D","House",FALSE,1
 "1752",2024,"OH","Leans D","House",FALSE,9
-"1753",2024,"OH","Toss-up","House",FALSE,13
+"1753",2024,"OH","Leans D","House",FALSE,13
 "1754",2024,"OR","Likely D","House",FALSE,4
 "1755",2024,"OR","Toss-up","House",FALSE,5
 "1756",2024,"OR","Likely D","House",FALSE,6
 "1757",2024,"PA","Likely R","House",FALSE,1
-"1758",2024,"PA","Toss-up","House",FALSE,7
+"1758",2024,"PA","Leans D","House",FALSE,7
 "1759",2024,"PA","Toss-up","House",FALSE,8
 "1760",2024,"PA","Leans R","House",FALSE,10
 "1761",2024,"PA","Leans D","House",FALSE,17
@@ -2079,3 +2079,4 @@
 "2078",2024,"NE","Safe R","President",FALSE,3
 "2079",2024,"ME","Safe D","President",FALSE,1
 "2080",2024,"ME","Likely R","President",FALSE,2
+"2081",2024,"AZ","Likely R","House",FALSE,2
