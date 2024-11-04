@@ -246,8 +246,7 @@ variance_bias_df = all_polls.groupby('cycle').apply(get_variance_bias).reset_ind
 
 all_polls = pd.concat([all_polls.reset_index(), variance_bias_df], axis=1)
 #All polls need a small variance
-all_polls['variance'] = np.where(all_polls['variance'] < 1, 1, np.mean(all_polls['variance']))
-
+all_polls['variance'] = np.where(all_polls['variance'] < 1, 1, all_polls['variance'])
 
 def combine_polls(race_df):
     "This combines polls in two methods: a bias-adjusted inverse-variance weighted average and a simple average"
