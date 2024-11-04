@@ -130,8 +130,7 @@ cleaned_current['num_polls'] = cleaned_current.groupby(['state', 'office_type', 
 def filter_presidents(group):
     if group['office_type'].iloc[0] != 'U.S. President':
         return group
-    elif ((group['answer'].str.contains('Harris').any()) & (group['answer'].str.contains('Trump').any()) & (~group['answer'].str.contains('Biden').any()) & 
-         (~group['answer'].str.contains('Kennedy').any())):
+    elif ((group['answer'].str.contains('Harris').any()) & (group['answer'].str.contains('Trump').any()) & (~group['answer'].str.contains('Biden').any())):
         return group
     return pd.DataFrame()  # Return an empty DataFrame if the group does not meet the criteria
 
@@ -247,8 +246,7 @@ variance_bias_df = all_polls.groupby('cycle').apply(get_variance_bias).reset_ind
 
 all_polls = pd.concat([all_polls.reset_index(), variance_bias_df], axis=1)
 #All polls need a small variance
-all_polls['variance'] = np.where(all_polls['variance'] < 1, 1, np.mean(all_polls['variance']))
-
+all_polls['variance'] = np.where(all_polls['variance'] < 1, 1, all_polls['variance'])
 
 def combine_polls(race_df):
     "This combines polls in two methods: a bias-adjusted inverse-variance weighted average and a simple average"
