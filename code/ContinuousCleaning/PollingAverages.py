@@ -130,8 +130,7 @@ cleaned_current['num_polls'] = cleaned_current.groupby(['state', 'office_type', 
 def filter_presidents(group):
     if group['office_type'].iloc[0] != 'U.S. President':
         return group
-    elif ((group['answer'].str.contains('Harris').any()) & (group['answer'].str.contains('Trump').any()) & (~group['answer'].str.contains('Biden').any()) & 
-         (~group['answer'].str.contains('Kennedy').any())):
+    elif ((group['answer'].str.contains('Harris').any()) & (group['answer'].str.contains('Trump').any()) & (~group['answer'].str.contains('Biden').any())):
         return group
     return pd.DataFrame()  # Return an empty DataFrame if the group does not meet the criteria
 
